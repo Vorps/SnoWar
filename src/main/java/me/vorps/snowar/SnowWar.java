@@ -1,7 +1,11 @@
 package me.vorps.snowar;
 
 import lombok.Getter;
+import me.vorps.snowar.commands.CommandManager;
 import me.vorps.snowar.listeners.EventsManager;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.event.EventHandler;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -14,7 +18,8 @@ public class SnowWar extends JavaPlugin{
     @Override
     public void onEnable(){
         instance = this;
-        EventsManager.registerEvents(this);
+        new EventsManager();
+        new CommandManager();
         Data.loadVariable();
         GameState.setState(GameState.WAITING);
     }
@@ -23,5 +28,10 @@ public class SnowWar extends JavaPlugin{
     public void onDisable(){
         GameState.setState(GameState.STOP);
         PlayerData.clear();
+    }
+
+    @EventHandler
+    public boolean onCommand(CommandSender sender , Command command, String label, String args[]){
+        return CommandManager.onCommand(sender, label, args);
     }
 }

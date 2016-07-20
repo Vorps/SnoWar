@@ -30,7 +30,10 @@ public class PlayerData {
     public PlayerData(UUID uuid){
         Database.SNOWAR.tryConnectionDatabase();
         this.uuid = uuid;
+        lang = "french";
+        name = getPlayer().getName();
         initPlayer();
+        playerDataList.put(name, this);
     }
 
     /**
@@ -51,10 +54,15 @@ public class PlayerData {
             getPlayer().setHealth(20);
             getPlayer().teleport(Location.getLocation("map_01_lobby"));
             getPlayer().setGameMode(GameMode.ADVENTURE);
-            scoreboard = new SbLobby(lang).getScoreBoard();
+            setScoreboard(new SbLobby(lang).getScoreBoard());
         } else {
             getPlayer().setGameMode(GameMode.SPECTATOR);
         }
+    }
+
+    private void setScoreboard(Scoreboard scoreboard){
+        this.scoreboard = scoreboard;
+        getPlayer().setScoreboard(this.scoreboard);
     }
 
     private static @Getter HashMap<String, PlayerData> playerDataList;

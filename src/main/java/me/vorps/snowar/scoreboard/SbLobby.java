@@ -12,16 +12,18 @@ public class SbLobby extends ScoreBoard{
 
     public SbLobby(String lang){
 		super(DisplaySlot.SIDEBAR, Lang.getMessage("SNO_WAR.SB.NAME", lang));
+        System.out.println(Lang.getMessage("SNO_WAR.SB.NAME", lang));
         this.lang = lang;
-        super.add("6", Lang.getMessage("SNO_WAR.SB.SPACE", lang), 7);
+        super.add("6", "§7"+Lang.getMessage("SNO_WAR.SB.SPACE", lang), 7);
         super.add("player", Lang.getMessage("SNO_WAR.SB.PLAYER", lang, new Lang.Args(Lang.Parameter.NBR_PLAYER, ""+PlayerData.size())), 6);
-		super.add("4", Lang.getMessage("SNO_WAR.SB.WAITING", lang), 4);
-        super.add("3", Lang.getMessage("SNO_WAR.SB.SPACE", lang), 3);
+        super.add("4", "§f§7"+Lang.getMessage("SNO_WAR.SB.SPACE", lang), 4);
+		super.add("waiting", Lang.getMessage("SNO_WAR.SB.WAITING", lang), 3);
         super.add("2", " ", 2);
 		super.add("ip", Settings.getIp(), 1);
 	}
 
     public void inStart(int time){
+        super.remove("waiting");
         super.add("time", Lang.getMessage(getKey(time), lang, new Lang.Args(Lang.Parameter.TIME, ""+time)), 5);
     }
 

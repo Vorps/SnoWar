@@ -14,10 +14,12 @@ public class Settings {
     private static HashMap<String, Settings> settings = new HashMap<>();
     private static @Getter String title;
     private static @Getter String ip;
+    private static @Getter String consoleLang;
 
     public static void initSettings(){
         title = Settings.settings.get("title").message;
         ip = Settings.settings.get("ip").message;
+        consoleLang = Settings.settings.get("console_lang").message;
         settings.clear();
     }
 

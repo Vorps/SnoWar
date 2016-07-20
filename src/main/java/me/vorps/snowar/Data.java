@@ -1,12 +1,17 @@
 package me.vorps.snowar;
 
 import lombok.Getter;
+import lombok.Setter;
 import me.vorps.snowar.Exceptions.SqlException;
 import me.vorps.snowar.databases.Database;
+import me.vorps.snowar.objects.MapParameter;
+import me.vorps.snowar.objects.Parameter;
 import me.vorps.snowar.utils.Lang;
 import me.vorps.snowar.utils.LangSetting;
+import me.vorps.snowar.utils.Limite;
 import me.vorps.snowar.utils.Location;
 
+import java.nio.file.Paths;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -15,12 +20,21 @@ import java.sql.SQLException;
  */
 public class Data {
 
+    private static @Getter @Setter int minPlayer;
+    private static @Getter @Setter int maxPlayer;
     private static @Getter int numberPlayer;
 
+    private static @Getter String nameServer;
+
+    static {
+        nameServer = Paths.get(System.getProperty("user.dir")).getFileName().toString();
+    }
     public static void loadVariable(){
         getLang();
         getSettings();
         getLocation();
+        getLimite();
+        getServer();
     }
 
     private static void getSettings(){
@@ -68,6 +82,43 @@ public class Data {
             results = Database.SNOWAR.getDatabase().getDataTmp("lang");
             while(results.next()) {
                 new Lang(results);
+            }
+        } catch (SQLException e){
+            //
+        } catch (SqlException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void getServer(){
+        try{
+            ResultSet resultServer = Database.SNOWAR.getDatabase().getData("server", "sv_name = '"+Data.getNameServer()+"'");
+            if(resultServer.next()){
+                minPlayer = Database.SNOWAR.getDatabase().getInt(resultServer, 3);
+                maxPlayer = Database.SNOWAR.getDatabase().getInt(resultServer, 4);
+                ResultSet resultParameter = Database.SNOWAR.getDatabase().getData("parameter", "p_parameter = '"+Database.SNOWAR.getDatabase().getString(resultServer, 2)+"'");
+                if(resultParameter.next()){
+                    Parameter.init(resultParameter);
+                    ResultSet resultMap = Database.SNOWAR.getDatabase().getData("map" , "m_name = '"+Database.SNOWAR.getDatabase().getString(resultParameter, 2)+"'");
+                    if(resultMap.next()){
+                        MapParameter.init(resultMap);
+                    }
+                }
+            }
+        }catch(SQLException e){
+            //
+        }catch (SqlException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void getLimite(){
+        Limite.clear();
+        ResultSet results;
+        try {
+            results = Database.SNOWAR.getDatabase().getDataTmp("limite");
+            while (results.next()) {
+                new Limite(results);
             }
         } catch (SQLException e){
             //

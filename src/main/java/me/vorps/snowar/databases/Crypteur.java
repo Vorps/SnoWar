@@ -14,7 +14,7 @@ public class Crypteur {
     public Crypteur(){
         typeBdd = "mysql";
         ip = "localhost";
-        user = "";
+        user = "root";
         pass = "";
     }
 

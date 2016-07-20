@@ -8,7 +8,7 @@ import java.sql.SQLException;
  * Project FortyCube Created by Vorps on 04/03/2016 at 18:32.
  */
 public enum Database {
-    SNOWAR("bd_fortycube");
+    SNOWAR("bd_snowar");
 
     private DatabaseManager database;
     private String nameDataBase;
