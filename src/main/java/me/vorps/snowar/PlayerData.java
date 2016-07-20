@@ -3,6 +3,7 @@ package me.vorps.snowar;
 import lombok.Getter;
 import me.vorps.snowar.databases.Database;
 import me.vorps.snowar.scoreboard.SbLobby;
+import me.vorps.snowar.scoreboard.ScoreBoard;
 import me.vorps.snowar.utils.Lang;
 import me.vorps.snowar.utils.Location;
 import org.bukkit.Bukkit;
@@ -21,7 +22,7 @@ public class PlayerData {
     private UUID uuid;
     private String name;
     private @Getter String lang;
-    private @Getter Scoreboard scoreboard;
+    private @Getter ScoreBoard scoreboard;
 
     /**
      * Contructor create a data player
@@ -54,15 +55,18 @@ public class PlayerData {
             getPlayer().setHealth(20);
             getPlayer().teleport(Location.getLocation("map_01_lobby"));
             getPlayer().setGameMode(GameMode.ADVENTURE);
-            setScoreboard(new SbLobby(lang).getScoreBoard());
+            setScoreboard(new SbLobby(lang));
         } else {
             getPlayer().setGameMode(GameMode.SPECTATOR);
         }
     }
 
-    private void setScoreboard(Scoreboard scoreboard){
+    public void removePlayerData(){
+        playerDataList.remove(name);
+    }
+    public void setScoreboard(ScoreBoard scoreboard){
         this.scoreboard = scoreboard;
-        getPlayer().setScoreboard(this.scoreboard);
+        getPlayer().setScoreboard(this.scoreboard.getScoreBoard());
     }
 
     private static @Getter HashMap<String, PlayerData> playerDataList;

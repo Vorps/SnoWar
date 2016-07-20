@@ -15,11 +15,15 @@ public class Settings {
     private static @Getter String title;
     private static @Getter String ip;
     private static @Getter String consoleLang;
+    private static @Getter String nameVillagerStats;
+    private static @Getter int timeStart;
 
     public static void initSettings(){
         title = Settings.settings.get("title").message;
         ip = Settings.settings.get("ip").message;
         consoleLang = Settings.settings.get("console_lang").message;
+        nameVillagerStats = Settings.settings.get("name_villager_stats").message;
+        timeStart = Settings.settings.get("time_start").valueInt;
         settings.clear();
     }
 

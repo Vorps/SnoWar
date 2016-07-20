@@ -1,25 +1,16 @@
 package me.vorps.snowar.objects;
 
 import lombok.Getter;
-import lombok.Setter;
-import me.vorps.fortycube.utils.Block;
-import me.vorps.fortycube.utils.Limite;
-import me.vorps.fortycube.utils.ParticleEffect;
-import me.vorps.rushvolcano.Settings;
-import me.vorps.rushvolcano.utils.EntityManager;
-import me.vorps.fortycube.Exceptions.SqlException;
-import me.vorps.fortycube.databases.Database;
 import me.vorps.snowar.Exceptions.SqlException;
+import me.vorps.snowar.Settings;
 import me.vorps.snowar.databases.Database;
+import me.vorps.snowar.utils.EntityManager;
 import me.vorps.snowar.utils.Limite;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Villager;
 
 import java.sql.ResultSet;
-import java.util.ArrayList;
 
 /**
  * Project RushVolcano Created by Vorps on 21/04/2016 at 22:56.

@@ -22,14 +22,11 @@ public class Data {
 
     private static @Getter @Setter int minPlayer;
     private static @Getter @Setter int maxPlayer;
-    private static @Getter int numberPlayer;
 
     private static @Getter String nameServer;
 
-    static {
-        nameServer = Paths.get(System.getProperty("user.dir")).getFileName().toString();
-    }
     public static void loadVariable(){
+        nameServer = Paths.get(System.getProperty("user.dir")).getFileName().toString();
         getLang();
         getSettings();
         getLocation();

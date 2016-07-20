@@ -13,6 +13,6 @@ public class EventsManager {
 		pluginManager.registerEvents(new PlayerQuit(), plugin);
         pluginManager.registerEvents(new FoodLevel(), plugin);
         pluginManager.registerEvents(new WeatherChange(), plugin);
-
+        pluginManager.registerEvents(new PlayerMove(), plugin);
 	}
 }
