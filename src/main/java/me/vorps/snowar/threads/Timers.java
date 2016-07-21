@@ -3,6 +3,7 @@ package me.vorps.snowar.threads;
 
 import lombok.Getter;
 import lombok.Setter;
+import me.vorps.snowar.GameManager;
 import me.vorps.snowar.GameState;
 import me.vorps.snowar.Settings;
 
@@ -17,7 +18,8 @@ public class Timers{
 			new ThreadInStart();
 			break;
 		case INGAME:
-			//threadGame = new ThreadGame(time);
+            GameManager.startGame();
+			new ThreadGame();
 			break;
 		case FINISH:
 			//GameManager.stopGame();

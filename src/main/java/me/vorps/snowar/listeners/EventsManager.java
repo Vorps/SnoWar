@@ -14,5 +14,9 @@ public class EventsManager {
         pluginManager.registerEvents(new FoodLevel(), plugin);
         pluginManager.registerEvents(new WeatherChange(), plugin);
         pluginManager.registerEvents(new PlayerMove(), plugin);
+        pluginManager.registerEvents(new DamageByEntityListener(), plugin);
+        pluginManager.registerEvents(new DamageListener(), plugin);
+        pluginManager.registerEvents(new DropListener(), plugin);
+        pluginManager.registerEvents(new PlayerInteract(), plugin);
 	}
 }

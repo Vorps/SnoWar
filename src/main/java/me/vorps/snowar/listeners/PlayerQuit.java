@@ -33,7 +33,11 @@ public class PlayerQuit implements Listener {
                 Timers.setTime(Settings.getTimeStart());
                 PlayerData.getPlayerDataList().values().forEach((PlayerData playerDataList) -> playerDataList.getScoreboard().updateValue("time",  Lang.getMessage(SbLobby.getKey(Timers.getTime()), playerDataList.getLang(), new Lang.Args(Lang.Parameter.TIME, ""+Timers.getTime()))));
 			}
-		}
+		} else {
+            if(PlayerData.size()-1 == 0){
+                Bukkit.shutdown();
+            }
+        }
         e.setQuitMessage(null);
         playerData.removePlayerData();
     }

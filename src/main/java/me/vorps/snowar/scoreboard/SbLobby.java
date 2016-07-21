@@ -25,9 +25,9 @@ public class SbLobby extends ScoreBoard{
         } else if(time < 120 && time >= 60){
             key = "SNO_WAR.SB.LOBBY.TIME.MINUTE";
         } else if(time < 60 && time > 1){
-            key = "SNO_WAR.SB.LOBBY.TIME.SECONDS";
+            key = "SNO_WAR.SB.LOBBY.TIME.SECONDES";
         } else {
-            key = "SNO_WAR.SB.LOBBY.TIME.SECOND";
+            key = "SNO_WAR.SB.LOBBY.TIME.SECONDE";
         }
         return key;
     }

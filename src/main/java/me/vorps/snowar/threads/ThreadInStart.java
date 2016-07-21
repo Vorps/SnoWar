@@ -37,11 +37,11 @@ public class ThreadInStart{
                 }
                 if(Timers.getTime() == 30 ||(Timers.getTime() <= 10 && Timers.getTime() > 1)){
                     state = true;
-                    PlayerData.broadCast("SNO_WAR.THREAD.INSTART.SECONDS", new Lang.Args(Lang.Parameter.TIME, ""+Timers.getTime()));
+                    PlayerData.broadCast("SNO_WAR.THREAD.INSTART.SECONDES", new Lang.Args(Lang.Parameter.TIME, ""+Timers.getTime()));
                 }
                 if(Timers.getTime() == 1){
                     state = true;
-                    PlayerData.broadCast("SNO_WAR.THREAD.INSTART.SECOND", new Lang.Args(Lang.Parameter.TIME, "1"));
+                    PlayerData.broadCast("SNO_WAR.THREAD.INSTART.SECONDE", new Lang.Args(Lang.Parameter.TIME, "1"));
                 }
                 if(state){
                     Bukkit.getOnlinePlayers().forEach((Player player) -> {

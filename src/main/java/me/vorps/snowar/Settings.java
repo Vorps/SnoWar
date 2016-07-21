@@ -17,6 +17,10 @@ public class Settings {
     private static @Getter String consoleLang;
     private static @Getter String nameVillagerStats;
     private static @Getter int timeStart;
+    private static @Getter String tabListHeader;
+    private static @Getter String tabListFooter;
+    private static @Getter int coolDownLastDamage;
+    private static @Getter int coolDownSpawnKill;
 
     public static void initSettings(){
         title = Settings.settings.get("title").message;
@@ -24,6 +28,10 @@ public class Settings {
         consoleLang = Settings.settings.get("console_lang").message;
         nameVillagerStats = Settings.settings.get("name_villager_stats").message;
         timeStart = Settings.settings.get("time_start").valueInt;
+        tabListHeader = Settings.settings.get("tab_list_header").message;
+        tabListFooter = Settings.settings.get("tab_list_footer").message;
+        coolDownLastDamage = Settings.settings.get("cooldown_last_damage").valueInt;
+        coolDownSpawnKill = Settings.settings.get("cooldown_spawn_kill").valueInt;
         settings.clear();
     }
 
