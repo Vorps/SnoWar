@@ -4,3 +4,4 @@ author: Vorps
 version: 1.0
 commands:
   reloadsw:
+  genentity:

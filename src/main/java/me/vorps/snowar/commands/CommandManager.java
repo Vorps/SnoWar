@@ -5,7 +5,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.event.EventHandler;
 
 /**
- * Project Hub Created by Vorps on 06/03/2016 at 07:57.
+ * Project SnoWar Created by Vorps on 21/07/2016 at 15:36.
  */
 public class CommandManager {
 
@@ -19,6 +19,9 @@ public class CommandManager {
         boolean state = false;
         if(label.equalsIgnoreCase(Commands.Command.RELOAD_SNOW_WAR.getCommand())){
             state = new CommandReload(sender, args).isStateExec();
+        }
+        if(label.equalsIgnoreCase(Commands.Command.ENTITY.getCommand())){
+            state = new CommandGenEntity(sender, args).isStateExec();
         }
         return state;
     }

@@ -8,7 +8,7 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
 /**
- * Project RushVolcano Created by Vorps on 21/06/2016 at 17:55.
+ * Project SnoWar Created by Vorps on 21/07/2016 at 15:36.
  */
 public class ThreadSpawnKill {
 

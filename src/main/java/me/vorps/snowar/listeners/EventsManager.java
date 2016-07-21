@@ -4,6 +4,9 @@ import me.vorps.snowar.SnowWar;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 
+/**
+ * Project SnoWar Created by Vorps on 21/07/2016 at 15:36.
+ */
 public class EventsManager {
 	
 	public EventsManager(){

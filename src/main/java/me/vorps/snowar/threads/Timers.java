@@ -7,6 +7,9 @@ import me.vorps.snowar.GameManager;
 import me.vorps.snowar.GameState;
 import me.vorps.snowar.Settings;
 
+/**
+ * Project SnoWar Created by Vorps on 21/07/2016 at 15:36.
+ */
 public class Timers{
 	
 	private @Getter @Setter static int time = Settings.getTimeStart();

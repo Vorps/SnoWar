@@ -1,7 +1,7 @@
 package me.vorps.snowar.databases;
 
 /**
- * Project FortyCubeAPIBukkit Created by Vorps on 27/05/2016 at 13:11.
+ * Project SnoWar Created by Vorps on 21/07/2016 at 15:36.
  */
 public class Crypteur {
 

@@ -8,7 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 /**
- * Project RushVolcano Created by Vorps on 27/04/2016 at 15:36.
+ * Project SnoWar Created by Vorps on 21/07/2016 at 15:36.
  */
 public class CommandReload extends Commands{
 

@@ -1,7 +1,7 @@
 package me.vorps.snowar;
 
 /**
- * Project Lobby Created by Vorps on 04/03/2016 at 18:32.
+ * Project SnoWar Created by Vorps on 21/07/2016 at 15:36.
  */
 public enum GameState {
     WAITING("En attente"),

@@ -5,7 +5,9 @@ import me.vorps.snowar.Settings;
 import me.vorps.snowar.utils.Lang;
 import org.bukkit.scoreboard.DisplaySlot;
 
-
+/**
+ * Project SnoWar Created by Vorps on 21/07/2016 at 15:36.
+ */
 public class SbLobby extends ScoreBoard{
 
     public SbLobby(String lang){

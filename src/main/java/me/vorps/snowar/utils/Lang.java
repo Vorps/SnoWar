@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 
 /**
- * Project FortycubeBungee Created by Vorps on 30/03/2016 at 17:40.
+ * Project SnoWar Created by Vorps on 21/07/2016 at 15:36.
  */
 public class Lang {
     public static class Args{
@@ -44,7 +44,9 @@ public class Lang {
         DEVICE("<device>"),
         LOOSER("<looser>"),
         KIT("<kit>"),
-        PAGE("<page>");
+        PAGE("<page>"),
+        LIFE("life"),
+        KILLED("killed");
 
         private String label;
 

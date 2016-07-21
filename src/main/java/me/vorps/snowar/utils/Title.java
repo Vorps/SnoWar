@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Project Hub Created by Vorps on 01/02/2016 at 02:02.
+ * Project SnoWar Created by Vorps on 21/07/2016 at 15:36.
  */
 public class Title {
     private Class<?> packetTitle;

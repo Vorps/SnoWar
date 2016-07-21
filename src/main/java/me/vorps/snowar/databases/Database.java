@@ -5,7 +5,7 @@ import me.vorps.snowar.Exceptions.SqlException;
 import java.sql.SQLException;
 
 /**
- * Project FortyCube Created by Vorps on 04/03/2016 at 18:32.
+ * Project SnoWar Created by Vorps on 21/07/2016 at 15:36.
  */
 public enum Database {
     SNOWAR("bd_snowar");

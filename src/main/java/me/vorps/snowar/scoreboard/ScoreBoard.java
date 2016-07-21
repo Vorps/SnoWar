@@ -8,7 +8,7 @@ import org.bukkit.scoreboard.Scoreboard;
 import java.util.HashMap;
 
 /**
- * Project Hub Created by Vorps on 01/02/2016 at 01:40.
+ * Project SnoWar Created by Vorps on 21/07/2016 at 15:36.
  */
 public abstract class ScoreBoard {
     private ScoreboardManager manager = Bukkit.getScoreboardManager();

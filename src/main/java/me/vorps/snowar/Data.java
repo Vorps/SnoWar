@@ -6,10 +6,7 @@ import me.vorps.snowar.Exceptions.SqlException;
 import me.vorps.snowar.databases.Database;
 import me.vorps.snowar.objects.MapParameter;
 import me.vorps.snowar.objects.Parameter;
-import me.vorps.snowar.utils.Lang;
-import me.vorps.snowar.utils.LangSetting;
-import me.vorps.snowar.utils.Limite;
-import me.vorps.snowar.utils.Location;
+import me.vorps.snowar.utils.*;
 
 import java.nio.file.Paths;
 import java.sql.ResultSet;
@@ -22,6 +19,7 @@ public class Data {
 
     private static @Getter @Setter int minPlayer;
     private static @Getter @Setter int maxPlayer;
+    private static @Getter @Setter boolean fall;
 
     private static @Getter String nameServer;
 
@@ -31,6 +29,8 @@ public class Data {
         getSettings();
         getLocation();
         getLimite();
+        getMessageTitle();
+        getItem();
         getServer();
     }
 
@@ -102,20 +102,48 @@ public class Data {
                     }
                 }
             }
-        }catch(SQLException e){
+        } catch(SQLException e){
             //
-        }catch (SqlException e) {
+        } catch (SqlException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void getItem(){
+        Item.clear();
+        ResultSet results;
+        try {
+            results = Database.SNOWAR.getDatabase().getDataTmp("item");
+            while (results.next()) {
+                new Item(results);
+            }
+        } catch (SQLException e){
+            //
+        } catch (SqlException e) {
             e.printStackTrace();
         }
     }
 
     private static void getLimite(){
         Limite.clear();
-        ResultSet results;
         try {
-            results = Database.SNOWAR.getDatabase().getDataTmp("limite");
+            ResultSet results = Database.SNOWAR.getDatabase().getDataTmp("limite");
             while (results.next()) {
                 new Limite(results);
+            }
+        } catch (SQLException e){
+            //
+        } catch (SqlException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void getMessageTitle(){
+        MessageTitle.clear();
+        try {
+            ResultSet results = Database.SNOWAR.getDatabase().getDataTmp("message_title");
+            while (results.next()) {
+                new MessageTitle(results);
             }
         } catch (SQLException e){
             //

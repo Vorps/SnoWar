@@ -14,6 +14,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+/**
+ * Project SnoWar Created by Vorps on 21/07/2016 at 15:36.
+ */
 public class PlayerQuit implements Listener {
 
 	@EventHandler
@@ -34,6 +37,12 @@ public class PlayerQuit implements Listener {
                 PlayerData.getPlayerDataList().values().forEach((PlayerData playerDataList) -> playerDataList.getScoreboard().updateValue("time",  Lang.getMessage(SbLobby.getKey(Timers.getTime()), playerDataList.getLang(), new Lang.Args(Lang.Parameter.TIME, ""+Timers.getTime()))));
 			}
 		} else {
+            if(playerData.getLife() != 0){
+                PlayerData.removePlayerInGame();
+            }
+            if(PlayerData.getPlayerInGame() == 1){
+                // TODO: 22/07/2016 Finish
+            }
             if(PlayerData.size()-1 == 0){
                 Bukkit.shutdown();
             }

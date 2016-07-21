@@ -1,272 +1,117 @@
 package me.vorps.snowar.utils;
 
-import org.bukkit.Color;
-import org.bukkit.Material;
-import org.bukkit.SkullType;
+import me.vorps.snowar.Exceptions.SqlException;
+import me.vorps.snowar.databases.Database;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.inventory.ItemFlag;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.LeatherArmorMeta;
-import org.bukkit.inventory.meta.SkullMeta;
-import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionType;
 
-import java.util.*;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
- * Project Hub Created by Vorps on 01/02/2016 at 01:41.
+ * Project Hub Created by Vorps on 17/05/2016 at 20:51.
  */
 public class Item {
-    private String name;
-    private Material material;
-    private int amount;
-    private boolean hideEnchant;
-    private byte data;
-    private int id;
-    private List<String> lore = new ArrayList<>();
-    private Map<Enchantment, Integer> enchantments = new HashMap<>();
-    private String skullOwnerName = null;
-    private Color color;
-    private PotionType potionType = null;
-    private short durability;
 
-    {
-        this.amount = 1;
-        this.data = (byte) 0;
-        this.durability = -1;
-    }
+    private static HashMap<String, Item> listItem = new HashMap<>();
+    private HashMap<String, String> label;
+    private HashMap<String, String[]> lore;
+    private me.vorps.snowar.menu.Item item;
 
-    public String name(){
-        return name;
-    }
-
-    public Material getMaterial(){
-        return material;
-    }
-
-    public int getAmount(){
-        return amount;
-    }
-
-    public boolean isHideEnchant(){
-        return hideEnchant;
-    }
-
-    public byte getData(){
-        return data;
-    }
-
-    public int id(){
-        return id;
-    }
-
-    public List<String> getLore(){
-        return lore;
-    }
-
-    public Map<Enchantment, Integer> getEnchantments(){
-        return enchantments;
-    }
-
-    public String getSkullOwnerName(){
-        return skullOwnerName;
-    }
-
-    public Color getColor(){
-        return color;
-    }
-
-    public PotionType getPotionType(){
-        return potionType;
-    }
-
-    public short getDurability(){
-        return durability;
-    }
-    /**
-     * @param material Material
-     */
-    public Item(Material material) {
-        this.material = material;
-        this.id = material.getId();
-    }
-
-    /**
-     *
-     * @param potionType PotionType
-     */
-    public Item(PotionType potionType){
-        this.potionType = potionType;
-    }
-    /**
-     * @param id int
-     */
-    public Item(int id) {
-        this.id = id;
-        this.material = Material.getMaterial(id);
-    }
-
-    public Item(Item item){
-        this.name = item.name;
-        this.material = item.material;
-        this.amount = item.amount;
-        this.hideEnchant = item.hideEnchant;
-        this.data = item.data;
-        this.id = item.id;
-        this.lore = item.lore;
-        this.enchantments = item.enchantments;
-        this.skullOwnerName = item.skullOwnerName;
-        this.color = item.color;
-        this.potionType = item.potionType;
-        this.durability = item.durability;
-    }
-
-    /**
-     * Skull Player
-     * @param namePlayer String
-     */
-    public Item(String namePlayer) {
-        skullOwnerName = namePlayer;
-    }
-
-    /**
-     * Color
-     * @param color Color
-     * @return
-     */
-    public Item withColor(Color color){
-        this.color = color;
-        return this;
-    }
-    /**
-     * @param name String
-     * @return Item
-     */
-    public Item withName(String name) {
-        this.name = name;
-        return this;
-    }
-    /**
-     * @param amount int
-     * @return Item
-     */
-    public Item withAmount(int amount) {
-        this.amount = amount;
-        return this;
-    }
-
-    /**
-     * @param hideEnchantement boolean
-     * @return Item
-     */
-    public Item hideEnchant(boolean hideEnchantement) {
-        this.hideEnchant = hideEnchantement;
-        return this;
-    }
-
-    /**
-     *
-     * @param durability
-     * @return
-     */
-    public Item withDurability(int durability){
-        this.durability = (short) durability;
-        return this;
-    }
-    /**
-     * @param data byte
-     * @return Item
-     */
-    public Item withData(byte data) {
-        this.data = data;
-        return this;
-    }
-
-    /**
-     * @param lore String[]
-     * @return Item
-     */
-    public Item withLore(String[] lore) {
-        this.lore = Arrays.asList(lore);
-        return this;
-    }
-
-    /**
-     * @param enchant Enchantment
-     * @param level int
-     * @return Item
-     */
-    public Item withEnchant(Enchantment enchant, int level) {
-        this.enchantments.put(enchant, level);
-        return this;
-    }
-
-    /**
-     * Return the item.
-     * @return ItemStack
-     */
-    public ItemStack get() {
-        ItemStack item;
-        if(color != null){
-            item = new ItemStack(this.material, 1);
-            LeatherArmorMeta lam = (LeatherArmorMeta) item.getItemMeta();
-            lam.setColor(this.color);
-            item.setItemMeta(lam);
-            if(this.name != null) {
-                lam.setDisplayName(this.name);
-            }
-            if(this.enchantments.size() > 0)
-                for(Map.Entry<Enchantment, Integer> enchant : this.enchantments.entrySet())
-                    lam.addEnchant(enchant.getKey(), enchant.getValue(), true);
-            if(this.hideEnchant)
-                lam.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-            lam.setLore(this.lore);
-            item.setItemMeta(lam);
+    public Item(ResultSet result) throws SqlException {
+        label = new HashMap<>();
+        me.vorps.snowar.menu.Item item;
+        if(Database.SNOWAR.getDatabase().getString(result, 5) != null){
+            item = new  me.vorps.snowar.menu.Item(Database.SNOWAR.getDatabase().getString(result, 5));
+        } else if(Database.SNOWAR.getDatabase().getString(result, 6) != null){
+            item = new  me.vorps.snowar.menu.Item(PotionType.valueOf(Database.SNOWAR.getDatabase().getString(result, 6)));
         } else {
-            if(skullOwnerName != null){
-                item = new ItemStack(Material.SKULL_ITEM, 1, (short) SkullType.PLAYER.ordinal());
-
-                SkullMeta sm = (SkullMeta)item.getItemMeta();
-                sm.setOwner(skullOwnerName);
-                if(this.name != null) {
-                    sm.setDisplayName(this.name);
-                }
-                if(this.enchantments.size() > 0)
-                    for(Map.Entry<Enchantment, Integer> enchant : this.enchantments.entrySet())
-                        sm.addEnchant(enchant.getKey(), enchant.getValue(), true);
-                if(this.hideEnchant)
-                    sm.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-                sm.setLore(this.lore);
-                item.setItemMeta(sm);
-            } else {
-                if(id > 0){
-                    item = new ItemStack(this.id);
-                } else {
-                    if(potionType != null){
-                        item = new Potion(potionType).toItemStack(1);
-                    } else {
-                        item = new ItemStack(this.material);
-                    }
-                }
-                item.setDurability((short) this.data);
-                ItemMeta meta = item.getItemMeta();
-                meta.setLore(this.lore);
-                if(this.name != null) {
-                    meta.setDisplayName(this.name);
-                }
-                if(this.enchantments.size() > 0)
-                    for(Map.Entry<Enchantment, Integer> enchant : this.enchantments.entrySet())
-                        meta.addEnchant(enchant.getKey(), enchant.getValue(), true);
-                if(this.hideEnchant)
-                    meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-                item.setItemMeta(meta);
+            item = new  me.vorps.snowar.menu.Item(Database.SNOWAR.getDatabase().getInt(result, 3));
+            item.withData((byte) Database.SNOWAR.getDatabase().getInt(result, 4));
+        }
+        String labelTmp = Database.SNOWAR.getDatabase().getString(result, 2);
+        for(LangSetting langSetting : LangSetting.getListLangSetting().values()){
+            label.put(langSetting.getName(), Lang.getMessage(labelTmp, langSetting.getName()));
+        }
+        String loreTmp = Database.SNOWAR.getDatabase().getString(result, 8);
+        if(loreTmp != null){
+            lore = new HashMap<>();
+            for(LangSetting langSetting : LangSetting.getListLangSetting().values()){
+                lore.put(langSetting.getName(), lore(Lang.getMessage(loreTmp,  langSetting.getName())));
             }
         }
-        item.setAmount(this.amount);
-        if(durability != -1){
-            item.setDurability((short)  (item.getType().getMaxDurability()-durability));
+        item.withAmount(Database.SNOWAR.getDatabase().getInt(result, 7));
+        enchant(Database.SNOWAR.getDatabase().getString(result, 9), item);
+        int durability = Database.SNOWAR.getDatabase().getInt(result, 10);
+        if(durability != 0){
+            item.withDurability(durability);
+        }
+        String color = Database.SNOWAR.getDatabase().getString(result, 11);
+        if(color != null){
+            item.withColor(Color.valueOf(color).getColor());
+        }
+        item.hideEnchant(Database.SNOWAR.getDatabase().getBoolean(result, 12));
+        this.item = item;
+        listItem.put(Database.SNOWAR.getDatabase().getString(result, 1), this);
+    }
+
+    private static String[] lore(String lore){
+        ArrayList<String> loreTab = new ArrayList<>();
+        int y = 0;
+        if(lore != null){
+            for(int i = 0; i < lore.length(); i++){
+                if(lore.charAt(i) == ';'){
+                    loreTab.add(lore.substring(y, i));
+                    y = i;
+                }
+            }
+            return loreTab.toArray(new String[loreTab.size()]);
+        }
+        return new String[0];
+    }
+
+    private static void enchant(String enchentment,  me.vorps.snowar.menu.Item item){
+        int y = 0;
+        int[] var = new int[2];
+        var[0] = -1;
+        var[1] = -1;
+        if(enchentment != null){
+            for(int i = 0; i < enchentment.length(); i++){
+                if(enchentment.charAt(i) == ':'){
+                    if(y != 0){
+                        y++;
+                    }
+                    var[0] = Integer.parseInt(enchentment.substring(y, i));
+                    y = i;
+                }
+                if(enchentment.charAt(i) == ';'){
+                    var[1] = Integer.parseInt(enchentment.substring(y+1, i));
+                    y = i;
+                }
+                if(var[0] != -1 && var[1] != -1){
+                    item.withEnchant(Enchantment.getById(var[0]), var[1]);
+                    var[0] = -1;
+                    var[1] = -1;
+                }
+            }
+        }
+    }
+
+    private  me.vorps.snowar.menu.Item getItem(String lang){
+         me.vorps.snowar.menu.Item item = new  me.vorps.snowar.menu.Item(this.item);
+        item.withName(label.get(lang));
+        if(lore != null){
+            item.withLore(lore.get(lang));
         }
         return item;
+    }
+
+    public static  me.vorps.snowar.menu.Item getItem(String name, String lang){
+        return listItem.get(name).getItem(lang);
+    }
+
+    public static void clear(){
+        listItem.clear();
     }
 }

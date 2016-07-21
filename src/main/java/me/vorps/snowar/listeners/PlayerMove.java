@@ -12,12 +12,14 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 
+/**
+ * Project SnoWar Created by Vorps on 21/07/2016 at 15:36.
+ */
 public class PlayerMove implements Listener {
 	
 	@EventHandler
 	public void onPlayerMove(PlayerMoveEvent e){
 		Player player = e.getPlayer();
-        PlayerData playerData = PlayerData.getPlayerData(player.getName());
 		if(GameState.isState(GameState.WAITING) || GameState.isState(GameState.INSTART)) {
             if (Limite.limite(player.getLocation(), MapParameter.getLimit())) {
                 player.teleport(MapParameter.getSpawnLobby());

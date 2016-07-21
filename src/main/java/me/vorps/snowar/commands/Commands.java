@@ -5,11 +5,12 @@ import lombok.Setter;
 import org.bukkit.command.CommandSender;
 
 /**
- * Project Hub Created by Vorps on 04/03/2016 at 16:25.
+ * Project SnoWar Created by Vorps on 21/07/2016 at 15:36.
  */
 public abstract class Commands {
     public enum Command{
-        RELOAD_SNOW_WAR("reloadsw", "snowwar.reloadsw");
+        RELOAD_SNOW_WAR("reloadsw", "snowwar.reloadsw"),
+        ENTITY("genentity", "snowar.genentity");
 
         private @Getter String command;
         private @Getter String permissions;

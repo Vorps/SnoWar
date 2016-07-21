@@ -12,6 +12,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
+/**
+ * Project SnoWar Created by Vorps on 21/07/2016 at 15:36.
+ */
 public class PlayerJoin implements Listener{
 	
 	@EventHandler
@@ -41,8 +44,6 @@ public class PlayerJoin implements Listener{
 
     private static int getTime(){
         int time = -1;
-        System.out.println(((float)(PlayerData.size()-1)/Data.getMaxPlayer())*100);
-        System.out.println(((float)PlayerData.size()/Data.getMaxPlayer())*100);
         if(((float)(PlayerData.size()-1)/Data.getMaxPlayer())*100 < 25.0 && ((float)PlayerData.size()/Data.getMaxPlayer())*100 >= 25.0){
             time = Settings.getTimeStart();
         }

@@ -3,6 +3,7 @@ package me.vorps.snowar;
 import lombok.Getter;
 import me.vorps.snowar.commands.CommandManager;
 import me.vorps.snowar.listeners.EventsManager;
+import me.vorps.snowar.utils.WorldUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -27,6 +28,7 @@ public class SnowWar extends JavaPlugin{
 
     @Override
     public void onDisable(){
+        WorldUtils.initMap("saveWorld", "world");
         Bukkit.getScheduler().cancelAllTasks();
         GameState.setState(GameState.STOP);
         PlayerData.clear();

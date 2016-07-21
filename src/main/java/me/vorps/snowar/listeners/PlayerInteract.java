@@ -12,6 +12,9 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
+/**
+ * Project SnoWar Created by Vorps on 21/07/2016 at 15:36.
+ */
 public class PlayerInteract implements Listener {
 	
 	@SuppressWarnings("deprecation")
@@ -33,7 +36,7 @@ public class PlayerInteract implements Listener {
                         } else {
                             block.setType(Material.AIR);
                         }
-                        playerData.getPlayer().getInventory().addItem(new Item(Material.SNOW_BALL).withName("§6Boules").get());
+                        playerData.getPlayer().getInventory().addItem(Item.getItem("ball", playerData.getLang()).get());
                         playerData.addBall();
                     }
                 }

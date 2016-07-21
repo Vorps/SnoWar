@@ -2,6 +2,7 @@ package me.vorps.snowar.threads;
 
 import me.vorps.snowar.PlayerData;
 import me.vorps.snowar.SnowWar;
+import me.vorps.snowar.utils.ActionBar;
 import me.vorps.snowar.utils.Lang;
 import me.vorps.snowar.utils.Title;
 import org.bukkit.Bukkit;
@@ -11,6 +12,9 @@ import org.bukkit.entity.Player;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * Project SnoWar Created by Vorps on 21/07/2016 at 15:36.
+ */
 public class ThreadGame{
 
     private int task;
@@ -58,21 +62,21 @@ public class ThreadGame{
                     }
                     playerData.getScoreboard().updateValue("time", Lang.getMessage("SNO_WAR.SB.TIME",  playerData.getLang(), new Lang.Args(Lang.Parameter.TIME, simpleDateFormat.format(date))));
                 });
-                /*
                 if(Timers.getTime()%10 == 0){
                     switch (state++){
                         case 0:
                             PlayerData.getPlayerDataList().values().forEach((PlayerData playerData) -> {
-                                if(playerData.getTeam() != null){
-                                    ActionBar.sendActionBar("§eEquipe : "+playerData.getTeam().showName(playerData.getLang()), playerData.getPlayer());
+                                if(playerData.getLife() == 0){
+                                    ActionBar.sendActionBar("§e"+playerData.getLife(), playerData.getPlayer());
                                 } else {
                                     ActionBar.sendActionBar("§eMode : §aSpectateur", playerData.getPlayer());
                                 }
                             });
                             break;
+                        /*
                         case 1:
-                            PlayerData.getPlayersList().values().forEach((PlayerData playerData) -> {
-                                if(playerData.getTeam() != null){
+                            PlayerData.getPlayerDataList().values().forEach((PlayerData playerData) -> {
+                                if(playerData.getLife() == 0){
                                     ActionBar.sendActionBar("§eKit : "+ Kit.getKitList().get(playerData.getKitTarget()).getName(), playerData.getPlayer());
                                 } else {
                                     ActionBar.sendActionBar("§eMode : §aSpectateur", playerData.getPlayer());
@@ -80,15 +84,15 @@ public class ThreadGame{
                             });
                             break;
                         case 2:
-                            PlayerData.getPlayersList().values().forEach((PlayerData playerData) -> {
+                            PlayerData.getPlayerDataList().values().forEach((PlayerData playerData) -> {
                                 Date date = new Date(time*1000);
                                 date.setHours(date.getHours()-1);
                                 ActionBar.sendActionBar("§eTemps : §a"+new SimpleDateFormat("HH:mm:ss").format(date), playerData.getPlayer());
                             });
                             break;
                         case 3:
-                            PlayerData.getPlayersList().values().forEach((PlayerData playerData) -> {
-                                if(playerData.getTeam() != null){
+                            PlayerData.getPlayerDataList().values().forEach((PlayerData playerData) -> {
+                                if(playerData.getLife() == 0){
                                     String spect = "";
                                     for(String spectator : playerData.getSpectator()){
                                         spect += " "+spectator;
@@ -108,14 +112,14 @@ public class ThreadGame{
                             });
                             state = 0;
                             break;
+                            */
                         default:
                             break;
                     }
                 }
-                */
                 if(Timers.getTime() == 0){
                     Bukkit.getServer().getScheduler().cancelTask(task);
-                    //Victory.onVictory(1);
+                    // TODO: 22/07/2016 Finish
                 }
                 Timers.setTime(Timers.getTime()-1);
             }

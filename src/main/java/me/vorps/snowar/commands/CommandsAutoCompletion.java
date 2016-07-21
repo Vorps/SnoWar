@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Project Hub Created by Vorps on 14/03/2016 at 05:19.
+ * Project SnoWar Created by Vorps on 21/07/2016 at 15:36.
  */
 public class CommandsAutoCompletion implements TabCompleter {
     private Commands.Command command;
@@ -21,6 +21,8 @@ public class CommandsAutoCompletion implements TabCompleter {
         List<String> matches = new ArrayList<>();
         switch (command){
             case RELOAD_SNOW_WAR:
+                break;
+            case ENTITY:
                 break;
             default:
                 break;

@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 import java.util.HashMap;
 
 /**
- * Project Hub Created by Vorps on 17/05/2016 at 20:20.
+ * Project SnoWar Created by Vorps on 21/07/2016 at 15:36.
  */
 public class Location {
 

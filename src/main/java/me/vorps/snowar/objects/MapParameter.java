@@ -13,7 +13,7 @@ import org.bukkit.entity.Villager;
 import java.sql.ResultSet;
 
 /**
- * Project RushVolcano Created by Vorps on 21/04/2016 at 22:56.
+ * Project SnoWar Created by Vorps on 21/07/2016 at 15:36.
  */
 public class MapParameter {
     private static @Getter String name;

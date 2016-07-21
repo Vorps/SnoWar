@@ -3,7 +3,7 @@ package me.vorps.snowar.cooldowns;
 import java.util.HashMap;
 
 /**
- * Project Hub Created by Vorps on 01/02/2016 at 01:41.
+ * Project SnoWar Created by Vorps on 21/07/2016 at 15:36.
  */
 public class CoolDowns {
     private int timeCooldown;

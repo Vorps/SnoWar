@@ -4,7 +4,9 @@ import io.netty.util.Timer;
 import lombok.Getter;
 import lombok.Setter;
 import me.vorps.snowar.cooldowns.CoolDowns;
+import me.vorps.snowar.cooldowns.CooldownBall;
 import me.vorps.snowar.databases.Database;
+import me.vorps.snowar.objects.Parameter;
 import me.vorps.snowar.scoreboard.SbLobby;
 import me.vorps.snowar.scoreboard.ScoreBoard;
 import me.vorps.snowar.threads.Timers;
@@ -12,13 +14,10 @@ import me.vorps.snowar.utils.Item;
 import me.vorps.snowar.utils.Lang;
 import me.vorps.snowar.utils.Location;
 import me.vorps.snowar.utils.TabList;
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.potion.PotionType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,17 +38,24 @@ public class PlayerData {
     private @Getter @Setter String playerLastDamage;
     private @Getter @Setter ArrayList<Integer> ball;
 
+    private static @Getter int playerInGame;
 
     public void addKill(){
         kill++;
+        scoreboard.updateValue("kill", Lang.getMessage("SNO_WAR.SB.KILL", lang, new Lang.Args(Lang.Parameter.VAR, ""+kill)));
         getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 5, 2));
+    }
+
+    public static void removePlayerInGame(){
+        playerInGame--;
     }
 
     public void addBall(){
         ball.add(Timers.getTime());
-        if(ball.size() >= 5){
-            if(ball.get(ball.size()-6) <= Timers.getTime()-5){
-                new CoolDowns(getPlayer().getName(), 2, "ball");
+        if(ball.size() >= Parameter.getNbrBall()){
+            if(ball.get(ball.size()-Parameter.getNbrBall()) <= Timers.getTime()+Parameter.getTimeBall()){
+                new CoolDowns(getPlayer().getName(), Parameter.getCooldownBall(), "ball");
+                new CooldownBall(getPlayer()).start();
             }
         }
     }
@@ -58,12 +64,34 @@ public class PlayerData {
         ball.remove(ball.size()-1);
     }
 
-    public void removeLife(){
-        life--;
+
+    public void removeLife(String killer){
+        scoreboard.updateValue("life", Lang.getMessage("SNO_WAR.SB.LIFE", lang, new Lang.Args(Lang.Parameter.VAR, ""+--life)));
+        setTabList();
         if(life == 0){
+            initInventory();
             getPlayer().setGameMode(GameMode.SPECTATOR);
+            getPlayer().sendMessage(Settings.getTitle()+Lang.getMessageTmp("SNO_WAR.DEATH", lang, new Lang.Args(Lang.Parameter.KILLER, killer)));
+            PlayerData.broadCast("SNO_WAR.DEATH.BROADCAST", new Lang.Args(Lang.Parameter.KILLER, killer), new Lang.Args(Lang.Parameter.PLAYER, getPlayer().getName()), new Lang.Args(Lang.Parameter.VAR, ""+--playerInGame));
+            PlayerData.getPlayerData(killer).getPlayer().sendMessage(Settings.getTitle()+Lang.getMessageTmp("SNO_WAR.KILL", PlayerData.getPlayerData(killer).getLang(), new Lang.Args(Lang.Parameter.PLAYER, getPlayer().getName())));
+            if(playerInGame == 1){
+                // TODO: 21/07/2016 fin de partie
+            }
+        } else {
+            if(life == 1){
+                getPlayer().sendMessage(Settings.getTitle()+Lang.getMessage("SNO_WAR.DEATH.1", lang, new Lang.Args(Lang.Parameter.KILLER, killer)));
+            } else {
+                getPlayer().sendMessage(Settings.getTitle()+Lang.getMessage("SNO_WAR.DEATH.2", lang, new Lang.Args(Lang.Parameter.KILLER, killer), new Lang.Args(Lang.Parameter.LIFE, ""+life)));
+            }
+            getPlayer().sendMessage(Settings.getTitle()+Lang.getMessage("SNO_WAR.KILL.1", lang, new Lang.Args(Lang.Parameter.KILLED, getPlayer().getName())));
         }
     }
+
+    public void setTabList(){
+        ChatColor[] colors = new ChatColor[] {ChatColor.GREEN, ChatColor.YELLOW, ChatColor.GOLD, ChatColor.RED};
+        getPlayer().setPlayerListName(colors[life/colors.length]+" §c"+life);
+    }
+
     /**
      * Contructor create a data player
      * @param uuid UUID
@@ -93,21 +121,26 @@ public class PlayerData {
         TabList.setPlayerList(getPlayer(), Settings.getTabListHeader(), Settings.getTabListFooter());
         getPlayer().getInventory().clear();
         getPlayer().getInventory().setArmorContents(null);
+        getPlayer().setLevel(0);
+        getPlayer().setFoodLevel(20);
+        getPlayer().setHealth(20);
         if(GameState.isState(GameState.WAITING) || GameState.isState(GameState.INSTART)){
             getPlayer().setFoodLevel(20);
             getPlayer().setHealth(20);
             getPlayer().teleport(Location.getLocation("map_01_lobby"));
             getPlayer().setGameMode(GameMode.ADVENTURE);
             setScoreboard(new SbLobby(lang));
+            playerInGame++;
         } else {
+            life = 0;
             getPlayer().setGameMode(GameMode.SPECTATOR);
         }
     }
 
     private void initInventory(){
-        getPlayer().getInventory().setItem(8, new Item(Material.BED).withName("§6Quitter").withLore(new String[] {"§7Quitter la partie"}).get());
+        getPlayer().getInventory().setItem(8, new me.vorps.snowar.menu.Item(Material.BED).withName(Lang.getMessage("SNO_WAR.ITEM.QUIT.LABEL", lang)).withLore(new String[] {Lang.getMessage("SNO_WAR.ITEM.QUIT.LORE", lang)}).get());
         if(GameState.isState(GameState.INGAME)){
-            getPlayer().getInventory().setItem(0, new Item("Notch").withName("§6Joueurs").withLore(new String[] {"§7Vous téléport a un joueur en jeu"}).get());
+            getPlayer().getInventory().setItem(0, new me.vorps.snowar.menu.Item("Notch").withName(Lang.getMessage("SNO_WAR.ITEM.SPECT.LABEL", lang)).withLore(new String[] {Lang.getMessage("SNO_WAR.ITEM.SPECT.LORE", lang)}).get());
         }
     }
 
