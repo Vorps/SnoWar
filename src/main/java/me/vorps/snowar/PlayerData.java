@@ -37,6 +37,8 @@ public class PlayerData {
     private @Getter @Setter boolean god;
     private @Getter @Setter String playerLastDamage;
     private @Getter @Setter ArrayList<Integer> ball;
+    private @Getter ArrayList<String> spectator;
+    private @Getter @Setter String playerView;
 
     private static @Getter int playerInGame;
 
@@ -118,6 +120,7 @@ public class PlayerData {
      * Initialize player
      */
     private void initPlayer(){
+        spectator = new ArrayList<>();
         TabList.setPlayerList(getPlayer(), Settings.getTabListHeader(), Settings.getTabListFooter());
         getPlayer().getInventory().clear();
         getPlayer().getInventory().setArmorContents(null);

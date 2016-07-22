@@ -21,5 +21,7 @@ public class EventsManager {
         pluginManager.registerEvents(new DamageListener(), plugin);
         pluginManager.registerEvents(new DropListener(), plugin);
         pluginManager.registerEvents(new PlayerInteract(), plugin);
+        pluginManager.registerEvents(new PlayerSneak(), plugin);
+        pluginManager.registerEvents(new PlayerInteractEntities(), plugin);
 	}
 }

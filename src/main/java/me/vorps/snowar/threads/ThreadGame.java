@@ -67,17 +67,16 @@ public class ThreadGame{
                         case 0:
                             PlayerData.getPlayerDataList().values().forEach((PlayerData playerData) -> {
                                 if(playerData.getLife() == 0){
-                                    ActionBar.sendActionBar("§e"+playerData.getLife(), playerData.getPlayer());
+                                    ActionBar.sendActionBar("§eVie : §c"+playerData.getLife(), playerData.getPlayer());
                                 } else {
                                     ActionBar.sendActionBar("§eMode : §aSpectateur", playerData.getPlayer());
                                 }
                             });
                             break;
-                        /*
                         case 1:
                             PlayerData.getPlayerDataList().values().forEach((PlayerData playerData) -> {
                                 if(playerData.getLife() == 0){
-                                    ActionBar.sendActionBar("§eKit : "+ Kit.getKitList().get(playerData.getKitTarget()).getName(), playerData.getPlayer());
+                                    ActionBar.sendActionBar("§eBonus : ");
                                 } else {
                                     ActionBar.sendActionBar("§eMode : §aSpectateur", playerData.getPlayer());
                                 }
@@ -85,9 +84,15 @@ public class ThreadGame{
                             break;
                         case 2:
                             PlayerData.getPlayerDataList().values().forEach((PlayerData playerData) -> {
-                                Date date = new Date(time*1000);
+                                Date date = new Date(Timers.getTime()*1000);
                                 date.setHours(date.getHours()-1);
-                                ActionBar.sendActionBar("§eTemps : §a"+new SimpleDateFormat("HH:mm:ss").format(date), playerData.getPlayer());
+                                SimpleDateFormat simpleDateFormat;
+                                if(Timers.getTime() > 3600){
+                                    simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
+                                } else {
+                                    simpleDateFormat = new SimpleDateFormat("mm:ss");
+                                }
+                                ActionBar.sendActionBar("§eTemps : §a"+simpleDateFormat.format(date), playerData.getPlayer());
                             });
                             break;
                         case 3:
@@ -112,7 +117,6 @@ public class ThreadGame{
                             });
                             state = 0;
                             break;
-                            */
                         default:
                             break;
                     }
