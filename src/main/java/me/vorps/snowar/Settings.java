@@ -21,6 +21,8 @@ public class Settings {
     private static @Getter String tabListFooter;
     private static @Getter int coolDownLastDamage;
     private static @Getter int coolDownSpawnKill;
+    private static @Getter int timeFinish;
+    private static @Getter boolean showStatFinish;
 
     public static void initSettings(){
         title = Settings.settings.get("title").message;
@@ -32,6 +34,8 @@ public class Settings {
         tabListFooter = Settings.settings.get("tab_list_footer").message;
         coolDownLastDamage = Settings.settings.get("cooldown_last_damage").valueInt;
         coolDownSpawnKill = Settings.settings.get("cooldown_spawn_kill").valueInt;
+        timeFinish = Settings.settings.get("time_finish").valueInt;
+        showStatFinish =  Settings.settings.get("show_stats_finish").valueBoolean;
         settings.clear();
     }
 

@@ -7,6 +7,7 @@ import me.vorps.snowar.databases.Database;
 import me.vorps.snowar.objects.MapParameter;
 import me.vorps.snowar.objects.Parameter;
 import me.vorps.snowar.utils.*;
+import org.bukkit.ChatColor;
 
 import java.nio.file.Paths;
 import java.sql.ResultSet;
@@ -20,6 +21,8 @@ public class Data {
     private static @Getter @Setter int minPlayer;
     private static @Getter @Setter int maxPlayer;
     private static @Getter @Setter boolean fall;
+    private static @Getter ChatColor[] colors = new ChatColor[] {ChatColor.GREEN, ChatColor.YELLOW, ChatColor.GOLD, ChatColor.RED};
+    private static @Getter int life = 15;
 
     private static @Getter String nameServer;
 

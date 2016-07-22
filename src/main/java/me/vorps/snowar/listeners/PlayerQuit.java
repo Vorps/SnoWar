@@ -8,6 +8,7 @@ import me.vorps.snowar.scoreboard.SbLobby;
 import me.vorps.snowar.threads.ThreadInStart;
 import me.vorps.snowar.threads.Timers;
 import me.vorps.snowar.utils.Lang;
+import me.vorps.snowar.utils.Victory;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -41,7 +42,7 @@ public class PlayerQuit implements Listener {
                 PlayerData.removePlayerInGame();
             }
             if(PlayerData.getPlayerInGame() == 1){
-                // TODO: 22/07/2016 Finish
+                Victory.onVictory(2);
             }
             if(PlayerData.size()-1 == 0){
                 Bukkit.shutdown();

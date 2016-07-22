@@ -36,6 +36,7 @@ public class DamageByEntityListener implements Listener{
                 } else {
                     playerDataKilled.getPlayer().setHealth(playerDataKilled.getPlayer().getHealth()-Parameter.getDamage());
                 }
+                playerDataKiller.addBallTouch();
             }
         }
         e.setCancelled(true);

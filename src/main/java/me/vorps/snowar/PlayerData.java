@@ -1,6 +1,5 @@
 package me.vorps.snowar;
 
-import io.netty.util.Timer;
 import lombok.Getter;
 import lombok.Setter;
 import me.vorps.snowar.cooldowns.CoolDowns;
@@ -10,18 +9,14 @@ import me.vorps.snowar.objects.Parameter;
 import me.vorps.snowar.scoreboard.SbLobby;
 import me.vorps.snowar.scoreboard.ScoreBoard;
 import me.vorps.snowar.threads.Timers;
-import me.vorps.snowar.utils.Item;
-import me.vorps.snowar.utils.Lang;
+import me.vorps.snowar.utils.*;
 import me.vorps.snowar.utils.Location;
-import me.vorps.snowar.utils.TabList;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Project SnoWar Created by Vorps on 19/07/2016 at 22:57.
@@ -39,8 +34,24 @@ public class PlayerData {
     private @Getter @Setter ArrayList<Integer> ball;
     private @Getter ArrayList<String> spectator;
     private @Getter @Setter String playerView;
+    private @Getter int ballShoot;
+    private @Getter int ballTouch;
+    private @Getter int bonus;
 
-    private static @Getter int playerInGame;
+    private static class PlayerDataComparatorLife implements Comparator<String> {
+        private Map<String, PlayerData> base;
+        private PlayerDataComparatorLife(Map<String, PlayerData> base) {
+            this.base = base;
+        }
+
+        public int compare(String a, String b) {
+            if (base.get(a).life < base.get(b).life) {
+                return 1;
+            } else {
+                return -1;
+            }
+        }
+    }
 
     public void addKill(){
         kill++;
@@ -54,6 +65,7 @@ public class PlayerData {
 
     public void addBall(){
         ball.add(Timers.getTime());
+
         if(ball.size() >= Parameter.getNbrBall()){
             if(ball.get(ball.size()-Parameter.getNbrBall()) <= Timers.getTime()+Parameter.getTimeBall()){
                 new CoolDowns(getPlayer().getName(), Parameter.getCooldownBall(), "ball");
@@ -62,7 +74,11 @@ public class PlayerData {
         }
     }
 
+    public void addBallTouch(){
+        ballTouch++;
+    }
     public void removeBall(){
+        ballShoot++;
         ball.remove(ball.size()-1);
     }
 
@@ -77,7 +93,7 @@ public class PlayerData {
             PlayerData.broadCast("SNO_WAR.DEATH.BROADCAST", new Lang.Args(Lang.Parameter.KILLER, killer), new Lang.Args(Lang.Parameter.PLAYER, getPlayer().getName()), new Lang.Args(Lang.Parameter.VAR, ""+--playerInGame));
             PlayerData.getPlayerData(killer).getPlayer().sendMessage(Settings.getTitle()+Lang.getMessageTmp("SNO_WAR.KILL", PlayerData.getPlayerData(killer).getLang(), new Lang.Args(Lang.Parameter.PLAYER, getPlayer().getName())));
             if(playerInGame == 1){
-                // TODO: 21/07/2016 fin de partie
+                Victory.onVictory(1);
             }
         } else {
             if(life == 1){
@@ -90,8 +106,7 @@ public class PlayerData {
     }
 
     public void setTabList(){
-        ChatColor[] colors = new ChatColor[] {ChatColor.GREEN, ChatColor.YELLOW, ChatColor.GOLD, ChatColor.RED};
-        getPlayer().setPlayerListName(colors[life/colors.length]+" §c"+life);
+        getPlayer().setPlayerListName(Data.getColors()[life/Data.getColors().length]+" §c"+life);
     }
 
     /**
@@ -156,9 +171,18 @@ public class PlayerData {
     }
 
     private static @Getter HashMap<String, PlayerData> playerDataList;
+    private static TreeMap<String, PlayerData> playerDataTrieLife;
+    private static @Getter int playerInGame;
 
     static {
         playerDataList = new HashMap<>();
+        playerDataTrieLife = new TreeMap<>(new PlayerDataComparatorLife(playerDataList));
+    }
+
+    public static TreeMap<String,PlayerData> triePlayerDataKill(){
+        playerDataTrieLife.clear();
+        playerDataTrieLife.putAll(playerDataList);
+        return playerDataTrieLife;
     }
 
     /**
@@ -184,5 +208,9 @@ public class PlayerData {
 
     public static void broadCast(String key, Lang.Args... args){
         playerDataList.values().forEach((PlayerData playerData) -> playerData.getPlayer().sendMessage(Settings.getTitle()+Lang.getMessage(key, playerData.lang, args)));
+    }
+
+    public String toString(){
+        return Data.getColors()[life/Data.getColors().length]+getPlayer().getName();
     }
 }

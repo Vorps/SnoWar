@@ -1,10 +1,12 @@
 package me.vorps.snowar.threads;
 
+import io.netty.util.Timer;
 import me.vorps.snowar.PlayerData;
 import me.vorps.snowar.SnowWar;
 import me.vorps.snowar.utils.ActionBar;
 import me.vorps.snowar.utils.Lang;
 import me.vorps.snowar.utils.Title;
+import me.vorps.snowar.utils.Victory;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -51,17 +53,7 @@ public class ThreadGame{
                         new Title("", "§a"+Timers.getTime()).send(player);
                     });
                 }
-                PlayerData.getPlayerDataList().values().forEach((PlayerData playerData) -> {
-                    Date date = new Date(Timers.getTime()*1000);
-                    date.setHours(date.getHours()-1);
-                    SimpleDateFormat simpleDateFormat;
-                    if(Timers.getTime() > 3600){
-                        simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
-                    } else {
-                        simpleDateFormat = new SimpleDateFormat("mm:ss");
-                    }
-                    playerData.getScoreboard().updateValue("time", Lang.getMessage("SNO_WAR.SB.TIME",  playerData.getLang(), new Lang.Args(Lang.Parameter.TIME, simpleDateFormat.format(date))));
-                });
+                Timers.updateTime();
                 if(Timers.getTime()%10 == 0){
                     switch (state++){
                         case 0:
@@ -123,7 +115,7 @@ public class ThreadGame{
                 }
                 if(Timers.getTime() == 0){
                     Bukkit.getServer().getScheduler().cancelTask(task);
-                    // TODO: 22/07/2016 Finish
+                    Victory.onVictory(1);
                 }
                 Timers.setTime(Timers.getTime()-1);
             }
