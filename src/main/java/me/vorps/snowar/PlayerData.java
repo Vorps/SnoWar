@@ -38,21 +38,6 @@ public class PlayerData {
     private @Getter int ballTouch;
     private @Getter int bonus;
 
-    private static class PlayerDataComparatorLife implements Comparator<String> {
-        private Map<String, PlayerData> base;
-        private PlayerDataComparatorLife(Map<String, PlayerData> base) {
-            this.base = base;
-        }
-
-        public int compare(String a, String b) {
-            if (base.get(a).life < base.get(b).life) {
-                return 1;
-            } else {
-                return -1;
-            }
-        }
-    }
-
     public void addKill(){
         kill++;
         scoreboard.updateValue("kill", Lang.getMessage("SNO_WAR.SB.KILL", lang, new Lang.Args(Lang.Parameter.VAR, ""+kill)));
@@ -65,7 +50,6 @@ public class PlayerData {
 
     public void addBall(){
         ball.add(Timers.getTime());
-
         if(ball.size() >= Parameter.getNbrBall()){
             if(ball.get(ball.size()-Parameter.getNbrBall()) <= Timers.getTime()+Parameter.getTimeBall()){
                 new CoolDowns(getPlayer().getName(), Parameter.getCooldownBall(), "ball");
@@ -96,6 +80,7 @@ public class PlayerData {
                 Victory.onVictory(1);
             }
         } else {
+            GameManager.teleportRandom(getPlayer());
             if(life == 1){
                 getPlayer().sendMessage(Settings.getTitle()+Lang.getMessage("SNO_WAR.DEATH.1", lang, new Lang.Args(Lang.Parameter.KILLER, killer)));
             } else {
@@ -170,19 +155,47 @@ public class PlayerData {
         getPlayer().setScoreboard(this.scoreboard.getScoreBoard());
     }
 
+    public String toString(){
+        return Data.getColors()[life/Data.getColors().length]+getPlayer().getName();
+    }
+
     private static @Getter HashMap<String, PlayerData> playerDataList;
     private static TreeMap<String, PlayerData> playerDataTrieLife;
+    private static TreeMap<String, PlayerData> playerDataTrieKill;
+    private static TreeMap<String, PlayerData> playerDataTrieBonus;
+    private static TreeMap<String, PlayerData> playerDataTrieBall;
     private static @Getter int playerInGame;
 
     static {
         playerDataList = new HashMap<>();
         playerDataTrieLife = new TreeMap<>(new PlayerDataComparatorLife(playerDataList));
+        playerDataTrieKill = new TreeMap<>(new PlayerDataComparatorKill(playerDataList));
+        playerDataTrieBonus = new TreeMap<>(new PlayerDataComparatorBonus(playerDataList));
+        playerDataTrieBall = new TreeMap<>(new PlayerDataComparatorBall(playerDataList));
     }
 
-    public static TreeMap<String,PlayerData> triePlayerDataKill(){
+    public static TreeMap<String,PlayerData> triePlayerDataLife(){
         playerDataTrieLife.clear();
         playerDataTrieLife.putAll(playerDataList);
         return playerDataTrieLife;
+    }
+
+    public static TreeMap<String,PlayerData> triePlayerDataKills(){
+        playerDataTrieKill.clear();
+        playerDataTrieKill.putAll(playerDataList);
+        return playerDataTrieKill;
+    }
+
+    public static TreeMap<String,PlayerData> triePlayerDataBonus(){
+        playerDataTrieBonus.clear();
+        playerDataTrieBonus.putAll(playerDataList);
+        return playerDataTrieBonus;
+    }
+
+    public static TreeMap<String,PlayerData> triePlayerDataBall(){
+        playerDataTrieBall.clear();
+        playerDataTrieBall.putAll(playerDataList);
+        return playerDataTrieBall;
     }
 
     /**
@@ -210,7 +223,64 @@ public class PlayerData {
         playerDataList.values().forEach((PlayerData playerData) -> playerData.getPlayer().sendMessage(Settings.getTitle()+Lang.getMessage(key, playerData.lang, args)));
     }
 
-    public String toString(){
-        return Data.getColors()[life/Data.getColors().length]+getPlayer().getName();
+
+    private static class PlayerDataComparatorLife implements Comparator<String> {
+        private Map<String, PlayerData> base;
+        private PlayerDataComparatorLife(Map<String, PlayerData> base) {
+            this.base = base;
+        }
+
+        public int compare(String a, String b) {
+            if (base.get(a).life < base.get(b).life) {
+                return 1;
+            } else {
+                return -1;
+            }
+        }
+    }
+
+    private static class PlayerDataComparatorKill implements Comparator<String> {
+        private Map<String, PlayerData> base;
+        private PlayerDataComparatorKill(Map<String, PlayerData> base) {
+            this.base = base;
+        }
+
+        public int compare(String a, String b) {
+            if (base.get(a).kill < base.get(b).kill) {
+                return 1;
+            } else {
+                return -1;
+            }
+        }
+    }
+
+    private static class PlayerDataComparatorBonus implements Comparator<String> {
+        private Map<String, PlayerData> base;
+        private PlayerDataComparatorBonus(Map<String, PlayerData> base) {
+            this.base = base;
+        }
+
+        public int compare(String a, String b) {
+            if (base.get(a).bonus < base.get(b).bonus) {
+                return 1;
+            } else {
+                return -1;
+            }
+        }
+    }
+
+    private static class PlayerDataComparatorBall implements Comparator<String> {
+        private Map<String, PlayerData> base;
+        private PlayerDataComparatorBall(Map<String, PlayerData> base) {
+            this.base = base;
+        }
+
+        public int compare(String a, String b) {
+            if (base.get(a).ballTouch < base.get(b).ballTouch) {
+                return 1;
+            } else {
+                return -1;
+            }
+        }
     }
 }

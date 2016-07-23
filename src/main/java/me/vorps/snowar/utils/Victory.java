@@ -21,7 +21,7 @@ public class Victory {
 	
 	public static void onVictory(int state){
 		GameState.setState(GameState.FINISH);
-        TreeMap<String, PlayerData> winnerTreeMap = PlayerData.triePlayerDataKill();
+        TreeMap<String, PlayerData> winnerTreeMap = PlayerData.triePlayerDataLife();
         ArrayList<String> winner = new ArrayList<>();
         int var = 0;
         for(String player : winnerTreeMap.keySet()){

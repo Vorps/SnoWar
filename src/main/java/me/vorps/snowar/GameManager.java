@@ -2,14 +2,18 @@ package me.vorps.snowar;
 
 
 import me.vorps.snowar.objects.MapParameter;
+import me.vorps.snowar.scoreboard.SbFinish;
 import me.vorps.snowar.scoreboard.SbGame;
 import me.vorps.snowar.utils.Lang;
 import me.vorps.snowar.utils.MessageTitle;
 import me.vorps.snowar.utils.Title;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+
+import java.util.Random;
 
 /**
  * Project SnoWar Created by Vorps on 21/07/2016 at 15:36.
@@ -25,7 +29,23 @@ public class GameManager {
             new Title(messageTitle.getTitle().get(playerData.getLang()), messageTitle.getSubTitle().get(playerData.getLang())).send(playerData.getPlayer());
             playerData.setTabList();
         });
+        teleport();
 	}
+
+    public static void teleport(){
+        int elp = 360/PlayerData.size();
+        int var = 0;
+        for(PlayerData playerData : PlayerData.getPlayerDataList().values()){
+            playerData.getPlayer().teleport(new Location(Bukkit.getWorlds().get(0), Math.cos(var)*MapParameter.getDistance()+MapParameter.getSpawnGame().getX(),  MapParameter.getSpawnGame().getY(), Math.sin(var)*MapParameter.getDistance()+MapParameter.getSpawnGame().getZ()));
+            var+=elp;
+        }
+
+    }
+
+    public static void teleportRandom(Player player){
+        int var = new Random().nextInt(360);
+        player.teleport(new Location(Bukkit.getWorlds().get(0), Math.cos(var)*MapParameter.getDistance()+MapParameter.getSpawnGame().getX(),  MapParameter.getSpawnGame().getY(), Math.sin(var)*MapParameter.getDistance()+MapParameter.getSpawnGame().getZ()));
+    }
 	
 	public static void stopGame(){
         for(Player player : Bukkit.getOnlinePlayers()){
