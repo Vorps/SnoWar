@@ -1,6 +1,7 @@
 package me.vorps.snowar;
 
 
+import me.vorps.snowar.cooldowns.CoolDownSpawnBonus;
 import me.vorps.snowar.objects.MapParameter;
 import me.vorps.snowar.scoreboard.SbFinish;
 import me.vorps.snowar.scoreboard.SbGame;
@@ -30,6 +31,7 @@ public class GameManager {
             playerData.setTabList();
         });
         teleport();
+        new CoolDownSpawnBonus();
 	}
 
     public static void teleport(){

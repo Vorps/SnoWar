@@ -2,9 +2,11 @@ package me.vorps.snowar;
 
 import lombok.Getter;
 import lombok.Setter;
+import me.vorps.snowar.cooldowns.CoolDownBonus;
 import me.vorps.snowar.cooldowns.CoolDowns;
 import me.vorps.snowar.cooldowns.CooldownBall;
 import me.vorps.snowar.databases.Database;
+import me.vorps.snowar.objects.Bonus;
 import me.vorps.snowar.objects.Parameter;
 import me.vorps.snowar.scoreboard.SbLobby;
 import me.vorps.snowar.scoreboard.ScoreBoard;
@@ -37,6 +39,12 @@ public class PlayerData {
     private @Getter int ballShoot;
     private @Getter int ballTouch;
     private @Getter int bonus;
+    private @Getter @Setter ArrayList<CoolDownBonus> bonusData;
+
+
+    public void addBonus(){
+        bonus++;
+    }
 
     public void addKill(){
         kill++;
@@ -60,10 +68,13 @@ public class PlayerData {
 
     public void addBallTouch(){
         ballTouch++;
+        getPlayer().playSound(getPlayer().getLocation(), Sound.ARROW_HIT, 10, 10);
     }
     public void removeBall(){
         ballShoot++;
-        ball.remove(ball.size()-1);
+        if(ball.size() > 0){
+            ball.remove(ball.size()-1);
+        }
     }
 
 
@@ -91,7 +102,7 @@ public class PlayerData {
     }
 
     public void setTabList(){
-        getPlayer().setPlayerListName(Data.getColors()[life/Data.getColors().length]+" §c"+life);
+        getPlayer().setPlayerListName(Data.getColors()[life/Data.getColors().length]+getPlayer().getName()+" §c"+life);
     }
 
     /**
@@ -100,8 +111,10 @@ public class PlayerData {
      */
     public PlayerData(UUID uuid){
         Database.SNOWAR.tryConnectionDatabase();
+        this.bonusData = new ArrayList<>();
         this.ball = new ArrayList<>();
         this.uuid = uuid;
+        this.life = Data.getLife();
         lang = "french";
         name = getPlayer().getName();
         initPlayer();

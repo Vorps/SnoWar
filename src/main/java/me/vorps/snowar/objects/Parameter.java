@@ -19,6 +19,7 @@ public class Parameter {
     private static @Getter @Setter int timeBall;
     private static @Getter @Setter int ball;
     private static @Getter @Setter double damage;
+    private static @Getter int timeBonus;
 
     public static void init(ResultSet result) throws SqlException{
         map = Database.SNOWAR.getDatabase().getString(result, 2);
@@ -29,5 +30,6 @@ public class Parameter {
         timeBall = Database.SNOWAR.getDatabase().getInt(result, 8);
         ball = Database.SNOWAR.getDatabase().getInt(result, 9);
         damage = Database.SNOWAR.getDatabase().getDouble(result, 10);
+        timeBonus = Database.SNOWAR.getDatabase().getInt(result, 11);
     }
 }

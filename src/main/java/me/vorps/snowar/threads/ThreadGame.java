@@ -58,7 +58,7 @@ public class ThreadGame{
                     switch (state++){
                         case 0:
                             PlayerData.getPlayerDataList().values().forEach((PlayerData playerData) -> {
-                                if(playerData.getLife() == 0){
+                                if(playerData.getLife() > 0){
                                     ActionBar.sendActionBar("§eVie : §c"+playerData.getLife(), playerData.getPlayer());
                                 } else {
                                     ActionBar.sendActionBar("§eMode : §aSpectateur", playerData.getPlayer());
@@ -67,7 +67,7 @@ public class ThreadGame{
                             break;
                         case 1:
                             PlayerData.getPlayerDataList().values().forEach((PlayerData playerData) -> {
-                                if(playerData.getLife() == 0){
+                                if(playerData.getLife() > 0){
                                     ActionBar.sendActionBar("§eBonus : ");
                                 } else {
                                     ActionBar.sendActionBar("§eMode : §aSpectateur", playerData.getPlayer());
