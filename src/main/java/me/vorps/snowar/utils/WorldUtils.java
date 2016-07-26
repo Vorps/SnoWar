@@ -5,7 +5,7 @@ import java.io.*;
 /**
  * Project SnoWar Created by Vorps on 21/07/2016 at 15:36.
  */
-public class WorldUtils {
+public final class WorldUtils {
 	
 	private static void copyFolder(File src, File dest) throws IOException {
 		if(src.isDirectory()){

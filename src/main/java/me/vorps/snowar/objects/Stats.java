@@ -11,9 +11,47 @@ import java.util.UUID;
 
 public class Stats {
 
+	private @Getter int kill;
+	private @Getter int dead;
+	private @Getter int bonus;
+    private @Getter int ballShot;
+    private @Getter int ballTouch;
+    private @Getter int time;
+	private @Getter int victory;
+	private @Getter int defeat;
+
+    /**
+     * Load statistic player
+     * @param uuid UUID
+     */
+	public Stats(UUID uuid){
+		try{
+			ResultSet result = Database.SNOWAR.getDatabase().getData("stats", "stats_player = '"+uuid.toString()+"'");
+			if(result.next()){
+				this.kill = Database.SNOWAR.getDatabase().getInt(result, 2);
+                this.dead = Database.SNOWAR.getDatabase().getInt(result, 3);
+                this.bonus = Database.SNOWAR.getDatabase().getInt(result, 4);
+                this.ballShot = Database.SNOWAR.getDatabase().getInt(result, 5);
+                this.ballTouch = Database.SNOWAR.getDatabase().getInt(result, 6);
+                this.time = Database.SNOWAR.getDatabase().getInt(result, 7);
+                this.victory = Database.SNOWAR.getDatabase().getInt(result, 8);
+                this.defeat = Database.SNOWAR.getDatabase().getInt(result, 9);
+			}
+		}catch(SQLException e){
+			//
+		} catch (SqlException e){
+            e.printStackTrace();
+        }
+	}
+
+    /**
+     * Update statistic player
+     * @param uuid UUID
+     * @param values int
+     */
     public static void updateStats(UUID uuid, int... values){
         try{
-            ResultSet result = Database.SNOWAR.getDatabase().getData("stats", "s_player = '"+uuid.toString()+"'");
+            ResultSet result = Database.SNOWAR.getDatabase().getData("stats", "stats_player = '"+uuid.toString()+"'");
             if(!result.next()){
                 Database.SNOWAR.getDatabase().insertTable("stats", uuid.toString(), 0, 0, 0, 0, 0, 0, 0, 0);
             }
@@ -33,33 +71,4 @@ public class Stats {
             e.printStackTrace();
         }
     }
-
-	private @Getter int kill;
-	private @Getter int dead;
-	private @Getter int bonus;
-    private @Getter int ballShot;
-    private @Getter int ballTouch;
-    private @Getter int time;
-	private @Getter int victory;
-	private @Getter int defeat;
-
-	public Stats(UUID uuid){
-		try{
-			ResultSet result = Database.SNOWAR.getDatabase().getData("stats", "stats_player = '"+uuid.toString()+"'");
-			if(result.next()){
-				kill = Database.SNOWAR.getDatabase().getInt(result, 2);
-				dead = Database.SNOWAR.getDatabase().getInt(result, 3);
-                bonus = Database.SNOWAR.getDatabase().getInt(result, 4);
-                ballShot = Database.SNOWAR.getDatabase().getInt(result, 5);
-                ballTouch = Database.SNOWAR.getDatabase().getInt(result, 6);
-				time = Database.SNOWAR.getDatabase().getInt(result, 7);
-                victory = Database.SNOWAR.getDatabase().getInt(result, 8);
-				defeat = Database.SNOWAR.getDatabase().getInt(result, 9);
-			}
-		}catch(SQLException e){
-			//
-		} catch (SqlException e){
-            e.printStackTrace();
-        }
-	}
 }

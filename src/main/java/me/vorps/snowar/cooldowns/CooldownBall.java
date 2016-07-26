@@ -11,21 +11,21 @@ public class CooldownBall extends Thread {
     private Player player;
     private int time;
 
-    public CooldownBall(Player player){
+    public CooldownBall(final Player player){
         this.player = player;
         this.time = Parameter.getCooldownBall();
     }
 
     public void run(){
-        while(time> 0){
-            player.setLevel(time);
-            time--;
+        while(time > 0){
+            this.player.setLevel(this.time);
+            this.time--;
             try{
                 Thread.sleep(1000);
             } catch(InterruptedException e){
                 e.printStackTrace();
             }
         }
-        player.setLevel(0);
+        this.player.setLevel(0);
     }
 }

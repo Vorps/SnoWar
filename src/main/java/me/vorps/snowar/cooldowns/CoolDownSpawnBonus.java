@@ -14,11 +14,14 @@ import java.util.Random;
  */
 public class CoolDownSpawnBonus {
 
+    /**
+     * Spawn SnoMan for bonus
+     */
     public CoolDownSpawnBonus(){
         run();
     }
 
-    public void run(){
+    private void run(){
         Bukkit.getScheduler().scheduleSyncRepeatingTask(SnowWar.getInstance(), new Runnable() {
             @Override
             public void run() {

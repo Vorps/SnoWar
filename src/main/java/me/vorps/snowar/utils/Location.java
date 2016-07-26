@@ -12,17 +12,20 @@ import java.util.HashMap;
  */
 public class Location {
 
-    private static HashMap<String, org.bukkit.Location> listLocation = new HashMap<>();
-
     public Location(ResultSet result) throws SqlException {
         listLocation.put(Database.SNOWAR.getDatabase().getString(result, 1), new org.bukkit.Location(Bukkit.getWorlds().get(0), Database.SNOWAR.getDatabase().getDouble(result, 2), Database.SNOWAR.getDatabase().getDouble(result, 3), Database.SNOWAR.getDatabase().getDouble(result, 4), Database.SNOWAR.getDatabase().getFloat(result, 5), Database.SNOWAR.getDatabase().getFloat(result, 6)));
     }
 
+    private static HashMap<String, org.bukkit.Location> listLocation;
+
+    static {
+        listLocation = new HashMap<>();
+    }
     public static void clear(){
         listLocation.clear();
     }
 
     public static org.bukkit.Location getLocation(String name){
-        return listLocation.get(name);
+        return Location.listLocation.get(name);
     }
 }

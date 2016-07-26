@@ -5,6 +5,11 @@ package me.vorps.snowar.utils;
  */
 public class ConvertMillis {
 
+    /**
+     * Time lang fr
+     * @param time long
+     * @return String
+     */
 	public static String convertMillisToDate(long time){
         long days;
         long hours;
@@ -50,6 +55,11 @@ public class ConvertMillis {
 		return messageTemps;
 	}
 
+    /**
+     * Time numeric
+     * @param time long
+     * @return String
+     */
     public static String convertMillisToTime(long time){
         long days;
         long hours;

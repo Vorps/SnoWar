@@ -2,6 +2,7 @@ package me.vorps.snowar;
 
 import lombok.Getter;
 import me.vorps.snowar.commands.CommandManager;
+import me.vorps.snowar.game.GameState;
 import me.vorps.snowar.listeners.EventsManager;
 import me.vorps.snowar.utils.WorldUtils;
 import org.bukkit.Bukkit;
@@ -19,7 +20,7 @@ public class SnowWar extends JavaPlugin{
 
     @Override
     public void onEnable(){
-        instance = this;
+        SnowWar.instance = this;
         new EventsManager();
         new CommandManager();
         Data.loadVariable();

@@ -1,13 +1,13 @@
-package me.vorps.snowar.utils;
+package me.vorps.snowar.game;
 
-import me.vorps.snowar.Data;
-import me.vorps.snowar.GameState;
 import me.vorps.snowar.PlayerData;
 import me.vorps.snowar.Settings;
-import me.vorps.snowar.objects.Earning;
+import me.vorps.snowar.lang.Lang;
+import me.vorps.snowar.lang.LangSetting;
 import me.vorps.snowar.objects.Parameter;
 import me.vorps.snowar.objects.Stats;
 import me.vorps.snowar.threads.Timers;
+import me.vorps.snowar.utils.*;
 import org.bukkit.Bukkit;
 import org.bukkit.FireworkEffect;
 import org.bukkit.entity.Player;
@@ -20,6 +20,7 @@ import java.util.TreeMap;
 public class Victory {
 	
 	public static void onVictory(int state){
+        Bukkit.getScheduler().cancelAllTasks();
 		GameState.setState(GameState.FINISH);
         TreeMap<String, PlayerData> winnerTreeMap = PlayerData.triePlayerDataLife();
         ArrayList<String> winner = new ArrayList<>();
@@ -28,7 +29,7 @@ public class Victory {
             winner.add(player);
             if(var++ == 3) break;
         }
-        if(PlayerData.getPlayerData(winner.get(0)).getLife() == Data.getLife()){
+        if(PlayerData.getPlayerData(winnerTreeMap.lastKey()).getLife() == Parameter.getLife() && state == 1){
             winner.clear();
             state = 3;
         }
@@ -44,7 +45,7 @@ public class Victory {
                 }
                 for(PlayerData playerData : PlayerData.getPlayerDataList().values()){
                     playerData.getPlayer().sendMessage(Lang.getMessage("SNO_WAR.VICTORY", playerData.getLang(), new Lang.Args(Lang.Parameter.WINNER, winnermsg.get(playerData.getLang()))));
-                    new Title(Lang.getMessage("SNO_WAR.VICTORY.TITLE", playerData.getLang(), new Lang.Args(Lang.Parameter.PLAYER, winner.get(0))), Lang.getMessage("SNO_WAR.VICTORY.SUBTITLE", playerData.getLang())).send(playerData.getPlayer());
+                    new Title(Lang.getMessage("SNO_WAR.VICTORY.TITLE", playerData.getLang(), new Lang.Args(Lang.Parameter.WINNER, "§c"+winner.get(0))), Lang.getMessage("SNO_WAR.VICTORY.SUBTITLE", playerData.getLang())).send(playerData.getPlayer());
                 }
                 break;
 	    	case 2:
@@ -56,7 +57,7 @@ public class Victory {
             case 3:
                 PlayerData.broadCast("SNO_WAR.VICTORY.EQUAL");
                 for(PlayerData playerData : PlayerData.getPlayerDataList().values()){
-                    new Title(Lang.getMessage("SNO_WAR.VICTORY.EQUAL.TITLE", playerData.getLang(), new Lang.Args(Lang.Parameter.PLAYER, winner.get(0))), Lang.getMessage("SNO_WAR.VICTORY.EQUAL.SUBTITLE", playerData.getLang())).send(playerData.getPlayer());
+                    new Title(Lang.getMessage("SNO_WAR.VICTORY.EQUAL.TITLE", playerData.getLang()), Lang.getMessage("SNO_WAR.VICTORY.EQUAL.SUBTITLE", playerData.getLang())).send(playerData.getPlayer());
                 }
                 break;
 		default:
@@ -67,8 +68,8 @@ public class Victory {
             new Firework(player_tmp, player_tmp.getLocation().add(0, 5, 0), Color.values()[new Random().nextInt(17)].getColor(), Color.values()[new Random().nextInt(17)].getColor(), FireworkEffect.Type.values()[new Random().nextInt(5)], 20, 5);
         }
         for(PlayerData playerData : PlayerData.getPlayerDataList().values()){
-            Stats.updateStats(playerData.getPlayer().getUniqueId(), playerData.getKill(), Data.getLife()-playerData.getLife(), playerData.getBonus(), playerData.getBallShoot(), playerData.getBallTouch(), (Parameter.getTimeGame()-Timers.getTime()), winner.contains(playerData.getPlayer().getName()) ? 1 : 0, winner.contains(playerData.getPlayer().getName()) ? 0 : 1);
-            Earning.getEarning().earning(playerData.getPlayer().getName(), playerData.getKill(), playerData.getBallTouch(), winner.contains(playerData.getPlayer().getName()));
+            Stats.updateStats(playerData.getPlayer().getUniqueId(), playerData.getKill(), Parameter.getLife()-playerData.getLife(), playerData.getBonus(), playerData.getBallShoot(), playerData.getBallTouch(), (Parameter.getTimeGame()-Timers.getTime()), winner.contains(playerData.getPlayer().getName()) ? 1 : 0, winner.contains(playerData.getPlayer().getName()) ? 0 : 1);
+            Parameter.getEarning().earning(playerData.getPlayer().getName(), playerData.getKill(), playerData.getBallTouch(), winner.contains(playerData.getPlayer().getName()));
         }
 		Timers.run(Settings.getTimeFinish());
 	}

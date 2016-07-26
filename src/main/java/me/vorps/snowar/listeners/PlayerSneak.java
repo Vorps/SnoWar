@@ -1,6 +1,6 @@
 package me.vorps.snowar.listeners;
 
-import me.vorps.snowar.GameState;
+import me.vorps.snowar.game.GameState;
 import me.vorps.snowar.PlayerData;
 import me.vorps.snowar.scoreboard.SbSpectator;
 import org.bukkit.GameMode;
@@ -14,9 +14,10 @@ public class PlayerSneak implements Listener {
 	@EventHandler
 	public void onPlayerSneak(PlayerToggleSneakEvent e){
 		Player player = e.getPlayer();
-		if(player.getGameMode() == GameMode.SPECTATOR && GameState.isState(GameState.INGAME)){
-            PlayerData playerData = PlayerData.getPlayerData(player.getName());
+        PlayerData playerData = PlayerData.getPlayerData(player.getName());
+		if(player.getGameMode() == GameMode.SPECTATOR && GameState.isState(GameState.INGAME) && playerData.getPlayerView() != null){
             playerData.setScoreboard(new SbSpectator(playerData.getLang()));
+            System.out.println(playerData.getPlayerView());
             PlayerData.getPlayerData(playerData.getPlayerView()).getSpectator().remove(player.getName());
             playerData.setPlayerView(null);
 		}

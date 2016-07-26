@@ -24,16 +24,24 @@ public class MapParameter {
     private static @Getter double distance;
     private static @Getter double[] limit;
 
+    /**
+     * Init variable map
+     * @param result ResultSet
+     * @throws SqlException
+     */
     public static void init(ResultSet result) throws SqlException{
-        name = Database.SNOWAR.getDatabase().getString(result, 1);
-        spawnLobby = me.vorps.snowar.utils.Location.getLocation(Database.SNOWAR.getDatabase().getString(result, 2));
-        spawnFinish = me.vorps.snowar.utils.Location.getLocation(Database.SNOWAR.getDatabase().getString(result, 3));
-        spawnStats = me.vorps.snowar.utils.Location.getLocation(Database.SNOWAR.getDatabase().getString(result, 4));
-        spawnGame = me.vorps.snowar.utils.Location.getLocation(Database.SNOWAR.getDatabase().getString(result, 5));
-        distance = Database.SNOWAR.getDatabase().getDouble(result, 6);
-        limit = Limite.getLimite(Database.SNOWAR.getDatabase().getString(result, 7));
+        MapParameter.name = Database.SNOWAR.getDatabase().getString(result, 1);
+        MapParameter.spawnLobby = me.vorps.snowar.utils.Location.getLocation(Database.SNOWAR.getDatabase().getString(result, 2));
+        MapParameter.spawnFinish = me.vorps.snowar.utils.Location.getLocation(Database.SNOWAR.getDatabase().getString(result, 3));
+        MapParameter.spawnStats = me.vorps.snowar.utils.Location.getLocation(Database.SNOWAR.getDatabase().getString(result, 4));
+        MapParameter.spawnGame = me.vorps.snowar.utils.Location.getLocation(Database.SNOWAR.getDatabase().getString(result, 5));
+        MapParameter.distance = Database.SNOWAR.getDatabase().getDouble(result, 6);
+        MapParameter.limit = Limite.getLimite(Database.SNOWAR.getDatabase().getString(result, 7));
     }
 
+    /**
+     * Spawn statistic Villager
+     */
     public static void spawnStats(){
         EntityManager.entityManager(EntityType.VILLAGER, spawnStats, Settings.getNameVillagerStats(), Villager.Profession.BUTCHER);
     }

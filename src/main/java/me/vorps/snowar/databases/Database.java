@@ -14,7 +14,7 @@ public enum Database {
     private String nameDataBase;
 
     public DatabaseManager getDatabase(){
-        return database;
+        return this.database;
     }
 
     Database(String nameDataBase){
@@ -31,11 +31,11 @@ public enum Database {
      */
     public void tryConnectionDatabase(){
         try {
-            database.sendRequest("SHOW tables");
+            this.database.sendRequest("SHOW tables");
         } catch (Exception e) {
             try {
-                database.getConnection().close();
-                database = new DatabaseManager(nameDataBase);
+                this.database.getConnection().close();
+                this.database = new DatabaseManager(this.nameDataBase);
             } catch (SqlException | SQLException err){
                 err.printStackTrace();
             }

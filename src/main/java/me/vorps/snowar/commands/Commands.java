@@ -15,7 +15,7 @@ public abstract class Commands {
         private @Getter String command;
         private @Getter String permissions;
 
-        Command(String command, String permissions){
+        Command(final String command, final String permissions){
             this.command = command;
             this.permissions = permissions;
         }
@@ -27,7 +27,7 @@ public abstract class Commands {
 
     protected abstract void help();
 
-    public Commands(CommandSender sender, String permission){
+    public Commands(final CommandSender sender, final String permission){
         this.sender = sender;
         this.permission = permission;
     }

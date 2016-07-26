@@ -24,7 +24,7 @@ public class DatabaseManager {
         Crypteur crypteur = new Crypteur();
         try {
             Class.forName("com."+crypteur.getTypeBdd()+".jdbc.Driver");
-            connection = DriverManager.getConnection("jdbc:"+crypteur.getTypeBdd()+"://"+crypteur.getIp()+"/"+nameDatabase, crypteur.getUser(), crypteur.getPass());
+            this.connection = DriverManager.getConnection("jdbc:"+crypteur.getTypeBdd()+"://"+crypteur.getIp()+"/"+nameDatabase, crypteur.getUser(), crypteur.getPass());
         } catch(ClassNotFoundException e){
             throw new SqlException("Driver not found Please install driver Mysql", new Throwable("Error, server no connected to database"));
         } catch (SQLException e){
@@ -33,7 +33,7 @@ public class DatabaseManager {
     }
 
     private Object[][] getColumnName(String table) throws SQLException {
-        ResultSet result =  connection.getMetaData().getColumns(connection.getCatalog(), null, table, "%");
+        ResultSet result =  this.connection.getMetaData().getColumns(this.connection.getCatalog(), null, table, "%");
         ArrayList<Object[]> tmp = new ArrayList<>();
         while (result.next()) {
             tmp.add(new Object[]{result.getObject(4), result.getObject(5)});
@@ -63,7 +63,7 @@ public class DatabaseManager {
                 msgName+= name[0]+",";
                 msgValue+="?,";
             }
-            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO "+table+" ("+msgName.substring(0, msgName.length()-1)+") VALUES("+msgValue.substring(0, msgValue.length()-1)+")");
+            PreparedStatement preparedStatement = this.connection.prepareStatement("INSERT INTO "+table+" ("+msgName.substring(0, msgName.length()-1)+") VALUES("+msgValue.substring(0, msgValue.length()-1)+")");
             for(int i = 0; i < objects.length; i++){
                 if(values[i] == null){
                     preparedStatement.setNull(i+1, (int) objects[i][1]);
@@ -85,7 +85,7 @@ public class DatabaseManager {
      */
     public void delete(String table) throws SqlException{
         try {
-            Statement state = connection.createStatement();
+            Statement state = this.connection.createStatement();
             state.executeUpdate("DELETE FROM "+table);
             state.close();
         } catch(SQLException err) {
@@ -101,7 +101,7 @@ public class DatabaseManager {
      */
     public void delete(String table, String condition) throws SqlException{
         try {
-            Statement state = connection.createStatement();
+            Statement state = this.connection.createStatement();
             state.executeUpdate("DELETE FROM "+table+" WHERE "+condition);
             state.close();
         } catch(SQLException err) {
@@ -120,16 +120,16 @@ public class DatabaseManager {
         }
 
         public String getNameColumn(){
-            return nameColumn;
+            return this.nameColumn;
         }
 
         public Object getValue(){
-            return value;
+            return this.value;
         }
     }
 
     private int infoColumnType(String table, String column) throws SQLException{
-        ResultSet result = connection.getMetaData().getColumns(connection.getCatalog(), null, table, "%");
+        ResultSet result = this.connection.getMetaData().getColumns(this.connection.getCatalog(), null, table, "%");
         while (result.next()) {
             if(result.getObject(4).equals(column)){
                 return (int) result.getObject(5);
@@ -155,11 +155,10 @@ public class DatabaseManager {
             if(condition != null){
                 cond = " WHERE "+condition;
             }
-            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE "+table+" SET "+msg.substring(0, msg.length()-1)+cond);
+            PreparedStatement preparedStatement = this.connection.prepareStatement("UPDATE "+table+" SET "+msg.substring(0, msg.length()-1)+cond);
             int i = 0;
             for(Values values1 : values){
                 int type = infoColumnType(table, values1.nameColumn);
-                System.out.println(values1.value);
                 if(values1.value == null){
                     preparedStatement.setNull(i+1, type);
                 } else {
@@ -169,8 +168,7 @@ public class DatabaseManager {
             }
             preparedStatement.executeUpdate();
         } catch(SQLException err) {
-            err.printStackTrace();
-            //throw new SqlException("Error, Data not send", new Throwable("Error, server no connected to database"));
+            throw new SqlException("Error, Data not send", new Throwable("Error, server no connected to database"));
         }
     }
 
@@ -194,7 +192,7 @@ public class DatabaseManager {
     public ResultSet getDataTmp(String table) throws SqlException {
         ResultSet results;
         try {
-            results = connection.createStatement().executeQuery("SELECT * FROM "+table);
+            results = this.connection.createStatement().executeQuery("SELECT * FROM "+table);
         } catch (SQLException e){
             throw new SqlException("Error, impossible to recover the data", new Throwable("Error, server no connected to database"));
         }
@@ -210,7 +208,7 @@ public class DatabaseManager {
     public ResultSet getData(String table, String condition) throws SqlException {
         ResultSet results;
         try {
-            results = connection.createStatement().executeQuery("SELECT * FROM "+table+" WHERE "+condition);
+            results = this.connection.createStatement().executeQuery("SELECT * FROM "+table+" WHERE "+condition);
         } catch (SQLException e){
             throw new SqlException("Error, impossible to recover the data", new Throwable("Error, server no connected to database"));
         }
@@ -227,7 +225,7 @@ public class DatabaseManager {
     public ResultSet getDataColumn(String table, String column) throws SqlException {
         ResultSet results;
         try {
-            results = connection.createStatement().executeQuery("SELECT "+column+" FROM "+table);
+            results = this.connection.createStatement().executeQuery("SELECT "+column+" FROM "+table);
         } catch (SQLException e){
             throw new SqlException("Error, impossible to recover the data", new Throwable("Error, server no connected to database"));
         }
@@ -245,7 +243,7 @@ public class DatabaseManager {
     public ResultSet getData(String table, String column, String condition) throws SqlException {
         ResultSet results;
         try {
-            results = connection.createStatement().executeQuery("SELECT "+column+" FROM "+table+" WHERE "+condition);
+            results = this.connection.createStatement().executeQuery("SELECT "+column+" FROM "+table+" WHERE "+condition);
         } catch (SQLException e){
             throw new SqlException("Error, impossible to recover the data", new Throwable("Error, server no connected to database"));
         }
@@ -260,7 +258,7 @@ public class DatabaseManager {
     public void sendRequest(String request) throws SqlException {
         try
         {
-            Statement state = connection.createStatement();
+            Statement state = this.connection.createStatement();
             state.executeUpdate(request);
             state.close();
         } catch(SQLException err) {
@@ -544,7 +542,7 @@ public class DatabaseManager {
 
     public void closeDataBase(){
         try {
-            connection.close();
+            this.connection.close();
         } catch (SQLException e){
             //
         }

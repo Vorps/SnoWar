@@ -1,20 +1,17 @@
 package me.vorps.snowar.listeners;
 
-import me.vorps.snowar.GameState;
+import me.vorps.snowar.game.GameState;
 import me.vorps.snowar.PlayerData;
-import me.vorps.snowar.cooldowns.CoolDownBonus;
+import me.vorps.snowar.bonus.Bonus;
 import me.vorps.snowar.cooldowns.CoolDowns;
 import me.vorps.snowar.utils.Item;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Snowball;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
-
-import java.util.Random;
 
 /**
  * Project SnoWar Created by Vorps on 21/07/2016 at 15:36.
@@ -46,19 +43,19 @@ public class PlayerInteract implements Listener {
                 }
                 if((action == Action.RIGHT_CLICK_BLOCK || action == Action.RIGHT_CLICK_AIR)){
                     if(item.getType() == Material.SNOW_BALL){
-                        playerData.removeBall();
-                        if(!playerData.getBonusData().isEmpty()){
-                            for(CoolDownBonus bonus : playerData.getBonusData()){
-                                bonus.getBonusData().getBonus().onUse(playerData, e);
-                            }
+                        boolean state = true;
+                        for(Bonus bonus : playerData.getBonusData().keySet()){
+                            state = bonus.getItemStack() == null ? true : item.isSimilar(bonus.getItemStack()) ? true : false;
+                        }
+                        if(state){
+                            playerData.removeBall();
                         }
                     }
-                    if(item.isSimilar(Item.getItem("gun", playerData.getLang()).get())){
-                        playerData.getPlayer().launchProjectile(Snowball.class);
-                        if(new Random().nextBoolean()){
-                            playerData.getPlayer().launchProjectile(Snowball.class).getVelocity().multiply(1.5);
+                    playerData.getBonusData().keySet().forEach((Bonus bonus)  -> {
+                        if(bonus.getItemStack() != null && item.isSimilar(bonus.getItemStack())){
+                            bonus.onUse(playerData, e);
                         }
-                    }
+                    });
                 }
             } else {
                 switch (item.getType()){

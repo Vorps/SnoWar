@@ -1,4 +1,4 @@
-package me.vorps.snowar.utils;
+package me.vorps.snowar.lang;
 
 import me.vorps.snowar.Exceptions.SqlException;
 import me.vorps.snowar.databases.Database;

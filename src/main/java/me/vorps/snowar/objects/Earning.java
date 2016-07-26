@@ -4,7 +4,7 @@ import lombok.Getter;
 import me.vorps.snowar.Exceptions.SqlException;
 import me.vorps.snowar.PlayerData;
 import me.vorps.snowar.databases.Database;
-import me.vorps.snowar.utils.Lang;
+import me.vorps.snowar.lang.Lang;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,8 +16,6 @@ import java.util.HashMap;
  */
 public class Earning {
 
-    private static @Getter Earning earning;
-
     private @Getter double kill;
     private @Getter String killDevice;
     private @Getter double ball;
@@ -25,6 +23,11 @@ public class Earning {
     private @Getter double victory;
     private @Getter String victoryDevice;
 
+    /**
+     * Init Earning parameter
+     * @param name String
+     * @throws SqlException
+     */
     public Earning(String name) throws SqlException{
         ResultSet result = Database.SNOWAR.getDatabase().getData("earning", "e_name = '"+name+"'");
         try {
@@ -32,22 +35,28 @@ public class Earning {
         } catch (SQLException e){
             //
         }
-        kill = Database.SNOWAR.getDatabase().getDouble(result, 2);
-        killDevice = Database.SNOWAR.getDatabase().getString(result, 3);
-        ball = Database.SNOWAR.getDatabase().getDouble(result, 4);
-        ballDevice = Database.SNOWAR.getDatabase().getString(result, 5);
-        victory = Database.SNOWAR.getDatabase().getDouble(result, 8);
-        victoryDevice = Database.SNOWAR.getDatabase().getString(result, 9);
-        earning = this;
+        this.kill = Database.SNOWAR.getDatabase().getDouble(result, 2);
+        this.killDevice = Database.SNOWAR.getDatabase().getString(result, 3);
+        this.ball = Database.SNOWAR.getDatabase().getDouble(result, 4);
+        this.ballDevice = Database.SNOWAR.getDatabase().getString(result, 5);
+        this.victory = Database.SNOWAR.getDatabase().getDouble(result, 6);
+        this.victoryDevice = Database.SNOWAR.getDatabase().getString(result, 7);
     }
 
+    /**
+     * Calcul earning player
+     * @param name String
+     * @param kill int
+     * @param ball int
+     * @param victory boolean
+     */
     public void earning(String name, int kill, int ball, boolean victory){
         HashMap<String, Double> earning = new HashMap<>();
-        earning.put(killDevice, kill*this.kill);
-        earning.put(ballDevice, ball * this.ball);
+        earning.put(this.killDevice, kill * this.kill);
+        earning.put(this.ballDevice, ball * this.ball);
         ArrayList<String> notification = new ArrayList<>();
         if(victory){
-            earning.put(victoryDevice, this.victory);
+            earning.put(this.victoryDevice, this.victory);
         }
         for(String device : earning.keySet()){
             // TODO: 22/07/2016 Earning earning.get(device)

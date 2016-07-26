@@ -3,7 +3,8 @@ package me.vorps.snowar.cooldowns;
 import lombok.Getter;
 import me.vorps.snowar.PlayerData;
 import me.vorps.snowar.SnowWar;
-import me.vorps.snowar.objects.Bonus;
+import me.vorps.snowar.bonus.Bonus;
+import me.vorps.snowar.lang.Lang;
 import org.bukkit.Bukkit;
 
 /**
@@ -11,24 +12,30 @@ import org.bukkit.Bukkit;
  */
 public class CoolDownBonus {
 
-    private @Getter Bonus.BonusData bonusData;
+    private Bonus bonus;
     private PlayerData playerData;
     private @Getter int task;
 
-    public CoolDownBonus(Bonus.BonusData bonusData, PlayerData playerData){
-        this.bonusData = bonusData;
+    /**
+     * Remove bonus time
+     * @param bonus Bonus
+     * @param playerData PlayerData
+     */
+    public CoolDownBonus(final Bonus bonus, final PlayerData playerData){
+        this.bonus = bonus;
         this.playerData = playerData;
         run();
     }
 
     public void run(){
-        task = Bukkit.getScheduler().scheduleSyncDelayedTask(SnowWar.getInstance(), new Runnable() {
+        this.task = Bukkit.getScheduler().scheduleSyncDelayedTask(SnowWar.getInstance(), new Runnable() {
             @Override
             public void run() {
-                bonusData.getBonus().onDisable(playerData);
-                playerData.setBonusData(null);
+                bonus.onDisable(playerData);
+                playerData.getBonusData().remove(bonus);
+                playerData.getPlayer().sendMessage(Lang.getMessage(bonus.getDisable(), playerData.getLang()));
             }
-        }, bonusData.getBonus().getTime()*20);
+        }, this.bonus.getTime()*20);
     }
 
 }

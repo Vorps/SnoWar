@@ -6,6 +6,8 @@ import me.vorps.snowar.PlayerData;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
+
 /**
  * Project SnoWar Created by Vorps on 24/07/2016 at 22:14.
  */
@@ -17,19 +19,60 @@ public abstract class Bonus {
     private @Getter String disable;
     private @Getter boolean persistence;
     private @Getter @Setter ItemStack itemStack;
+    private String label;
 
-    public Bonus(int time, double percent, String enable, String disable, boolean persistence){
+    /**
+     * Constructor abstract instance new Bonus
+     * @param time int
+     * @param percent double
+     * @param enable String
+     * @param disable String
+     * @param persistence boolean
+     * @param label String
+     */
+    public Bonus(final int time, final double percent, final String enable, final String disable, final boolean persistence, final String label){
         this.time = time;
         this.percent = percent;
         this.enable = enable;
         this.disable = disable;
         this.persistence = persistence;
+        this.label = label;
+        Bonus.bonusList.add(this);
     }
 
+    /**
+     * Method start bonus
+     * @param playerData PlayerData
+     */
     public abstract void onEnable(PlayerData playerData);
 
+    /**
+     * Method end bonus
+     * @param playerData PlayerData
+     */
     public abstract void onDisable(PlayerData playerData);
 
+    /**
+     * Method use bonus
+     * @param playerData PlayerData
+     */
     public abstract void onUse(PlayerData playerData, PlayerInteractEvent e);
 
+    @Override
+    public String toString(){
+        return this.label;
+    }
+
+    /**
+     * Clear all bonus
+     */
+    public static void clear(){
+        Bonus.bonusList.clear();
+    }
+
+    private static @Getter ArrayList<Bonus> bonusList;
+
+    static {
+        Bonus.bonusList = new ArrayList<>();
+    }
 }

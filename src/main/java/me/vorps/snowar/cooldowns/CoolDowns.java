@@ -11,7 +11,11 @@ public class CoolDowns {
     private String id;
     private String namePlayer;
 
-    private static HashMap<String, CoolDowns> coolDowns = new HashMap<>();
+    private static HashMap<String, CoolDowns> coolDowns;
+
+    static {
+        coolDowns = new HashMap<>();
+    }
 
     /**
      * Add cooldown
@@ -23,8 +27,8 @@ public class CoolDowns {
         this.namePlayer = namePlayer;
         this.timeCooldown = timeCooldown;
         this.id = id;
-        time = System.currentTimeMillis();
-        coolDowns.put(namePlayer+id, this);
+        this.time = System.currentTimeMillis();
+        CoolDowns.coolDowns.put(namePlayer+id, this);
     }
 
     /**
@@ -34,7 +38,7 @@ public class CoolDowns {
      * @return boolean
      */
     public static boolean hasCoolDown(String namePlayer, String id){
-        return coolDowns.containsKey(namePlayer+id);
+        return CoolDowns.coolDowns.containsKey(namePlayer+id);
     }
 
     /**
@@ -42,15 +46,15 @@ public class CoolDowns {
      * @return Long
      */
 	public Long getSecondsLeft(){
-        return ((coolDowns.get(namePlayer+id).time / 1000) + timeCooldown) - System.currentTimeMillis() / 1000;
+        return (( CoolDowns.coolDowns.get(this.namePlayer+this.id).time / 1000) + this.timeCooldown) - System.currentTimeMillis() / 1000;
 	}
 
     /**
      * Remove cooldown player
      */
     public void removeCoolDown(){
-        if(CoolDowns.hasCoolDown(namePlayer, id)){
-            coolDowns.remove(namePlayer+id);
+        if(CoolDowns.hasCoolDown(this.namePlayer, this.id)){
+            CoolDowns.coolDowns.remove(this.namePlayer+this.id);
         }
     }
 
@@ -61,6 +65,6 @@ public class CoolDowns {
      * @return CoolDowns
      */
     public static CoolDowns getCoolDown(String namePlayer, String id){
-        return coolDowns.get(namePlayer+id);
+        return  CoolDowns.coolDowns.get(namePlayer+id);
     }
 }

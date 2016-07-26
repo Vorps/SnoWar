@@ -2,6 +2,8 @@ package me.vorps.snowar.utils;
 
 import me.vorps.snowar.Exceptions.SqlException;
 import me.vorps.snowar.databases.Database;
+import me.vorps.snowar.lang.Lang;
+import me.vorps.snowar.lang.LangSetting;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.potion.PotionType;
 
@@ -14,11 +16,15 @@ import java.util.HashMap;
  */
 public class Item {
 
-    private static HashMap<String, Item> listItem = new HashMap<>();
     private HashMap<String, String> label;
     private HashMap<String, String[]> lore;
     private me.vorps.snowar.menu.Item item;
 
+    /**
+     * Load item bdd
+     * @param result ResultSet
+     * @throws SqlException
+     */
     public Item(ResultSet result) throws SqlException {
         label = new HashMap<>();
         me.vorps.snowar.menu.Item item;
@@ -56,6 +62,31 @@ public class Item {
         listItem.put(Database.SNOWAR.getDatabase().getString(result, 1), this);
     }
 
+    /**
+     * Return item
+     * @param lang String
+     * @return me.vorps.snowar.menu.Item
+     */
+    private  me.vorps.snowar.menu.Item getItem(String lang){
+        me.vorps.snowar.menu.Item item = new  me.vorps.snowar.menu.Item(this.item);
+        item.withName(label.get(lang));
+        if(lore != null){
+            item.withLore(lore.get(lang));
+        }
+        return item;
+    }
+
+    private static HashMap<String, Item> listItem;
+
+    static {
+        listItem = new HashMap<>();
+    }
+
+    /**
+     * return Lore
+     * @param lore String
+     * @return String[]
+     */
     private static String[] lore(String lore){
         ArrayList<String> loreTab = new ArrayList<>();
         int y = 0;
@@ -71,6 +102,11 @@ public class Item {
         return new String[0];
     }
 
+    /**
+     * Load enchant item
+     * @param enchentment String
+     * @param item me.vorps.snowar.menu.Item
+     */
     private static void enchant(String enchentment,  me.vorps.snowar.menu.Item item){
         int y = 0;
         int[] var = new int[2];
@@ -98,19 +134,15 @@ public class Item {
         }
     }
 
-    private  me.vorps.snowar.menu.Item getItem(String lang){
-         me.vorps.snowar.menu.Item item = new  me.vorps.snowar.menu.Item(this.item);
-        item.withName(label.get(lang));
-        if(lore != null){
-            item.withLore(lore.get(lang));
-        }
-        return item;
-    }
 
     public static  me.vorps.snowar.menu.Item getItem(String name, String lang){
         return listItem.get(name).getItem(lang);
     }
 
+
+    /**
+     * Clear all Item
+     */
     public static void clear(){
         listItem.clear();
     }

@@ -2,7 +2,7 @@ package me.vorps.snowar.scoreboard;
 
 import me.vorps.snowar.PlayerData;
 import me.vorps.snowar.Settings;
-import me.vorps.snowar.utils.Lang;
+import me.vorps.snowar.lang.Lang;
 import org.bukkit.scoreboard.DisplaySlot;
 
 import java.text.SimpleDateFormat;
@@ -27,19 +27,19 @@ public class SbFinish extends ScoreBoard{
                 break;
             }
         }
-        if(PlayerData.size() >= 2) {
+        if(PlayerData.getPlayerInGame() >= 1) {
             super.add("first", Lang.getMessage("SNO_WAR.SB.FINISH.TEAM", lang, new Lang.Args(Lang.Parameter.VAR, ""+1), new Lang.Args(Lang.Parameter.WINNER, winner[0])), 10);
         }
-        if(PlayerData.size() >= 3) {
-            super.add("first", Lang.getMessage("SNO_WAR.SB.FINISH.TEAM", lang, new Lang.Args(Lang.Parameter.VAR, ""+2), new Lang.Args(Lang.Parameter.WINNER, winner[1])), 9);
+        if(PlayerData.getPlayerInGame() >= 2) {
+            super.add("second", Lang.getMessage("SNO_WAR.SB.FINISH.TEAM", lang, new Lang.Args(Lang.Parameter.VAR, ""+2), new Lang.Args(Lang.Parameter.WINNER, winner[1])), 9);
         }
-        if(PlayerData.size() > 3){
-            super.add("first", Lang.getMessage("SNO_WAR.SB.FINISH.TEAM", lang, new Lang.Args(Lang.Parameter.VAR, ""+3), new Lang.Args(Lang.Parameter.WINNER, winner[2])), 8);
+        if(PlayerData.getPlayerInGame() >= 3){
+            super.add("third", Lang.getMessage("SNO_WAR.SB.FINISH.TEAM", lang, new Lang.Args(Lang.Parameter.VAR, ""+3), new Lang.Args(Lang.Parameter.WINNER, winner[2])), 8);
         }
         super.add("14", "  ", 7);
         super.add("kill", Lang.getMessage("SNO_WAR.SB.FINISH.KILL", lang, new Lang.Args(Lang.Parameter.PLAYER, ""+ PlayerData.getPlayerDataList().get(PlayerData.triePlayerDataKills().firstKey())), new Lang.Args(Lang.Parameter.VAR, ""+PlayerData.getPlayerDataList().get(PlayerData.triePlayerDataKills().firstKey()).getKill())), 6);
-        super.add("dead", Lang.getMessage("SNO_WAR.SB.FINISH.BONUS", lang, new Lang.Args(Lang.Parameter.PLAYER, ""+PlayerData.getPlayerDataList().get(PlayerData.triePlayerDataBonus().firstKey())), new Lang.Args(Lang.Parameter.DEAD, ""+PlayerData.getPlayerDataList().get(PlayerData.triePlayerDataBonus().firstKey()).getBonus())), 5);
-        super.add("point", Lang.getMessage("SNO_WAR.SB.FINISH.BALL", lang, new Lang.Args(Lang.Parameter.PLAYER, ""+PlayerData.getPlayerDataList().get(PlayerData.triePlayerDataBall().firstKey())), new Lang.Args(Lang.Parameter.POINT, ""+PlayerData.getPlayerDataList().get(PlayerData.triePlayerDataBall().firstKey()).getBallTouch())), 4);
+        super.add("dead", Lang.getMessage("SNO_WAR.SB.FINISH.BONUS", lang, new Lang.Args(Lang.Parameter.PLAYER, ""+PlayerData.getPlayerDataList().get(PlayerData.triePlayerDataBonus().firstKey())), new Lang.Args(Lang.Parameter.VAR, ""+PlayerData.getPlayerDataList().get(PlayerData.triePlayerDataBonus().firstKey()).getBonus())), 5);
+        super.add("point", Lang.getMessage("SNO_WAR.SB.FINISH.BALL", lang, new Lang.Args(Lang.Parameter.PLAYER, ""+PlayerData.getPlayerDataList().get(PlayerData.triePlayerDataBall().firstKey())), new Lang.Args(Lang.Parameter.VAR, ""+PlayerData.getPlayerDataList().get(PlayerData.triePlayerDataBall().firstKey()).getBallTouch())), 4);
         super.add("3", "", 3);
         super.add("2", Lang.getMessage("SNO_WAR.SB.SPACE", lang), 2);
         super.add("ip", Settings.getIp(), 1);

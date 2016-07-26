@@ -12,14 +12,18 @@ import java.util.HashMap;
  */
 public class Limite {
 
-    private static HashMap<String, double[]> listLimite = new HashMap<>();
-
     public Limite(ResultSet result) throws SqlException {
         listLimite.put(Database.SNOWAR.getDatabase().getString(result, 1), new double[] {Database.SNOWAR.getDatabase().getDouble(result, 2), Database.SNOWAR.getDatabase().getDouble(result, 3), Database.SNOWAR.getDatabase().getDouble(result, 4), Database.SNOWAR.getDatabase().getDouble(result, 5), Database.SNOWAR.getDatabase().getDouble(result, 6), Database.SNOWAR.getDatabase().getDouble(result, 7)});
     }
 
+    private static HashMap<String, double[]> listLimite;
+
+    static {
+        listLimite = new HashMap<>();
+    }
+
     public static double[] getLimite(String nameLimite){
-        return listLimite.get(nameLimite);
+        return Limite.listLimite.get(nameLimite);
     }
 
     public static boolean limite(Location loc, double[] limite){
@@ -27,6 +31,6 @@ public class Limite {
     }
 
     public static void clear(){
-        listLimite.clear();
+        Limite.listLimite.clear();
     }
 }

@@ -81,9 +81,12 @@ public class Item {
         return potionType;
     }
 
+
     public short getDurability(){
         return durability;
     }
+
+
     /**
      * @param material Material
      */
@@ -93,12 +96,12 @@ public class Item {
     }
 
     /**
-     *
      * @param potionType PotionType
      */
     public Item(PotionType potionType){
         this.potionType = potionType;
     }
+
     /**
      * @param id int
      */
@@ -107,6 +110,10 @@ public class Item {
         this.material = Material.getMaterial(id);
     }
 
+    /**
+     * Clone item
+     * @param item Item
+     */
     public Item(Item item){
         this.name = item.name;
         this.material = item.material;

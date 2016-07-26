@@ -3,7 +3,7 @@ package me.vorps.snowar.scoreboard;
 import me.vorps.snowar.PlayerData;
 import me.vorps.snowar.Settings;
 import me.vorps.snowar.threads.Timers;
-import me.vorps.snowar.utils.Lang;
+import me.vorps.snowar.lang.Lang;
 import org.bukkit.scoreboard.DisplaySlot;
 
 import java.text.SimpleDateFormat;
@@ -29,7 +29,7 @@ public class SbGame extends ScoreBoard{
         }
         super.add("time", Lang.getMessage("SNO_WAR.SB.TIME",  lang, new Lang.Args(Lang.Parameter.TIME, simpleDateFormat.format(date))), 7);
         super.add("5", "§f§7"+Lang.getMessage("SNO_WAR.SB.SPACE", lang), 5);
-        super.add("player", Lang.getMessage("SNO_WAR.SB.PLAYER", lang, new Lang.Args(Lang.Parameter.NBR_PLAYER, ""+PlayerData.size())), 6);
+        super.add("player", Lang.getMessage("SNO_WAR.SB.PLAYER", lang, new Lang.Args(Lang.Parameter.NBR_PLAYER, ""+PlayerData.getPlayerInGame())), 6);
         super.add("kill", Lang.getMessage("SNO_WAR.SB.KILL", lang, new Lang.Args(Lang.Parameter.VAR, ""+playerData.getKill())), 4);
         super.add("life", Lang.getMessage("SNO_WAR.SB.LIFE", lang, new Lang.Args(Lang.Parameter.VAR, ""+playerData.getLife())), 3);
         super.add("2", " ", 2);

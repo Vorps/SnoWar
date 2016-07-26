@@ -1,14 +1,13 @@
 package me.vorps.snowar.listeners;
 
 import me.vorps.snowar.Data;
-import me.vorps.snowar.GameState;
+import me.vorps.snowar.game.GameState;
 import me.vorps.snowar.PlayerData;
 import me.vorps.snowar.Settings;
-import me.vorps.snowar.scoreboard.SbLobby;
 import me.vorps.snowar.threads.ThreadInStart;
 import me.vorps.snowar.threads.Timers;
-import me.vorps.snowar.utils.Lang;
-import me.vorps.snowar.utils.Victory;
+import me.vorps.snowar.lang.Lang;
+import me.vorps.snowar.game.Victory;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -25,26 +24,29 @@ public class PlayerQuit implements Listener {
         Player player = e.getPlayer();
 		PlayerData playerData = PlayerData.getPlayerData(player.getName());
 		if(GameState.isState(GameState.WAITING) || GameState.isState(GameState.INSTART)){
-            PlayerData.broadCast("SNO_WAR.QUIT.LOBBY", new Lang.Args(Lang.Parameter.PLAYER, ""+player.getName()), new Lang.Args(Lang.Parameter.NBR_PLAYER, ""+(PlayerData.size()-1)), new Lang.Args(Lang.Parameter.NBR_MAX_PLAYER, ""+ Data.getMaxPlayer()));
-            PlayerData.getPlayerDataList().values().forEach((PlayerData playerDataList) -> playerDataList.getScoreboard().updateValue("player", Lang.getMessage("SNO_WAR.SB.PLAYER", playerDataList.getLang(), new Lang.Args(Lang.Parameter.NBR_PLAYER, ""+PlayerData.size()))));
-            if(GameState.isState(GameState.INSTART) && ((float)(PlayerData.size()-1))/Data.getMaxPlayer()*100 < 25){
+            PlayerData.broadCast("SNO_WAR.QUIT.LOBBY", new Lang.Args(Lang.Parameter.PLAYER, ""+player.getName()), new Lang.Args(Lang.Parameter.NBR_PLAYER, ""+(PlayerData.getPlayerInGame()-1)), new Lang.Args(Lang.Parameter.NBR_MAX_PLAYER, ""+ Data.getMaxPlayer()));
+            if(GameState.isState(GameState.INSTART) && ((float)(playerData.getLife() > 0 ? PlayerData.getPlayerInGame()-1 : PlayerData.getPlayerInGame()))/Data.getMaxPlayer()*100 < 25){
                 GameState.setState(GameState.WAITING);
+                Bukkit.getScheduler().cancelTask(ThreadInStart.getTask());
                 PlayerData.getPlayerDataList().values().forEach((PlayerData playerDataList) -> {
-                    playerDataList.getScoreboard().add("waiting", Lang.getMessage("SNO_WAR.SB.WAITING", playerData.getLang()), 3);
                     playerDataList.getScoreboard().remove("time");
+                    playerDataList.getScoreboard().add("waiting", Lang.getMessage("SNO_WAR.SB.WAITING", playerData.getLang()), 3);
                 });
-				Bukkit.getScheduler().cancelTask(ThreadInStart.getTask());
                 Timers.setTime(Settings.getTimeStart());
-                PlayerData.getPlayerDataList().values().forEach((PlayerData playerDataList) -> playerDataList.getScoreboard().updateValue("time",  Lang.getMessage(SbLobby.getKey(Timers.getTime()), playerDataList.getLang(), new Lang.Args(Lang.Parameter.TIME, ""+Timers.getTime()))));
 			}
-		} else {
-            if(playerData.getLife() != 0){
+            if(playerData.getLife() > 0){
                 PlayerData.removePlayerInGame();
             }
-            if(PlayerData.getPlayerInGame() == 1){
+		} else {
+            if(playerData.getLife() > 0){
+                playerData.resetLife();
+                PlayerData.removePlayerInGame();
+            }
+            if(PlayerData.getPlayerInGame() >= 1){
                 Victory.onVictory(2);
             }
-            if(PlayerData.size()-1 == 0){
+
+            if(GameState.isState(GameState.FINISH) && PlayerData.getPlayerDataList().size() == 1 || GameState.isState(GameState.INGAME) && PlayerData.getPlayerInGame() == 1){
                 Bukkit.shutdown();
             }
         }

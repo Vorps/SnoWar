@@ -1,4 +1,4 @@
-package me.vorps.snowar.utils;
+package me.vorps.snowar.lang;
 
 import me.vorps.snowar.Exceptions.SqlException;
 import me.vorps.snowar.databases.Database;
@@ -11,6 +11,22 @@ import java.util.HashMap;
  * Project SnoWar Created by Vorps on 21/07/2016 at 15:36.
  */
 public class Lang {
+
+    /**
+     * Load all message
+     * @param result ResultSet
+     * @throws SqlException
+     * @throws SQLException
+     */
+    public Lang(ResultSet result) throws SqlException, SQLException{
+        String key = Database.SNOWAR.getDatabase().getString(result, 1);
+        HashMap<String, String> langMessage =  new HashMap<>();
+        for(LangSetting langSetting : LangSetting.getListLangSetting().values()){
+            langMessage.put(langSetting.getName(), result.getString(langSetting.getColumnId()));
+        }
+        lang.put(key, langMessage);
+    }
+
     public static class Args{
         private Parameter parameter;
         private String value;
@@ -45,8 +61,9 @@ public class Lang {
         LOOSER("<looser>"),
         KIT("<kit>"),
         PAGE("<page>"),
-        LIFE("life"),
-        KILLED("killed");
+        LIFE("<life>"),
+        BONUS("<bonus>"),
+        KILLED("<killed>");
 
         private String label;
 
@@ -60,8 +77,8 @@ public class Lang {
 
     public static String getMessageTmp(String key, String lang, Args[] args){
         String message = getMessage(key, lang);
-        for(int i = 0; i < args.length; i++){
-            message = message.replaceAll(args[i].parameter.label , args[i].value);
+        for(Args argsList : args){
+            message = message.replaceAll(argsList.parameter.label , argsList.value);
         }
         return message;
     }
@@ -85,15 +102,6 @@ public class Lang {
                 break;
         }
         return message;
-    }
-
-    public Lang(ResultSet result) throws SqlException, SQLException{
-        String key = Database.SNOWAR.getDatabase().getString(result, 1);
-        HashMap<String, String> langMessage =  new HashMap<>();
-        for(LangSetting langSetting : LangSetting.getListLangSetting().values()){
-            langMessage.put(langSetting.getName(), result.getString(langSetting.getColumnId()));
-        }
-        lang.put(key, langMessage);
     }
 
     public static void clearLang(){

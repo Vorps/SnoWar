@@ -17,7 +17,7 @@ public class Firework {
 
     public Firework(Player player, org.bukkit.Location location, Color mainColor, Color fadeColor, FireworkEffect.Type type, int speed, final int timeExec){
         this.time = timeExec;
-        task = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(SnowWar.getInstance(), new Runnable() {
+        this.task = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(SnowWar.getInstance(), new Runnable() {
             public void run() {
                 org.bukkit.entity.Firework f = player.getWorld().spawn(location, org.bukkit.entity.Firework.class);
                 FireworkMeta fm = f.getFireworkMeta();

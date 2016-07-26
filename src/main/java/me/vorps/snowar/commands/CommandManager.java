@@ -12,10 +12,11 @@ public class CommandManager {
     public CommandManager(){
         SnowWar plugin = SnowWar.getInstance();
         plugin.getCommand(Commands.Command.RELOAD_SNOW_WAR.getCommand()).setTabCompleter(new CommandsAutoCompletion(Commands.Command.RELOAD_SNOW_WAR));
+        plugin.getCommand(Commands.Command.ENTITY.getCommand()).setTabCompleter(new CommandsAutoCompletion(Commands.Command.ENTITY));
     }
 
     @EventHandler
-    public static boolean onCommand(CommandSender sender, String label, String args[]){
+    public static boolean onCommand(final CommandSender sender, final String label, final String args[]){
         boolean state = false;
         if(label.equalsIgnoreCase(Commands.Command.RELOAD_SNOW_WAR.getCommand())){
             state = new CommandReload(sender, args).isStateExec();

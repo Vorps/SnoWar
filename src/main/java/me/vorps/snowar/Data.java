@@ -2,8 +2,12 @@ package me.vorps.snowar;
 
 import lombok.Getter;
 import lombok.Setter;
+import me.vorps.snowar.Exceptions.PercentException;
 import me.vorps.snowar.Exceptions.SqlException;
 import me.vorps.snowar.databases.Database;
+import me.vorps.snowar.lang.Lang;
+import me.vorps.snowar.lang.LangSetting;
+import me.vorps.snowar.objects.Bonus;
 import me.vorps.snowar.objects.MapParameter;
 import me.vorps.snowar.objects.Parameter;
 import me.vorps.snowar.utils.*;
@@ -18,16 +22,21 @@ import java.sql.SQLException;
  */
 public class Data {
 
+    private static final @Getter ChatColor[] COLOR;
+    private static final @Getter String NAME_SERVER;
     private static @Getter @Setter int minPlayer;
     private static @Getter @Setter int maxPlayer;
     private static @Getter @Setter boolean fall;
-    private static @Getter ChatColor[] colors = new ChatColor[] {ChatColor.GREEN, ChatColor.YELLOW, ChatColor.GOLD, ChatColor.RED};
-    private static @Getter int life = 15;
 
-    private static @Getter String nameServer;
+    static {
+        COLOR       =  new ChatColor[] {ChatColor.GREEN, ChatColor.YELLOW, ChatColor.GOLD, ChatColor.RED};
+        NAME_SERVER =  Paths.get(System.getProperty("user.dir")).getFileName().toString();
+    }
 
+    /**
+     * Load all variable plugin
+     */
     public static void loadVariable(){
-        nameServer = Paths.get(System.getProperty("user.dir")).getFileName().toString();
         getLang();
         getSettings();
         getLocation();
@@ -35,6 +44,26 @@ public class Data {
         getMessageTitle();
         getItem();
         getServer();
+        getBonus();
+    }
+
+    private static void getBonus(){
+        me.vorps.snowar.bonus.Bonus.clear();
+        try {
+            ResultSet results = Database.SNOWAR.getDatabase().getDataTmp("bonus");
+            while (results.next()) {
+                new Bonus(results);
+            }
+        } catch (SQLException e){
+            //
+        } catch (SqlException e) {
+            e.printStackTrace();
+        }
+        try {
+            Bonus.init();
+        } catch (PercentException error){
+            error.printStackTrace();
+        }
     }
 
     private static void getSettings(){
@@ -92,10 +121,10 @@ public class Data {
 
     private static void getServer(){
         try{
-            ResultSet resultServer = Database.SNOWAR.getDatabase().getData("server", "sv_name = '"+Data.getNameServer()+"'");
+            ResultSet resultServer = Database.SNOWAR.getDatabase().getData("server", "sv_name = '"+Data.NAME_SERVER+"'");
             if(resultServer.next()){
-                minPlayer = Database.SNOWAR.getDatabase().getInt(resultServer, 3);
-                maxPlayer = Database.SNOWAR.getDatabase().getInt(resultServer, 4);
+                Data.minPlayer = Database.SNOWAR.getDatabase().getInt(resultServer, 3);
+                Data.maxPlayer = Database.SNOWAR.getDatabase().getInt(resultServer, 4);
                 ResultSet resultParameter = Database.SNOWAR.getDatabase().getData("parameter", "p_parameter = '"+Database.SNOWAR.getDatabase().getString(resultServer, 2)+"'");
                 if(resultParameter.next()){
                     Parameter.init(resultParameter);

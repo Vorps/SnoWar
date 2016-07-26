@@ -1,6 +1,6 @@
 package me.vorps.snowar.listeners;
 
-import me.vorps.snowar.GameState;
+import me.vorps.snowar.game.GameState;
 import me.vorps.snowar.PlayerData;
 import me.vorps.snowar.cooldowns.CoolDownsLastDamage;
 import me.vorps.snowar.objects.Bonus;
@@ -22,22 +22,25 @@ public class DamageByEntityListener implements Listener{
     public void onDamagesByEntity(EntityDamageByEntityEvent e){
         if(GameState.isState(GameState.INGAME) && e.getDamager() instanceof Snowball && ((Snowball)e.getDamager()).getShooter() instanceof Player){
             if(e.getEntity() instanceof Player){
+                System.out.println("ok");
                 String killed = e.getEntity().getName();
                 String killer = ((Player) ((Snowball)e.getDamager()).getShooter()).getName();
-                PlayerData playerDataKilled = PlayerData.getPlayerData(killer);
-                PlayerData playerDataKiller = PlayerData.getPlayerData(killed);
+                PlayerData playerDataKilled = PlayerData.getPlayerData(killed);
+                PlayerData playerDataKiller = PlayerData.getPlayerData(killer);
                 if(playerDataKilled.isGod()){
                     playerDataKilled.setGod(false);
                 }
                 if(!playerDataKiller.isGod()) {
                     PlayerData.getPlayerData(killed).setPlayerLastDamage(killer);
                     new CoolDownsLastDamage(PlayerData.getPlayerData(killed)).start();
-                    if(playerDataKilled.getPlayer().getHealth()-Parameter.getDamage() == 0){
-                        new ThreadSpawnKill(playerDataKilled.getPlayer());
+                    if(playerDataKilled.getPlayer().getHealth()-Parameter.getDamage() <= 0){
+                        if(playerDataKilled.getLife() > 1){
+                            new ThreadSpawnKill(playerDataKilled.getPlayer());
+                        }
                         playerDataKiller.addKill();
                         playerDataKilled.removeLife(killer);
                     } else {
-                        playerDataKilled.getPlayer().setHealth(playerDataKilled.getPlayer().getHealth()-Parameter.getDamage());
+                        playerDataKilled.getPlayer().damage(Parameter.getDamage());
                     }
                     playerDataKiller.addBallTouch();
                 }

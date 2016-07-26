@@ -25,10 +25,10 @@ public enum Color {
     private org.bukkit.Color color;
 
     Color(int rgb){
-        color = org.bukkit.Color.fromRGB(rgb);
+        this.color = org.bukkit.Color.fromRGB(rgb);
     }
 
     public org.bukkit.Color getColor(){
-        return color;
+        return this.color;
     }
 }

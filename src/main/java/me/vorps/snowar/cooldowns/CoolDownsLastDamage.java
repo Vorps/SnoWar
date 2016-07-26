@@ -9,17 +9,22 @@ import me.vorps.snowar.Settings;
 public class CoolDownsLastDamage extends Thread{
 	
 	private PlayerData playerData;
-	
+
+    /**
+     * Define the last player damager
+     * @param playerData PlayerData
+     */
 	public CoolDownsLastDamage(PlayerData playerData) {
 		this.playerData = playerData;
 	}
-	
+
+    @Override
 	public void run(){
 		try{
 			Thread.sleep(Settings.getCoolDownLastDamage());
 		} catch(InterruptedException e){
 			e.printStackTrace();
 		}
-		playerData.setPlayerLastDamage(null);
+		this.playerData.setPlayerLastDamage(null);
 	}
 }

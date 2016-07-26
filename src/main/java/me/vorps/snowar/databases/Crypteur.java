@@ -10,7 +10,9 @@ public class Crypteur {
     private String user;
     private String pass;
 
-
+    /**
+     * Crypt data
+     */
     public Crypteur(){
         typeBdd = "mysql";
         ip = "localhost";

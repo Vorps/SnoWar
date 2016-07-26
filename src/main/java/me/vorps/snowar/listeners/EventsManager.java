@@ -24,5 +24,6 @@ public class EventsManager {
         pluginManager.registerEvents(new PlayerSneak(), plugin);
         pluginManager.registerEvents(new PlayerInteractEntities(), plugin);
         pluginManager.registerEvents(new ChatListener(), plugin);
+        pluginManager.registerEvents(new PlayerInventoryClick(), plugin);
 	}
 }

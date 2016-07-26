@@ -1,11 +1,13 @@
-package me.vorps.snowar;
+package me.vorps.snowar.game;
 
 
+import me.vorps.snowar.PlayerData;
+import me.vorps.snowar.Settings;
 import me.vorps.snowar.cooldowns.CoolDownSpawnBonus;
 import me.vorps.snowar.objects.MapParameter;
 import me.vorps.snowar.scoreboard.SbFinish;
 import me.vorps.snowar.scoreboard.SbGame;
-import me.vorps.snowar.utils.Lang;
+import me.vorps.snowar.lang.Lang;
 import me.vorps.snowar.utils.MessageTitle;
 import me.vorps.snowar.utils.Title;
 import org.bukkit.Bukkit;
@@ -30,12 +32,13 @@ public class GameManager {
             new Title(messageTitle.getTitle().get(playerData.getLang()), messageTitle.getSubTitle().get(playerData.getLang())).send(playerData.getPlayer());
             playerData.setTabList();
         });
-        teleport();
+        PlayerData.broadCast("SNO_WAR.STARGAME");
+        GameManager.teleport();
         new CoolDownSpawnBonus();
 	}
 
     public static void teleport(){
-        int elp = 360/PlayerData.size();
+        int elp = 360/PlayerData.getPlayerInGame();
         int var = 0;
         for(PlayerData playerData : PlayerData.getPlayerDataList().values()){
             playerData.getPlayer().teleport(new Location(Bukkit.getWorlds().get(0), Math.cos(var)*MapParameter.getDistance()+MapParameter.getSpawnGame().getX(),  MapParameter.getSpawnGame().getY(), Math.sin(var)*MapParameter.getDistance()+MapParameter.getSpawnGame().getZ()));

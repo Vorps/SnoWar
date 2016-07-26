@@ -1,6 +1,5 @@
 package me.vorps.snowar.utils;
 
-import lombok.Getter;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -14,8 +13,6 @@ import org.bukkit.entity.Villager;
  */
 public class EntityManager {
 	
-	private static @Getter Entity entity;
-
 	private static void disableAI(Entity entity) {
         net.minecraft.server.v1_8_R3.Entity nmsEntity = ((CraftEntity) entity).getHandle();
         NBTTagCompound tag = nmsEntity.getNBTTag();
@@ -32,7 +29,7 @@ public class EntityManager {
         entity.setCustomName(name);
         entity.setCustomNameVisible(true);
         entity.setProfession(profession);
-		disableAI(entity);
+        EntityManager.disableAI(entity);
 	}
 
     public static void removeEntity(){
