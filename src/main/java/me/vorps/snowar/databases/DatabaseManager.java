@@ -2,6 +2,7 @@ package me.vorps.snowar.databases;
 
 import me.vorps.snowar.Exceptions.SqlException;
 
+import java.nio.file.Paths;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -21,10 +22,10 @@ public class DatabaseManager {
      * @throws SqlException
      */
     public DatabaseManager(String nameDatabase) throws SqlException{
-        Crypteur crypteur = new Crypteur();
+        Encryptor encryptor = new Encryptor(Paths.get( System.getProperty("user.dir")).toString()+"/.pass", 2659);
         try {
-            Class.forName("com."+crypteur.getTypeBdd()+".jdbc.Driver");
-            this.connection = DriverManager.getConnection("jdbc:"+crypteur.getTypeBdd()+"://"+crypteur.getIp()+"/"+nameDatabase, crypteur.getUser(), crypteur.getPass());
+            Class.forName("com."+encryptor.getTypeBdd()+".jdbc.Driver");
+            this.connection = DriverManager.getConnection("jdbc:"+encryptor.getTypeBdd()+"://"+encryptor.getIp()+"/"+nameDatabase, encryptor.getUser(), encryptor.getPass());
         } catch(ClassNotFoundException e){
             throw new SqlException("Driver not found Please install driver Mysql", new Throwable("Error, server no connected to database"));
         } catch (SQLException e){
