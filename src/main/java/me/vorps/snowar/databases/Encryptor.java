@@ -11,15 +11,13 @@ import java.util.HashMap;
 public class Encryptor {
 
     private String path;
-    private int key;
     private @Getter String typeBdd;
     private @Getter String ip;
     private @Getter String user;
     private @Getter String pass;
 
-    public Encryptor(String path, int key){
+    public Encryptor(String path){
         this.path = path;
-        this.key = key;
         this.init();
     }
 
@@ -28,10 +26,24 @@ public class Encryptor {
         String var1 = "";
         String var2 = "";
         ArrayList<String> var3 = new ArrayList<>();
+        int var = 0;
+        String keyTmp = "";
+        for(int i = 0; i < data.get(0).length(); i++){
+            if(data.get(0).charAt(i) == '@'){
+                var++;
+            } else {
+                if(var == 3){
+                    keyTmp+=data.get(0).charAt(i);
+                }
+                if(var == 4){
+                    break;
+                }
+            }
+        }
         for(String dataValue : data){
             for(int i = 0; i < dataValue.length(); i++){
                 if (dataValue.charAt(i) == '@') {
-                    var2+=Character.toString ((char) (Integer.parseInt(var1)/this.key));
+                    var2+=Character.toString ((char) (Integer.parseInt(var1)/(Integer.parseInt(keyTmp)/ ((int) '='))));
                     var1 = "";
                 } else {
                     if(dataValue.charAt(i) != 'n'){

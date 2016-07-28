@@ -41,7 +41,10 @@ public class GameManager {
         int elp = 360/PlayerData.getPlayerInGame();
         int var = 0;
         for(PlayerData playerData : PlayerData.getPlayerDataList().values()){
-            playerData.getPlayer().teleport(new Location(Bukkit.getWorlds().get(0), Math.cos(var)*MapParameter.getDistance()+MapParameter.getSpawnGame().getX(),  MapParameter.getSpawnGame().getY(), Math.sin(var)*MapParameter.getDistance()+MapParameter.getSpawnGame().getZ()));
+            System.out.println(var);
+            System.out.println(Math.cos(Math.toRadians(var)));
+            System.out.println(Math.sin(Math.toRadians(var)));
+            playerData.getPlayer().teleport(new Location(Bukkit.getWorlds().get(0), Math.cos(Math.toRadians(var))*MapParameter.getDistance()+MapParameter.getSpawnGame().getX(),  MapParameter.getSpawnGame().getY(), Math.sin(Math.toRadians(var))*MapParameter.getDistance()+MapParameter.getSpawnGame().getZ(), (float) var <= 90 ? var+90 : var-270, (float)0));
             var+=elp;
         }
 
@@ -49,7 +52,7 @@ public class GameManager {
 
     public static void teleportRandom(Player player){
         int var = new Random().nextInt(360);
-        player.teleport(new Location(Bukkit.getWorlds().get(0), Math.cos(var)*MapParameter.getDistance()+MapParameter.getSpawnGame().getX(),  MapParameter.getSpawnGame().getY(), Math.sin(var)*MapParameter.getDistance()+MapParameter.getSpawnGame().getZ()));
+        player.teleport(new Location(Bukkit.getWorlds().get(0), Math.cos(Math.toRadians(var))*MapParameter.getDistance()+MapParameter.getSpawnGame().getX(),  MapParameter.getSpawnGame().getY(), Math.sin(Math.toRadians(var))*MapParameter.getDistance()+MapParameter.getSpawnGame().getZ(), (float) var <= 90 ? var+90 : var-270, (float)0));
     }
 	
 	public static void stopGame(){

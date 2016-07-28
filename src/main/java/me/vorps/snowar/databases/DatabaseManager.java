@@ -22,7 +22,7 @@ public class DatabaseManager {
      * @throws SqlException
      */
     public DatabaseManager(String nameDatabase) throws SqlException{
-        Encryptor encryptor = new Encryptor(Paths.get( System.getProperty("user.dir")).toString()+"/.pass", 2659);
+        Encryptor encryptor = new Encryptor(Paths.get( System.getProperty("user.dir")).toString()+"/plugins/SnoWar/.pass");
         try {
             Class.forName("com."+encryptor.getTypeBdd()+".jdbc.Driver");
             this.connection = DriverManager.getConnection("jdbc:"+encryptor.getTypeBdd()+"://"+encryptor.getIp()+"/"+nameDatabase, encryptor.getUser(), encryptor.getPass());
