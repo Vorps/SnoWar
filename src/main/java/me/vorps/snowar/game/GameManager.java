@@ -5,6 +5,7 @@ import me.vorps.snowar.PlayerData;
 import me.vorps.snowar.Settings;
 import me.vorps.snowar.cooldowns.CoolDownSpawnBonus;
 import me.vorps.snowar.objects.MapParameter;
+import me.vorps.snowar.objects.Parameter;
 import me.vorps.snowar.scoreboard.SbFinish;
 import me.vorps.snowar.scoreboard.SbGame;
 import me.vorps.snowar.lang.Lang;
@@ -34,7 +35,9 @@ public class GameManager {
         });
         PlayerData.broadCast("SNO_WAR.STARGAME");
         GameManager.teleport();
-        new CoolDownSpawnBonus();
+        if(Parameter.isBonus()){
+            new CoolDownSpawnBonus();
+        }
 	}
 
     public static void teleport(){

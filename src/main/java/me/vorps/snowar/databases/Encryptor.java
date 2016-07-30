@@ -65,8 +65,10 @@ public class Encryptor {
         for(String var1 : decrypt()){
             var2 = "";
             var3 = "";
+            boolean state = false;
             for(int i = 0; i < var1.length(); i++){
-                if(var1.charAt(i) == '='){
+                if(var1.charAt(i) == '=' && !state){
+                    state = true;
                     var3=var2;
                     var2="";
                 } else {

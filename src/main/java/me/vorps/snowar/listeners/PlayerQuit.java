@@ -24,8 +24,8 @@ public class PlayerQuit implements Listener {
         Player player = e.getPlayer();
 		PlayerData playerData = PlayerData.getPlayerData(player.getName());
 		if(GameState.isState(GameState.WAITING) || GameState.isState(GameState.INSTART)){
-            PlayerData.broadCast("SNO_WAR.QUIT.LOBBY", new Lang.Args(Lang.Parameter.PLAYER, ""+player.getName()), new Lang.Args(Lang.Parameter.NBR_PLAYER, ""+(PlayerData.getPlayerInGame()-1)), new Lang.Args(Lang.Parameter.NBR_MAX_PLAYER, ""+ Data.getMaxPlayer()));
-            if(GameState.isState(GameState.INSTART) && ((float)(playerData.getLife() > 0 ? PlayerData.getPlayerInGame()-1 : PlayerData.getPlayerInGame()))/Data.getMaxPlayer()*100 < 25){
+            PlayerData.broadCast("SNO_WAR.QUIT.LOBBY", new Lang.Args(Lang.Parameter.PLAYER, ""+player.getName()), new Lang.Args(Lang.Parameter.NBR_PLAYER, ""+(PlayerData.getPlayerInGame()-1)), new Lang.Args(Lang.Parameter.NBR_MAX_PLAYER, ""+ Data.getNbPlayerMax()));
+            if(GameState.isState(GameState.INSTART) && ((float)(playerData.getLife() > 0 ? PlayerData.getPlayerInGame()-1 : PlayerData.getPlayerInGame()))/Data.getNbPlayerMax()*100 < 25){
                 GameState.setState(GameState.WAITING);
                 Bukkit.getScheduler().cancelTask(ThreadInStart.getTask());
                 PlayerData.getPlayerDataList().values().forEach((PlayerData playerDataList) -> {

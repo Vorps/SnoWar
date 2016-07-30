@@ -10,6 +10,7 @@ import me.vorps.snowar.lang.LangSetting;
 import me.vorps.snowar.objects.Bonus;
 import me.vorps.snowar.objects.MapParameter;
 import me.vorps.snowar.objects.Parameter;
+import me.vorps.snowar.scenario.Scenario;
 import me.vorps.snowar.utils.*;
 import org.bukkit.ChatColor;
 
@@ -24,9 +25,9 @@ public class Data {
 
     private static final @Getter ChatColor[] COLOR;
     private static final @Getter String NAME_SERVER;
-    private static @Getter @Setter int minPlayer;
-    private static @Getter @Setter int maxPlayer;
-    private static @Getter @Setter boolean fall;
+    private static @Getter @Setter int nbPlayerMin;
+    private static @Getter @Setter int nbPlayerMax;
+    private static @Getter boolean scenario;
 
     static {
         COLOR       =  new ChatColor[] {ChatColor.GREEN, ChatColor.YELLOW, ChatColor.GOLD, ChatColor.RED};
@@ -123,8 +124,15 @@ public class Data {
         try{
             ResultSet resultServer = Database.SNOWAR.getDatabase().getData("server", "sv_name = '"+Data.NAME_SERVER+"'");
             if(resultServer.next()){
-                Data.minPlayer = Database.SNOWAR.getDatabase().getInt(resultServer, 3);
-                Data.maxPlayer = Database.SNOWAR.getDatabase().getInt(resultServer, 4);
+                Data.nbPlayerMin = Database.SNOWAR.getDatabase().getInt(resultServer, 3);
+                Data.nbPlayerMax = Database.SNOWAR.getDatabase().getInt(resultServer, 4);
+                Data.scenario = Database.SNOWAR.getDatabase().getString(resultServer, 5) != null;
+                if(Data.scenario){
+                    ResultSet resultSet =Database.SNOWAR.getDatabase().getData("scenario", "scen_name = '"+Database.SNOWAR.getDatabase().getString(resultServer, 5)+"'");
+                    if(resultSet.next()){
+                        Scenario.init(resultSet);
+                    }
+                }
                 ResultSet resultParameter = Database.SNOWAR.getDatabase().getData("parameter", "p_parameter = '"+Database.SNOWAR.getDatabase().getString(resultServer, 2)+"'");
                 if(resultParameter.next()){
                     Parameter.init(resultParameter);

@@ -9,6 +9,7 @@ import me.vorps.snowar.game.GameManager;
 import me.vorps.snowar.game.GameState;
 import me.vorps.snowar.game.Victory;
 import me.vorps.snowar.lang.Lang;
+import me.vorps.snowar.menu.*;
 import me.vorps.snowar.objects.Parameter;
 import me.vorps.snowar.scoreboard.SbLobby;
 import me.vorps.snowar.scoreboard.SbSpectator;
@@ -179,6 +180,11 @@ public class PlayerData {
      * Init inventory player
      */
     private void initInventory(){
+        if(GameState.isState(GameState.WAITING) || GameState.isState(GameState.INSTART)){
+            if(getPlayer().hasPermission("rushvolcano.scenario") && Data.isScenario()) {
+                this.getPlayer().getInventory().setItem(0, new me.vorps.snowar.menu.Item(Material.REDSTONE_COMPARATOR).withName(Lang.getMessage("SNO_WAR.INVENTORY.LOBBy.SCENARISE", lang)).get());
+            }
+        }
         this.getPlayer().getInventory().setItem(8, new me.vorps.snowar.menu.Item(Material.BED).withName(Lang.getMessage("SNO_WAR.ITEM.QUIT.LABEL", this.lang)).withLore(new String[] {Lang.getMessage("SNO_WAR.ITEM.QUIT.LORE", this.lang)}).get());
         if(GameState.isState(GameState.INGAME)){
             this.getPlayer().getInventory().setItem(0, new me.vorps.snowar.menu.Item("Notch").withName(Lang.getMessage("SNO_WAR.ITEM.SPECT.LABEL", this.lang)).withLore(new String[] {Lang.getMessage("SNO_WAR.ITEM.SPECT.LORE", this.lang)}).get());

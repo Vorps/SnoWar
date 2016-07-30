@@ -29,7 +29,7 @@ public class SnowWar extends JavaPlugin{
 
     @Override
     public void onDisable(){
-        WorldUtils.initMap("saveWorld", "world");
+        WorldUtils.initMap("save_world", "world");
         Bukkit.getScheduler().cancelAllTasks();
         GameState.setState(GameState.STOP);
         PlayerData.clear();

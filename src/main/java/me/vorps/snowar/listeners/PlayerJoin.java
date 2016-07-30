@@ -21,9 +21,9 @@ public class PlayerJoin implements Listener{
 		Player player = e.getPlayer();
         PlayerData playerDataInstance = new PlayerData(player.getUniqueId());
         if(playerDataInstance.getLife() != 0){
-            PlayerData.broadCast("SNO_WAR.JOIN", new Lang.Args(Lang.Parameter.PLAYER, player.getName()), new Lang.Args(Lang.Parameter.NBR_PLAYER, ""+PlayerData.getPlayerInGame()), new Lang.Args(Lang.Parameter.NBR_MAX_PLAYER, ""+ Data.getMaxPlayer()));
+            PlayerData.broadCast("SNO_WAR.JOIN", new Lang.Args(Lang.Parameter.PLAYER, player.getName()), new Lang.Args(Lang.Parameter.NBR_PLAYER, ""+PlayerData.getPlayerInGame()), new Lang.Args(Lang.Parameter.NBR_MAX_PLAYER, ""+ Data.getNbPlayerMax()));
         }
-        if((GameState.isState(GameState.WAITING) || GameState.isState(GameState.INSTART)) && PlayerData.getPlayerInGame() >= Data.getMinPlayer() && PlayerData.getPlayerInGame() > 1){
+        if((GameState.isState(GameState.WAITING) || GameState.isState(GameState.INSTART)) && PlayerData.getPlayerInGame() >= Data.getNbPlayerMin() && PlayerData.getPlayerInGame() > 1){
             int time = getTime();
             if(time != -1 && Timers.getTime() >= time){
                 if(GameState.isState(GameState.WAITING)){
@@ -40,16 +40,16 @@ public class PlayerJoin implements Listener{
 
     private static int getTime(){
         int time = -1;
-        if(((float)(PlayerData.getPlayerInGame()-1)/Data.getMaxPlayer())*100 < 25.0 && ((float)PlayerData.getPlayerInGame()/Data.getMaxPlayer())*100 >= 25.0){
+        if(((float)(PlayerData.getPlayerInGame()-1)/Data.getNbPlayerMax())*100 < 25.0 && ((float)PlayerData.getPlayerInGame()/Data.getNbPlayerMax())*100 >= 25.0){
             time = Settings.getTimeStart();
         }
-        if(((float)(PlayerData.getPlayerInGame()-1)/Data.getMaxPlayer())*100 < 50.0 && ((float)PlayerData.getPlayerInGame()/Data.getMaxPlayer())*100 >= 50.0){
+        if(((float)(PlayerData.getPlayerInGame()-1)/Data.getNbPlayerMax())*100 < 50.0 && ((float)PlayerData.getPlayerInGame()/Data.getNbPlayerMax())*100 >= 50.0){
             time = Settings.getTimeStart()/2;
         }
-        if(((float)(PlayerData.getPlayerInGame()-1)/Data.getMaxPlayer())*100 < 75.0 && ((float)PlayerData.getPlayerInGame()/Data.getMaxPlayer())*100 >= 75.0){
+        if(((float)(PlayerData.getPlayerInGame()-1)/Data.getNbPlayerMax())*100 < 75.0 && ((float)PlayerData.getPlayerInGame()/Data.getNbPlayerMax())*100 >= 75.0){
             time = Settings.getTimeStart()/4;
         }
-        if(PlayerData.getPlayerInGame() == Data.getMaxPlayer()){
+        if(PlayerData.getPlayerInGame() == Data.getNbPlayerMax()){
             time = Settings.getTimeStart()/6;
         }
         return time;

@@ -68,7 +68,7 @@ public class Earning {
         }
         try {
             for(String notif : notification){
-                Database.SNOWAR.getDatabase().insertTable("notification",  name, notif, "GAME");
+                Database.SNOWAR.getDatabase().insertTable("notification",  PlayerData.getPlayerData(name).getPlayer().getUniqueId().toString(), notif, "GAME");
             }
         } catch (SqlException e){
             e.printStackTrace();

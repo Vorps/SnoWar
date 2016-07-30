@@ -1,8 +1,8 @@
 package me.vorps.snowar.listeners;
 
-import me.vorps.snowar.Data;
 import me.vorps.snowar.game.GameState;
 import me.vorps.snowar.PlayerData;
+import me.vorps.snowar.objects.Parameter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -21,7 +21,7 @@ public class DamageListener implements Listener{
             } else {
                 if(e.getCause() != EntityDamageEvent.DamageCause.ENTITY_ATTACK){
                     if(e.getCause() == EntityDamageEvent.DamageCause.FALL){
-                        if(Data.isFall()){
+                        if(Parameter.isFall()){
                            e.setCancelled(true);
                         }
                     }

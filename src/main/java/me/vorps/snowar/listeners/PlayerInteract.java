@@ -4,6 +4,8 @@ import me.vorps.snowar.game.GameState;
 import me.vorps.snowar.PlayerData;
 import me.vorps.snowar.bonus.Bonus;
 import me.vorps.snowar.cooldowns.CoolDowns;
+import me.vorps.snowar.menu.MenuScenario;
+import me.vorps.snowar.scenario.Scenario;
 import me.vorps.snowar.utils.Item;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -61,6 +63,9 @@ public class PlayerInteract implements Listener {
                 switch (item.getType()){
                     case BED:
                         // TODO: 21/07/2016 Retour lobby implementation
+                        break;
+                    case REDSTONE_COMPARATOR:
+                        Scenario.setMenu(new MenuScenario(playerData.getPlayer()));
                         break;
                     default:
                         break;
