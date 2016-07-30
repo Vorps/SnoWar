@@ -18,6 +18,7 @@ public class Parameter {
     private static @Getter String label;
     private static @Getter @Setter int timeGame;
     private static @Getter @Setter int cooldownBall;
+    private static @Getter @Setter boolean coolDownBallState;
     private static @Getter @Setter int nbrBall;
     private static @Getter @Setter int timeBall;
     private static @Getter @Setter int ball;
@@ -51,6 +52,7 @@ public class Parameter {
         Parameter.fall = Database.SNOWAR.getDatabase().getBoolean(result, 14);
         Parameter.cycle = Database.SNOWAR.getDatabase().getBoolean(result, 15);
         Parameter.bonus = Database.SNOWAR.getDatabase().getBoolean(result, 16);
+        Parameter.coolDownBallState = Parameter.cooldownBall > 0;
         Bukkit.getWorlds().get(0).setGameRuleValue("doDaylightCycle", ""+cycle);
         Bukkit.getWorlds().get(0).setTime(hour);
     }

@@ -7,10 +7,7 @@ import me.vorps.snowar.Exceptions.SqlException;
 import me.vorps.snowar.databases.Database;
 import me.vorps.snowar.lang.Lang;
 import me.vorps.snowar.lang.LangSetting;
-import me.vorps.snowar.menu.Item;
-import me.vorps.snowar.menu.Menu;
-import me.vorps.snowar.menu.MenuBonus;
-import me.vorps.snowar.menu.MenuScenario;
+import me.vorps.snowar.menu.*;
 import me.vorps.snowar.objects.Parameter;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -55,6 +52,18 @@ public class Scenario {
         }
     }
 
+    public enum Weather{
+        SUN(""),
+        RAIN(""),
+        THUNDER("");
+
+        private String label;
+
+        Weather(String label){
+            this.label = label;
+        }
+    }
+
     public static void init(ResultSet resultSet) throws SqlException{
         timeMin = Database.SNOWAR.getDatabase().getInt(resultSet, 2);
         timeMax = Database.SNOWAR.getDatabase().getInt(resultSet, 3);
@@ -64,6 +73,11 @@ public class Scenario {
         speedBonusMax = Database.SNOWAR.getDatabase().getInt(resultSet, 7);
         damageMin = Database.SNOWAR.getDatabase().getDouble(resultSet, 8);
         damageMax = Database.SNOWAR.getDatabase().getDouble(resultSet, 9);
+        coolDownBallMax = Database.SNOWAR.getDatabase().getInt(resultSet, 10);
+        ballCoolDownBallMin = Database.SNOWAR.getDatabase().getInt(resultSet, 11);
+        ballCoolDownBallMax = Database.SNOWAR.getDatabase().getInt(resultSet, 12);
+        ballTimeMin = Database.SNOWAR.getDatabase().getInt(resultSet, 13);
+        ballTimeMax = Database.SNOWAR.getDatabase().getInt(resultSet, 14);
     }
 
     private static int timeMin;
@@ -75,8 +89,50 @@ public class Scenario {
     private static int speedBonusMax;
     private static double damageMin;
     private static double damageMax;
+    private static int coolDownBallMax;
+    private static int ballCoolDownBallMin;
+    private static int ballCoolDownBallMax;
+    private static int  ballTimeMin;
+    private static int  ballTimeMax;
 
-    private static @Setter Menu menu;
+    private static @Getter @Setter Menu menu;
+
+    public static void addTimeBall(){
+        if(Parameter.getTimeBall()+1 <= Scenario.ballTimeMax){
+            Parameter.setTimeBall(Parameter.getTimeBall()+1);
+            updateItemBallTime();
+        }
+    }
+
+    public static void removeTimeBall(){
+        if(Parameter.getTimeBall()-1 >= Scenario.ballCoolDownBallMin){
+            Parameter.setTimeBall(Parameter.getTimeBall()-1);
+            updateItemBallTime();
+        }
+    }
+
+    private static void updateItemBallTime(){
+        ((MenuCoolDown) menu).updateItem(new String[] {"§a"+Parameter.getTimeBall()}, 5);
+    }
+
+    public static void addBallCoolDown(){
+        if(Parameter.getNbrBall()+1 <= Scenario.ballCoolDownBallMax){
+            Parameter.setNbrBall(Parameter.getNbrBall()+1);
+            updateItemCooldownBall();
+        }
+    }
+
+    public static void removeBallCoolDown(){
+        if(Parameter.getNbrBall()-1 >= Scenario.ballCoolDownBallMin){
+            Parameter.setNbrBall(Parameter.getNbrBall()-1);
+            updateItemCooldownBall();
+        }
+    }
+
+
+    private static void updateItemCooldownBall(){
+        ((MenuCoolDown) menu).updateItem(new String[] {"§a"+Parameter.getNbrBall()}, 3);
+    }
 
     public static void addSpeedBonus(){
         if(Parameter.getTimeBonus()+1 <= Scenario.speedBonusMax){
@@ -86,15 +142,33 @@ public class Scenario {
     }
 
     public static void addDamage(){
-        if(Parameter.getDamage()+0.5 <= Scenario.damageMax){
-            Parameter.setDamage(Parameter.getDamage()+0.5);
+        if(Parameter.getDamage()+1 <= Scenario.damageMax){
+            Parameter.setDamage(Parameter.getDamage()+1);
             Scenario.updateItemDamage();
         }
     }
 
+    public static void addTimeCoolDown(){
+        if(Parameter.getCooldownBall()+1 <= Scenario.coolDownBallMax){
+            Parameter.setCooldownBall(Parameter.getCooldownBall()+1);
+            updateItemCooldownTime();
+        }
+    }
+
+    public static void removeTimeCoolDown(){
+        if(Parameter.getCooldownBall()-1 >= 0){
+            Parameter.setCooldownBall(Parameter.getCooldownBall()-1);
+            updateItemCooldownTime();
+        }
+    }
+
+    private static void updateItemCooldownTime(){
+        ((MenuCoolDown) menu).updateItem(new String[] {"§a"+Parameter.getCooldownBall()}, 1);
+    }
+
     public static void removeDamage(){
-        if(Parameter.getDamage()-0.5 >= Scenario.damageMin){
-            Parameter.setDamage(Parameter.getDamage()-0.5);
+        if(Parameter.getDamage()-1 >= Scenario.damageMin){
+            Parameter.setDamage(Parameter.getDamage()-1);
             Scenario.updateItemDamage();
         }
     }
@@ -106,8 +180,8 @@ public class Scenario {
     public static void setBonus(){
         Parameter.setBonus(!Parameter.isBonus());
         if(Parameter.isBonus())  ((MenuScenario) menu).updateItem(5, new Item(Material.SNOW_BLOCK).withName("§6Bonus").withLore(new String[] {"§7Configurer les bonus du jeu"}));
-        else ((MenuScenario) menu).updateItem(5, new Item(351).withData((byte) 8).withName("§6Bonus").withLore(new String[] {"§cDésactivé"}));
     }
+
     public static void removeSpeedBonus(){
         if(Parameter.getTimeBonus()-1 >= Scenario.speedBonusMin){
             Parameter.setTimeBonus(Parameter.getTimeBonus()-1);
@@ -126,6 +200,11 @@ public class Scenario {
         }
     }
 
+    public static void setCoolDown(){
+        Parameter.setCoolDownBallState(!Parameter.isCoolDownBallState());
+        if(Parameter.isCoolDownBallState())  ((MenuScenario) menu).updateItem(7, new Item(349).withData((byte) 3).withName("§6Cooldown").withLore(new String[] {"§7Configurer le cooldown Ball"}));
+    }
+
     public static void removeTime(){
         if(Parameter.getTimeGame()-60 >= Scenario.timeMin){
             Parameter.setTimeGame(Parameter.getTimeGame()-60);
@@ -137,7 +216,7 @@ public class Scenario {
         if(++hour >= 4) hour = 0;
         Hour hourVar = Hour.values()[hour];
         Bukkit.getWorlds().get(0).setTime(hourVar.time);
-        ((MenuScenario) menu).updateItem(new String[] {hourVar.label.get(lang)}, 1);
+        ((MenuTimes) menu).updateItem(new String[] {hourVar.label.get(lang)}, 1);
     }
 
     public static void addNbrPlayer(){
@@ -164,8 +243,8 @@ public class Scenario {
     public static void setCycle(){
         Parameter.setCycle(!Parameter.isCycle());
         Bukkit.getWorlds().get(0).setGameRuleValue("doDaylightCycle", ""+Parameter.isCycle());
-        if(Parameter.isCycle()) ((MenuScenario) menu).updateItem((byte) 10,new String[] {"§aActivé"}, 4);
-        else ((MenuScenario) menu).updateItem((byte) 8,new String[] {"§cDésactivé"}, 4);
+        if(Parameter.isCycle()) ((MenuTimes) menu).updateItem((byte) 10,new String[] {"§aActivé"}, 4);
+        else ((MenuTimes) menu).updateItem((byte) 8,new String[] {"§cDésactivé"}, 4);
     }
 
 

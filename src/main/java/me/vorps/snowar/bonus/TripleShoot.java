@@ -11,8 +11,8 @@ import org.bukkit.util.Vector;
  */
 public class TripleShoot extends Bonus {
 
-    public TripleShoot(final int time, final double percent, final String enable, final String disable, final boolean persistence, final String label){
-        super(time, percent , enable, disable, persistence, label);
+    public TripleShoot(final int time, final double percent, final String enable, final String disable, final boolean persistence, final String label, final String icon){
+        super(time, percent , enable, disable, persistence, label, icon);
     }
 
     @Override

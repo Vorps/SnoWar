@@ -137,8 +137,7 @@ public abstract class Menu implements Listener{
      * @param size int
      */
     protected void init(int start, final int size, int listSize, int index, int lineSize, int[] exclude){
-        modelList = new ModelList[(size/9)-1-start/9];
-        System.out.println(modelList.length);
+        modelList = new ModelList[((size-9)/9)-1-start/9];
         if(modelList.length > 0){
             int middle = (modelList.length+1)/2;
             modelList[0] = new ModelList(middle);
@@ -159,7 +158,7 @@ public abstract class Menu implements Listener{
             }
         } else {
             modelList = new ModelList[1];
-            modelList[0] = new ModelList(start/9-1);
+            modelList[0] = new ModelList(start/9);
         }
         int max = 0;
         for(ModelList modelList : this.modelList){

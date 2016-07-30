@@ -3,6 +3,12 @@ package me.vorps.snowar.bonus;
 import lombok.Getter;
 import lombok.Setter;
 import me.vorps.snowar.PlayerData;
+import me.vorps.snowar.Settings;
+import me.vorps.snowar.menu.Item;
+import me.vorps.snowar.menu.MenuBonus;
+import me.vorps.snowar.objects.Parameter;
+import me.vorps.snowar.scenario.Scenario;
+import org.bukkit.Material;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -20,6 +26,7 @@ public abstract class Bonus {
     private @Getter boolean persistence;
     private @Getter @Setter ItemStack itemStack;
     private String label;
+    private @Getter String icon;
 
     /**
      * Constructor abstract instance new Bonus
@@ -30,13 +37,14 @@ public abstract class Bonus {
      * @param persistence boolean
      * @param label String
      */
-    public Bonus(final int time, final double percent, final String enable, final String disable, final boolean persistence, final String label){
+    public Bonus(final int time, final double percent, final String enable, final String disable, final boolean persistence, final String label, final String icon){
         this.time = time;
         this.percent = percent;
         this.enable = enable;
         this.disable = disable;
         this.persistence = persistence;
         this.label = label;
+        this.icon = icon;
         Bonus.bonusList.add(this);
     }
 
@@ -63,6 +71,42 @@ public abstract class Bonus {
         return this.label;
     }
 
+    private static int percentTotal(){
+        int percent = 0;
+        for(Bonus bonus : Bonus.getBonusList()){
+            percent+= bonus.percent;
+        }
+        return percent;
+    }
+
+    public void addPercent(int place){
+        if(Bonus.percentTotal() < 100){
+            this.percent++;
+        }
+        this.updateItemBonus(place);
+    }
+
+    public void removePercent(int place){
+        if(Bonus.percentTotal() > 0 && this.percent > 0){
+            this.percent--;
+        }
+        this.updateItemBonus(place);
+    }
+
+    private void updateItemBonus(int place){
+        ((MenuBonus) Scenario.getMenu()).updateItem(new String[] {"§7Percent : §a"+percent}, place);
+    }
+
+    public static Bonus getBonus(ItemStack itemStack){
+        Bonus bonus = null;
+        for(Bonus bonusList : Bonus.getBonusList()){
+            if(me.vorps.snowar.utils.Item.getItem(bonusList.icon, Settings.getConsoleLang()).get().getItemMeta().getDisplayName().equals(itemStack.getItemMeta().getDisplayName())){
+                bonus = bonusList;
+                break;
+            }
+        }
+        return bonus;
+    }
     /**
      * Clear all bonus
      */

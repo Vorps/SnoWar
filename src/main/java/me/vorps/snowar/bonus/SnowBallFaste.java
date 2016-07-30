@@ -10,8 +10,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
  */
 public class SnowBallFaste extends Bonus {
 
-    public SnowBallFaste(final int time, final double percent, final String enable, final String disable, final boolean persistence, final String label){
-        super(time, percent , enable, disable, persistence, label);
+    public SnowBallFaste(final int time, final double percent, final String enable, final String disable, final boolean persistence, final String label, final String icon){
+        super(time, percent , enable, disable, persistence, label, icon);
     }
 
 

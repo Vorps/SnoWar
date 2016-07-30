@@ -1,6 +1,7 @@
 package me.vorps.snowar.bonus;
 
 import me.vorps.snowar.PlayerData;
+import me.vorps.snowar.utils.Item;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -10,8 +11,8 @@ import org.bukkit.potion.PotionEffectType;
  */
 public class Adrenaline extends Bonus {
 
-    public Adrenaline(final int time, final double percent, final String enable, final String disable, final boolean persistence, final String label){
-        super(time, percent , enable, disable, persistence, label);
+    public Adrenaline(final int time, final double percent, final String enable, final String disable, final boolean persistence, final String label, final String icon){
+        super(time, percent , enable, disable, persistence, label, icon);
     }
 
     @Override

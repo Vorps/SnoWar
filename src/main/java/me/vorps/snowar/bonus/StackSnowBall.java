@@ -10,8 +10,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
 public class StackSnowBall extends Bonus {
 
 
-    public StackSnowBall(final int time, final double percent, final String enable, final String disable, final boolean persistence, final String label){
-        super(time, percent , enable, disable, persistence, label);
+    public StackSnowBall(final int time, final double percent, final String enable, final String disable, final boolean persistence, final String label, final String icon){
+        super(time, percent , enable, disable, persistence, label, icon);
     }
 
     @Override

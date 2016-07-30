@@ -86,7 +86,7 @@ public class PlayerData {
     public void addBall(){
         this.ball.add(Timers.getTime());
         if(this.ball.size() >= Parameter.getNbrBall()){
-            if(this.ball.get(this.ball.size()-Parameter.getNbrBall()) <= Timers.getTime()+Parameter.getTimeBall()){
+            if(this.ball.get(this.ball.size()-Parameter.getNbrBall()) <= Timers.getTime()+Parameter.getTimeBall() && Parameter.getCooldownBall() > 0){
                 new CoolDowns(getPlayer().getName(), Parameter.getCooldownBall(), "ball");
                 new CooldownBall(getPlayer()).start();
             }
