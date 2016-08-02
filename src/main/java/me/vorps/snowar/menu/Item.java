@@ -233,7 +233,6 @@ public class Item {
         } else {
             if(skullOwnerName != null){
                 item = new ItemStack(Material.SKULL_ITEM, 1, (short) SkullType.PLAYER.ordinal());
-
                 SkullMeta sm = (SkullMeta)item.getItemMeta();
                 sm.setOwner(skullOwnerName);
                 if(this.name != null) {

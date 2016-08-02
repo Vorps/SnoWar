@@ -19,7 +19,7 @@ public class MenuCoolDown extends Menu {
     public MenuCoolDown(PlayerData playerData){
         super(null, Bukkit.createInventory(null, 18, "§7Menu Cooldown"), null);
         this.player = playerData.getPlayer();
-        super.menu.setItem(9, new Item(Material.ARROW).withName("§6Quitter le menu").withLore(new String[] {"§7Retour au jeu"}).get());
+        super.menu.setItem(9, new Item(Material.ARROW).withName("§6Quitter le menu").withLore(new String[] {"§7Retour au menu Scenario"}).get());
         menu.setItem(1, new Item(Material.COMPASS).withName("§6Temps de cooldown").withLore(new String[] {"§a"+ Parameter.getCooldownBall()}).get());
         menu.setItem(3, new Item(Material.SNOW_BALL).withName("§6Nombre de balles").withLore(new String[] {"§a"+Parameter.getNbrBall()}).get());
         menu.setItem(5, new Item(347).withName("§6Temps entre les balles").withLore(new String[] {"§a"+Parameter.getTimeBall()}).get());

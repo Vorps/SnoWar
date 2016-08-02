@@ -6,6 +6,7 @@ import me.vorps.snowar.Data;
 import me.vorps.snowar.Exceptions.SqlException;
 import me.vorps.snowar.databases.Database;
 import me.vorps.snowar.scenario.Scenario;
+import me.vorps.snowar.utils.Weather;
 import org.bukkit.Bukkit;
 
 import java.sql.ResultSet;
@@ -30,6 +31,7 @@ public class Parameter {
     private static @Getter @Setter boolean fall;
     private static @Getter @Setter boolean cycle;
     private static @Getter @Setter boolean bonus;
+    private static @Getter String weather;
 
     /**
      * Init variable server
@@ -52,7 +54,9 @@ public class Parameter {
         Parameter.fall = Database.SNOWAR.getDatabase().getBoolean(result, 14);
         Parameter.cycle = Database.SNOWAR.getDatabase().getBoolean(result, 15);
         Parameter.bonus = Database.SNOWAR.getDatabase().getBoolean(result, 16);
+        Parameter.weather = Database.SNOWAR.getDatabase().getString(result, 17);
         Parameter.coolDownBallState = Parameter.cooldownBall > 0;
+        Weather.getWeather(weather).setWeather();
         Bukkit.getWorlds().get(0).setGameRuleValue("doDaylightCycle", ""+cycle);
         Bukkit.getWorlds().get(0).setTime(hour);
     }

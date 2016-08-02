@@ -21,7 +21,7 @@ public class DamageListener implements Listener{
             } else {
                 if(e.getCause() != EntityDamageEvent.DamageCause.ENTITY_ATTACK){
                     if(e.getCause() == EntityDamageEvent.DamageCause.FALL){
-                        if(Parameter.isFall()){
+                        if(!Parameter.isFall()){
                            e.setCancelled(true);
                         }
                     }

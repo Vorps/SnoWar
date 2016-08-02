@@ -5,64 +5,21 @@ import lombok.Setter;
 import me.vorps.snowar.Data;
 import me.vorps.snowar.Exceptions.SqlException;
 import me.vorps.snowar.databases.Database;
-import me.vorps.snowar.lang.Lang;
-import me.vorps.snowar.lang.LangSetting;
 import me.vorps.snowar.menu.*;
 import me.vorps.snowar.objects.Parameter;
+import me.vorps.snowar.utils.Hour;
+import me.vorps.snowar.utils.Weather;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 
 /**
  * Project RushVolcano Created by Vorps on 27/04/2016 at 16:41.
  */
 public class Scenario {
-
-    public enum Hour {
-        MORNING(23000, "morning"),
-        DAY(0, "day"),
-        EVENING(12000, "evening"),
-        NIGHT(13500, "night");
-
-        private long time;
-        private @Getter HashMap<String, String> label;
-
-        Hour(long time, String label){
-            this.label = new HashMap<>();
-            this.time = time;
-            for(LangSetting langSetting : LangSetting.getListLangSetting().values()){
-                this.label.put(langSetting.getName(), "§a"+Lang.getMessage("SNO_WAR.SCENARIO."+label.toUpperCase(), langSetting.getName()));
-            }
-        }
-
-        public static Hour getHour(long time){
-            Hour hour = DAY;
-            for(Hour hourTmp : Hour.values()){
-                Scenario.hour++;
-                if(hourTmp.time == time){
-                    hour = hourTmp;
-                    break;
-                }
-            }
-            return hour;
-        }
-    }
-
-    public enum Weather{
-        SUN(""),
-        RAIN(""),
-        THUNDER("");
-
-        private String label;
-
-        Weather(String label){
-            this.label = label;
-        }
-    }
 
     public static void init(ResultSet resultSet) throws SqlException{
         timeMin = Database.SNOWAR.getDatabase().getInt(resultSet, 2);
@@ -94,8 +51,25 @@ public class Scenario {
     private static int ballCoolDownBallMax;
     private static int  ballTimeMin;
     private static int  ballTimeMax;
+    private static @Getter int weather;
+
+    public static void addWeather(){
+        Scenario.weather++;
+    }
+
+    public static void addHour(){
+        hour++;
+    }
 
     private static @Getter @Setter Menu menu;
+
+    public static void setWeather(){
+        if(++weather >= 3) weather = 0;
+        Weather weather = Weather.values()[Scenario.weather];
+        weather.setWeather();
+        ((MenuTimes) menu).updateItem(new String[] {"§a"+weather.getLabel()}, 6);
+    }
+
 
     public static void addTimeBall(){
         if(Parameter.getTimeBall()+1 <= Scenario.ballTimeMax){
@@ -105,7 +79,7 @@ public class Scenario {
     }
 
     public static void removeTimeBall(){
-        if(Parameter.getTimeBall()-1 >= Scenario.ballCoolDownBallMin){
+        if(Parameter.getTimeBall()-1 >= Scenario.ballTimeMin){
             Parameter.setTimeBall(Parameter.getTimeBall()-1);
             updateItemBallTime();
         }
@@ -215,8 +189,8 @@ public class Scenario {
     public static void addHour(String lang){
         if(++hour >= 4) hour = 0;
         Hour hourVar = Hour.values()[hour];
-        Bukkit.getWorlds().get(0).setTime(hourVar.time);
-        ((MenuTimes) menu).updateItem(new String[] {hourVar.label.get(lang)}, 1);
+        Bukkit.getWorlds().get(0).setTime(hourVar.getTime());
+        ((MenuTimes) menu).updateItem(new String[] {hourVar.getLabel().get(lang)}, 2);
     }
 
     public static void addNbrPlayer(){

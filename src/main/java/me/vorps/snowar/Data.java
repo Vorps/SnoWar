@@ -46,6 +46,7 @@ public class Data {
         getItem();
         getServer();
         getBonus();
+        getBookHelp();
     }
 
     private static void getBonus(){
@@ -116,6 +117,20 @@ public class Data {
         } catch (SQLException e){
             //
         } catch (SqlException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void getBookHelp(){
+        BookHelp.clear();
+        try{
+            ResultSet results = Database.SNOWAR.getDatabase().getDataTmp("book");
+            while(results.next()){
+                new BookHelp(results, false);
+            }
+        }catch(SQLException e){
+            //
+        }catch (SqlException e) {
             e.printStackTrace();
         }
     }

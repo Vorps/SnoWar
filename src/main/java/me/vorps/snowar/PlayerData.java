@@ -184,6 +184,9 @@ public class PlayerData {
             if(getPlayer().hasPermission("rushvolcano.scenario") && Data.isScenario()) {
                 this.getPlayer().getInventory().setItem(0, new me.vorps.snowar.menu.Item(Material.REDSTONE_COMPARATOR).withName(Lang.getMessage("SNO_WAR.INVENTORY.LOBBy.SCENARISE", lang)).get());
             }
+            for(BookHelp bookHelp : BookHelp.getBookList().values()){
+                getPlayer().getInventory().setItem(7, bookHelp.getBook(lang));
+            }
         }
         this.getPlayer().getInventory().setItem(8, new me.vorps.snowar.menu.Item(Material.BED).withName(Lang.getMessage("SNO_WAR.ITEM.QUIT.LABEL", this.lang)).withLore(new String[] {Lang.getMessage("SNO_WAR.ITEM.QUIT.LORE", this.lang)}).get());
         if(GameState.isState(GameState.INGAME)){

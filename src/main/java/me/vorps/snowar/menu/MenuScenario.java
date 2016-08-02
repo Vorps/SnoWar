@@ -27,23 +27,22 @@ public class MenuScenario extends Menu {
         date.setHours(date.getHours()-1);
         menu.setItem(0, new Item(Material.COMPASS).withName("§6Temps de jeu").withLore(new String[] {"§6Temps : §a"+new SimpleDateFormat("HH:mm:ss").format(date)}).get());
         menu.setItem(1, new Item(347).withName("§6Temps").withLore(new String[] {"§7Configure l'heure et la météo"}).get());
-        menu.setItem(2, new Item(Material.SKULL_ITEM).withName("§6Nombre de joueur").withLore(new String[] {"§a"+ Data.getNbPlayerMax()}).get());
         if(Parameter.isFall()){
             menu.setItem(3, new Item(351).withData((byte) 10).withName("§6Dégat de chute").withLore(new String[] {"§aActivé"}).get());
         } else {
             menu.setItem(3, new Item(351).withData((byte) 8).withName("§6Dégat de chute").withLore(new String[] {"§cDésactivé"}).get());
         }
-
+        menu.setItem(4, new Item(Material.SKULL_ITEM).withName("§6Nombre de joueur").withLore(new String[] {"§a"+ Data.getNbPlayerMax()}).get());
         if(Parameter.isBonus()){
             menu.setItem(5, new Item(Material.SNOW_BLOCK).withName("§6Bonus").withLore(new String[] {"§7Configurer les bonus du jeu"}).get());
         } else {
             menu.setItem(5, new Item(351).withData((byte) 8).withName("§6Bonus").withLore(new String[] {"§cDésactivé"}).get());
         }
-        menu.setItem(6, new Item(Material.IRON_SWORD).withName("§6Damage").withLore(new String[] {"§a"+Parameter.getDamage()}).get());
+        menu.setItem(7, new Item(Material.IRON_SWORD).withName("§6Damage").withLore(new String[] {"§a"+Parameter.getDamage()}).get());
         if(Parameter.isCoolDownBallState()){
-            menu.setItem(7, new Item(349).withData((byte) 3).withName("§6Cooldown").withLore(new String[] {"§7Configurer le cooldown Ball"}).get());
+            menu.setItem(8, new Item(349).withData((byte) 3).withName("§6Cooldown").withLore(new String[] {"§7Configurer le cooldown Ball"}).get());
         } else {
-            menu.setItem(7, new Item(351).withData((byte) 8).withName("§6CoolDown Ball").withLore(new String[] {"§cDésactivé"}).get());
+            menu.setItem(8, new Item(351).withData((byte) 8).withName("§6CoolDown Ball").withLore(new String[] {"§cDésactivé"}).get());
         }
         menu.setItem(13, new Item(Material.NETHER_STAR).withName("§6Démarrer").get());
         menu.setItem(9, new Item(Material.ARROW).withName("§6Quitter le menu").withLore(new String[] {"§7Retour au jeu"}).get());
