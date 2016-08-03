@@ -1,5 +1,6 @@
 package me.vorps.snowar.listeners;
 
+import me.vorps.snowar.SnowWar;
 import me.vorps.snowar.game.GameState;
 import me.vorps.snowar.PlayerData;
 import me.vorps.snowar.bonus.Bonus;
@@ -65,7 +66,7 @@ public class PlayerInteract implements Listener {
                         // TODO: 21/07/2016 Retour lobby implementation
                         break;
                     case REDSTONE_COMPARATOR:
-                        Scenario.setMenu(new MenuScenario(playerData.getPlayer()));
+                        Scenario.setMenu(new MenuScenario(playerData));
                         break;
                     default:
                         break;

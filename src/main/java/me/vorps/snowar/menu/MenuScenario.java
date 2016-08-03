@@ -1,7 +1,9 @@
 package me.vorps.snowar.menu;
 
+import lombok.Getter;
 import me.vorps.snowar.Data;
 import me.vorps.snowar.PlayerData;
+import me.vorps.snowar.lang.Lang;
 import me.vorps.snowar.objects.Parameter;
 import me.vorps.snowar.scenario.Scenario;
 import org.bukkit.Bukkit;
@@ -18,35 +20,26 @@ import java.util.Date;
  */
 public class MenuScenario extends Menu {
 
-    private Player player;
+    private @Getter PlayerData playerData;
 
-    public MenuScenario(Player player) {
-        super(null, Bukkit.createInventory(null, 18, "§7Menu scenario"), null);
-        this.player = player;
+    public MenuScenario(PlayerData playerData) {
+        super(null, Bukkit.createInventory(null, 18, Lang.getMessage("SNO_WAR.MENU_SCENARIO_TITLE", playerData.getLang())), null);
+        this.playerData = playerData;
         Date date = new Date(Parameter.getTimeGame()*1000);
         date.setHours(date.getHours()-1);
-        menu.setItem(0, new Item(Material.COMPASS).withName("§6Temps de jeu").withLore(new String[] {"§6Temps : §a"+new SimpleDateFormat("HH:mm:ss").format(date)}).get());
-        menu.setItem(1, new Item(347).withName("§6Temps").withLore(new String[] {"§7Configure l'heure et la météo"}).get());
-        if(Parameter.isFall()){
-            menu.setItem(3, new Item(351).withData((byte) 10).withName("§6Dégat de chute").withLore(new String[] {"§aActivé"}).get());
-        } else {
-            menu.setItem(3, new Item(351).withData((byte) 8).withName("§6Dégat de chute").withLore(new String[] {"§cDésactivé"}).get());
-        }
-        menu.setItem(4, new Item(Material.SKULL_ITEM).withName("§6Nombre de joueur").withLore(new String[] {"§a"+ Data.getNbPlayerMax()}).get());
-        if(Parameter.isBonus()){
-            menu.setItem(5, new Item(Material.SNOW_BLOCK).withName("§6Bonus").withLore(new String[] {"§7Configurer les bonus du jeu"}).get());
-        } else {
-            menu.setItem(5, new Item(351).withData((byte) 8).withName("§6Bonus").withLore(new String[] {"§cDésactivé"}).get());
-        }
-        menu.setItem(7, new Item(Material.IRON_SWORD).withName("§6Damage").withLore(new String[] {"§a"+Parameter.getDamage()}).get());
-        if(Parameter.isCoolDownBallState()){
-            menu.setItem(8, new Item(349).withData((byte) 3).withName("§6Cooldown").withLore(new String[] {"§7Configurer le cooldown Ball"}).get());
-        } else {
-            menu.setItem(8, new Item(351).withData((byte) 8).withName("§6CoolDown Ball").withLore(new String[] {"§cDésactivé"}).get());
-        }
-        menu.setItem(13, new Item(Material.NETHER_STAR).withName("§6Démarrer").get());
-        menu.setItem(9, new Item(Material.ARROW).withName("§6Quitter le menu").withLore(new String[] {"§7Retour au jeu"}).get());
-        player.openInventory(menu);
+        menu.setItem(0, new Item(345).withName(Lang.getMessage("SNO_WAR.SCENARIO.TIME_GAME_LABEL", playerData.getLang())).withLore(new String[] {Lang.getMessage("SNO_WAR.SCENARIO.TIME_GAME", playerData.getLang(), new Lang.Args(Lang.Parameter.TIME, new SimpleDateFormat("HH:mm:ss").format(date)))}).get());
+        menu.setItem(1, new Item(347).withName(Lang.getMessage("SNO_WAR.SCENARIO.WEATHER_LABEL", playerData.getLang())).withLore(new String[] {Lang.getMessage("SNO_WAR.SCENARIO.WEATHER", playerData.getLang())}).get());
+        if(Parameter.isFall())menu.setItem(3, new Item(351).withData((byte)10).withName(Lang.getMessage("SNO_WAR.SCENARIO_FALL", playerData.getLang())).withLore(new String[] {Lang.getMessage("SNO_WAR.SCENARIO_ENABLE", playerData.getLang())}).get());
+        else menu.setItem(3, new Item(351).withData((byte) 8).withName(Lang.getMessage("SNO_WAR.SCENARIO_FALL", playerData.getLang())).withLore(new String[] {Lang.getMessage("SNO_WAR.SCENARIO_DISABLE", playerData.getLang())}).get());
+        menu.setItem(4, new Item(397).withName(Lang.getMessage("SNO_WAR.SCENARIO.PLAYER_LABEL", playerData.getLang())).withLore(new String[] {Lang.getMessage("SNO_WAR.SCENARIO.PLAYER.LORE", playerData.getLang(), new Lang.Args(Lang.Parameter.VAR, ""+Data.getNbPlayerMax()))}).get());
+        if(Parameter.isBonus())menu.setItem(5, new Item(80).withName(Lang.getMessage("SNO_WAR.SCENARIO.BONUS_LABEL", playerData.getLang())).withLore(new String[] {Lang.getMessage("SNO_WAR.SCENARIO.COOLDOWN_BALL_LORE", playerData.getLang())}).get());
+        else menu.setItem(5, new Item(351).withData((byte) 8).withName(Lang.getMessage("SNO_WAR.SCENARIO.BONUS_LABEL", playerData.getLang())).withLore(new String[] {Lang.getMessage("SNO_WAR.SCENARIO_DISABLE", playerData.getLang())}).get());
+        menu.setItem(7, new Item(267).withName(Lang.getMessage("SNO_WAR.SCENARIO.DAMAGE_LABEL", playerData.getLang())).withLore(new String[] {Lang.getMessage("SNO_WAR.SCENARIO.DAMAGE_LORE", playerData.getLang(), new Lang.Args(Lang.Parameter.VAR, ""+Parameter.getDamage()))}).get());
+        if(Parameter.isCoolDownBallState())menu.setItem(8, new Item(349).withData((byte) 3).withName(Lang.getMessage("SNO_WAR.SCENARIO.COOLDOWN_BALL_LABEL", playerData.getLang())).withLore(new String[] {Lang.getMessage("SNO_WAR.SCENARIO.COOLDOWN_BALL_LORE", playerData.getLang())}).get());
+        else menu.setItem(8, new Item(351).withData((byte) 8).withName(Lang.getMessage("SNO_WAR.SCENARIO.COOLDOWN_BALL_LABEL", playerData.getLang())).withLore(new String[] {Lang.getMessage("SNO_WAR.SCENARIO_DISABLE", playerData.getLang())}).get());
+        menu.setItem(13, new Item(Material.NETHER_STAR).withName(Lang.getMessage("SNO_WAR.SCENARIO.START_LABEL", playerData.getLang())).withLore(new String[] {Lang.getMessage("SNO_WAR.SCENARIO.START_LORE", playerData.getLang())}).get());
+        menu.setItem(9, new Item(Material.ARROW).withName(Lang.getMessage("SNO_WAR.INVENTORY.RECURSIVE.QUIT", playerData.getLang())).get());
+        playerData.getPlayer().openInventory(menu);
     }
 
     public void setItem(int i){
@@ -55,19 +48,19 @@ public class MenuScenario extends Menu {
 
     public void updateItem(int index ,Item items){
         menu.setItem(index, items.get());
-        player.updateInventory();
+        playerData.getPlayer().updateInventory();
     }
 
     public void updateItem(String[] lore, int index){
         ItemStack itemStack = menu.getItem(index);
         menu.setItem(index, new Item(itemStack.getType()).withName(itemStack.getItemMeta().getDisplayName()).withLore(lore).get());
-        player.updateInventory();
+        playerData.getPlayer().updateInventory();
     }
 
     public void updateItem(byte data, String[] lore, int index){
         ItemStack itemStack = menu.getItem(index);
         menu.setItem(index, new Item(itemStack.getType()).withData(data).withName(itemStack.getItemMeta().getDisplayName()).withLore(lore).get());
-        player.updateInventory();
+        playerData.getPlayer().updateInventory();
     }
 
     @Override
@@ -110,11 +103,11 @@ public class MenuScenario extends Menu {
                 if(itemStack.getType().getId() == 347){
                     Scenario.setMenu(new MenuTimes(playerData));
                 } else if((itemStack.getType().getId() == 351) && (itemStack.getData().getData() == 8 || itemStack.getData().getData() == 10)){
-                    if(itemStack.getItemMeta().getDisplayName().equals("§6Dégat de chute")){
+                    if(itemStack.getItemMeta().getDisplayName().equals(Lang.getMessage("SNO_WAR.SCENARIO_FALL", playerData.getLang()))){
                         Scenario.setFall();
-                    } else if(itemStack.getItemMeta().getDisplayName().equals("§6Bonus")) {
+                    } else if(itemStack.getItemMeta().getDisplayName().equals(Lang.getMessage("SNO_WAR.SCENARIO.BONUS_LABEL", playerData.getLang()))){
                         Scenario.setBonus();
-                    } else if(itemStack.getItemMeta().getDisplayName().equals("§6CoolDown Ball")){
+                    } else if(itemStack.getItemMeta().getDisplayName().equals(Lang.getMessage("SNO_WAR.SCENARIO.COOLDOWN_BALL_LABEL", playerData.getLang()))){
                         Scenario.setCoolDown();
                     }
                 } else if(itemStack.getType().getId() == 349){

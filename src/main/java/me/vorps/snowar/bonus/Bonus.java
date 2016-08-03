@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import me.vorps.snowar.PlayerData;
 import me.vorps.snowar.Settings;
+import me.vorps.snowar.lang.Lang;
 import me.vorps.snowar.menu.Item;
 import me.vorps.snowar.menu.MenuBonus;
 import me.vorps.snowar.objects.Parameter;
@@ -94,7 +95,7 @@ public abstract class Bonus {
     }
 
     private void updateItemBonus(int place){
-        ((MenuBonus) Scenario.getMenu()).updateItem(new String[] {"§7Percent : §a"+percent}, place);
+        ((MenuBonus) Scenario.getMenu()).updateItem(new String[] {Lang.getMessage("SNO_WAR.SCENARIO_BONUS_LORE",  ((MenuBonus) Scenario.getMenu()).getPlayerData().getLang(), new Lang.Args(Lang.Parameter.VAR, ""+percent))}, place);
     }
 
     public static Bonus getBonus(ItemStack itemStack){

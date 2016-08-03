@@ -1,21 +1,30 @@
 package me.vorps.snowar.utils;
 
+import me.vorps.snowar.lang.Lang;
+import me.vorps.snowar.lang.LangSetting;
 import me.vorps.snowar.scenario.Scenario;
 import org.bukkit.Bukkit;
+
+import java.util.HashMap;
 
 /**
  * Project SnoWar Created by Vorps on 31/07/2016 at 13:26.
  */
 public enum Weather{
-    SUN("clear", 1000000),
-    RAIN("rain", 1000000),
-    THUNDER("thunder", 1000000);
+    SUN("SNO_WAR.WEATHER.CLEAR", 1000000, "clear"),
+    RAIN("SNO_WAR.WEATHER.RAIN", 1000000, "rain"),
+    THUNDER("SNO_WAR.WEATHER.THUNDER", 1000000, "thunder");
 
-    private String label;
+    private HashMap<String, String> label;
+    private String key;
     private int duration;
 
-    Weather(String label, int duration){
-        this.label = label;
+    Weather(String label, int duration, String key){
+        this.label = new HashMap<>();
+        this.key = key;
+        for(LangSetting langSetting : LangSetting.getListLangSetting().values()){
+            this.label.put(langSetting.getName(), Lang.getMessage(label, langSetting.getName()));
+        }
         this.duration = duration;
     }
 
@@ -37,17 +46,18 @@ public enum Weather{
         Bukkit.getWorlds().get(0).setThunderDuration(this.duration);
     }
 
-    public String getLabel(){
-        return this.label;
+    public String getLabel(String lang){
+        return this.label.get(lang);
     }
 
-    public static Weather getWeather(String label){
+    public static Weather getWeather(String key){
         Weather weather = Weather.SUN;
         for(Weather weatherList : Weather.values()){
-            Scenario.addWeather();
-            if(weatherList.label.equals(label)){
+            if(weatherList.key.equals(key)){
                 weather = weatherList;
                 break;
+            } else {
+                Scenario.addWeather();
             }
         }
         return weather;

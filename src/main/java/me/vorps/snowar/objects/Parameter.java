@@ -56,7 +56,7 @@ public class Parameter {
         Parameter.bonus = Database.SNOWAR.getDatabase().getBoolean(result, 16);
         Parameter.weather = Database.SNOWAR.getDatabase().getString(result, 17);
         Parameter.coolDownBallState = Parameter.cooldownBall > 0;
-        Weather.getWeather(weather).setWeather();
+        Weather.getWeather(Parameter.getWeather()).setWeather();
         Bukkit.getWorlds().get(0).setGameRuleValue("doDaylightCycle", ""+cycle);
         Bukkit.getWorlds().get(0).setTime(hour);
     }
