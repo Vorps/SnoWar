@@ -1,7 +1,9 @@
 package me.vorps.snowar.menu;
 
 import me.vorps.snowar.PlayerData;
-import me.vorps.snowar.lang.Lang;
+import me.vorps.syluriapi.lang.Lang;
+import me.vorps.syluriapi.menu.Item;
+import me.vorps.syluriapi.menu.MenuRecursive;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -11,22 +13,22 @@ import java.util.ArrayList;
 
 public class MenuSpectator extends MenuRecursive{
 
-	public MenuSpectator(Player player, ArrayList<Item> list){
+	public MenuSpectator(final Player player, final ArrayList<Item> list){
         super(null, Bukkit.createInventory(player, list.size() > 9 ? list.size() > 18 ? 36 : 27 : 18, Lang.getMessage("SNO_WAR.INVENTORY.SPECTATOR.TITLE", PlayerData.getPlayerData(player.getName()).getLang())), null, list,PlayerData.getPlayerData(player.getName()).getLang(), 9, 9);
         initMenu(player, 1);
-        player.openInventory(menu);
+        player.openInventory(super.menu);
 	}
 
     @Override
-    public void initMenu(Player player, int page){
-        menu.clear();
+    public void initMenu(final Player player, final int page){
+        super.menu.clear();
         getPage(page);
         player.updateInventory();
     }
 
-    public static void createMenu(Player player){
+    public static void createMenu(final Player player){
         ArrayList<Item> list = new ArrayList<>();
-        PlayerData.getPlayerDataList().values().forEach((PlayerData playerData) -> {if(playerData.getLife() != 0)list.add(new Item(playerData.getPlayer().getName()).withName(playerData.toString()));});
+        PlayerData.getPlayerDataList().values().forEach((PlayerData playerData) -> {if(playerData.getLife() != 0) list.add(new Item(playerData.getPlayer().getName()).withName(playerData.toString()));});
         new MenuSpectator(player, list);
     }
 

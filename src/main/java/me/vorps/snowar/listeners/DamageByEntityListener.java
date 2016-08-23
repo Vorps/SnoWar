@@ -7,8 +7,8 @@ import me.vorps.snowar.cooldowns.CoolDownsLastDamage;
 import me.vorps.snowar.objects.Bonus;
 import me.vorps.snowar.objects.Parameter;
 import me.vorps.snowar.threads.ThreadSpawnKill;
-import me.vorps.snowar.utils.ActionBar;
-import me.vorps.snowar.utils.Hologram;
+import me.vorps.syluriapi.utils.ActionBar;
+import me.vorps.syluriapi.utils.Hologram;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Snowball;
 import org.bukkit.entity.Snowman;
@@ -41,20 +41,23 @@ public class DamageByEntityListener implements Listener{
                         }
                         playerDataKiller.addKill();
                         playerDataKilled.removeLife(killer);
+                        new Hologram(0.3, new Hologram.Message("1", "§cTué"), new Hologram.Message("2", "§6"+playerDataKiller.getPlayer().getName())).show(playerDataKilled.getPlayer().getLocation(), 0.7, 2000, SnowWar.getInstance());
                     } else {
                         playerDataKilled.getPlayer().damage(Parameter.getDamage());
-                        String heart = "";
-                        for(int i = 0; i <= playerDataKilled.getPlayer().getHealthScale(); i++){
-                            heart += i < playerDataKilled.getPlayer().getHealth() ? "§c❤" : "§7❤";
+                        if(playerDataKiller.isEffect()){
+                            String heart = "";
+                            for(int i = 0; i <= playerDataKilled.getPlayer().getHealthScale()/2; i++){
+                                heart += i < playerDataKilled.getPlayer().getHealth() ? "§c❤" : "§7❤";
+                            }
+                            ActionBar.sendActionBar(heart, playerDataKiller.getPlayer());
                         }
-                        ActionBar.sendActionBar(heart, playerDataKiller.getPlayer());
                     }
                     playerDataKiller.addBallTouch();
                 }
             }
             if(e.getEntity() instanceof Snowman){
                 e.getEntity().remove();
-                Bonus.give(PlayerData.getPlayerData(((Player) ((Snowball)e.getDamager()).getShooter()).getName()));
+                new Hologram(0.3, new Hologram.Message("1", "§6Bonus"), new Hologram.Message("2", Bonus.give(PlayerData.getPlayerData(((Player) ((Snowball)e.getDamager()).getShooter()).getName())).toString())).show(e.getEntity().getLocation(), 0, 2000, SnowWar.getInstance());
             }
         }
         e.setCancelled(true);

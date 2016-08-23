@@ -1,13 +1,12 @@
 package me.vorps.snowar.objects;
 
-import me.vorps.snowar.Exceptions.PercentException;
-import me.vorps.snowar.Exceptions.SqlException;
 import me.vorps.snowar.PlayerData;
 import me.vorps.snowar.cooldowns.CoolDownBonus;
-import me.vorps.snowar.databases.Database;
-import me.vorps.snowar.lang.Lang;
+import me.vorps.syluriapi.Exceptions.PercentException;
+import me.vorps.syluriapi.Exceptions.SqlException;
+import me.vorps.syluriapi.databases.Database;
+import me.vorps.syluriapi.lang.Lang;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.Sound;
 
 import java.sql.ResultSet;
@@ -25,8 +24,8 @@ public class Bonus {
      */
     public Bonus(ResultSet resultSet) throws SqlException{
         try {
-            java.lang.reflect.Constructor constructor = Class.forName ("me.vorps.snowar.bonus."+Database.SNOWAR.getDatabase().getString(resultSet, 1)).getConstructor (int.class, double.class, String.class, String.class, boolean.class, String.class, String.class);
-            constructor.newInstance (Database.SNOWAR.getDatabase().getInt(resultSet, 2), Database.SNOWAR.getDatabase().getDouble(resultSet, 3), Database.SNOWAR.getDatabase().getString(resultSet, 4), Database.SNOWAR.getDatabase().getString(resultSet, 5), Database.SNOWAR.getDatabase().getBoolean(resultSet, 6), Database.SNOWAR.getDatabase().getString(resultSet, 7), Database.SNOWAR.getDatabase().getString(resultSet, 8));
+            java.lang.reflect.Constructor constructor = Class.forName ("me.vorps.snowar.bonus."+Database.SNOWAR.getDatabase().getString(resultSet, 1)).getConstructor (int.class, double.class, String.class, String.class, boolean.class, String.class, String.class, String.class);
+            constructor.newInstance (Database.SNOWAR.getDatabase().getInt(resultSet, 2), Database.SNOWAR.getDatabase().getDouble(resultSet, 3), Database.SNOWAR.getDatabase().getString(resultSet, 4), Database.SNOWAR.getDatabase().getString(resultSet, 5), Database.SNOWAR.getDatabase().getBoolean(resultSet, 6), Database.SNOWAR.getDatabase().getString(resultSet, 7), Database.SNOWAR.getDatabase().getString(resultSet, 8), Database.SNOWAR.getDatabase().getString(resultSet, 9));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -48,17 +47,20 @@ public class Bonus {
      * Give Bonus Select Bonus percent
      * @param playerData PlayerData
      */
-    public static void give(PlayerData playerData){
+    public static  me.vorps.snowar.bonus.Bonus give(PlayerData playerData){
+        me.vorps.snowar.bonus.Bonus bonus = null;
         playerData.getPlayer().playSound(playerData.getPlayer().getLocation(), Sound.FIZZ, 10, 10);
         int luck = new Random().nextInt(100);
         int var = 0;
-        for(me.vorps.snowar.bonus.Bonus bonus : me.vorps.snowar.bonus.Bonus.getBonusList()){
-            var+= bonus.getPercent();
+        for(me.vorps.snowar.bonus.Bonus bonusList : me.vorps.snowar.bonus.Bonus.getBonusList()){
+            var+= bonusList.getPercent();
             if(var >= luck) {
-                Bonus.giveBonus(bonus, playerData);
+                Bonus.giveBonus(bonusList, playerData);
+                bonus = bonusList;
                 break;
             }
         }
+        return bonus;
     }
 
     /**

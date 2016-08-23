@@ -1,7 +1,7 @@
 package me.vorps.snowar.bonus;
 
 import me.vorps.snowar.PlayerData;
-import me.vorps.snowar.utils.Item;
+import me.vorps.syluriapi.utils.Item;
 import org.bukkit.entity.Snowball;
 import org.bukkit.event.player.PlayerInteractEvent;
 
@@ -10,8 +10,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
  */
 public class SnowBallFaste extends Bonus {
 
-    public SnowBallFaste(final int time, final double percent, final String enable, final String disable, final boolean persistence, final String label, final String icon){
-        super(time, percent , enable, disable, persistence, label, icon);
+    public SnowBallFaste(final int time, final double percent, final String enable, final String disable, final boolean persistence, final String label, final String icon, final String lore){
+        super(time, percent , enable, disable, persistence, label, icon, lore);
     }
 
 

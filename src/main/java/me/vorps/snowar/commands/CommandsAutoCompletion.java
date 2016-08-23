@@ -10,9 +10,9 @@ import java.util.List;
  * Project SnoWar Created by Vorps on 21/07/2016 at 15:36.
  */
 public class CommandsAutoCompletion implements TabCompleter {
-    private Commands.Command command;
+    private Commands command;
 
-    public CommandsAutoCompletion(Commands.Command command){
+    public CommandsAutoCompletion(Commands command){
         this.command = command;
     }
 
@@ -23,6 +23,10 @@ public class CommandsAutoCompletion implements TabCompleter {
             case RELOAD_SNOW_WAR:
                 break;
             case ENTITY:
+                break;
+            case START:
+                break;
+            case STOP:
                 break;
             default:
                 break;

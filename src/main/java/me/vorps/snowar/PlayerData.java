@@ -2,26 +2,31 @@ package me.vorps.snowar;
 
 import lombok.Getter;
 import lombok.Setter;
-import me.vorps.snowar.cooldowns.CoolDowns;
 import me.vorps.snowar.cooldowns.CooldownBall;
-import me.vorps.snowar.databases.Database;
 import me.vorps.snowar.game.GameManager;
 import me.vorps.snowar.game.GameState;
 import me.vorps.snowar.game.Victory;
-import me.vorps.snowar.lang.Lang;
-import me.vorps.snowar.menu.*;
+import me.vorps.snowar.objects.MapParameter;
 import me.vorps.snowar.objects.Parameter;
 import me.vorps.snowar.scoreboard.SbLobby;
 import me.vorps.snowar.scoreboard.SbSpectator;
-import me.vorps.snowar.scoreboard.ScoreBoard;
 import me.vorps.snowar.threads.Timers;
-import me.vorps.snowar.utils.*;
-import me.vorps.snowar.utils.Location;
+import me.vorps.syluriapi.Exceptions.SqlException;
+import me.vorps.syluriapi.cooldowns.CoolDowns;
+import me.vorps.syluriapi.databases.Database;
+import me.vorps.syluriapi.databases.DatabaseManager;
+import me.vorps.syluriapi.lang.Lang;
+import me.vorps.syluriapi.menu.*;
+import me.vorps.syluriapi.menu.Item;
+import me.vorps.syluriapi.scoreboard.ScoreBoard;
+import me.vorps.syluriapi.utils.*;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 
 /**
@@ -44,7 +49,28 @@ public class PlayerData {
     private @Getter int bonus;
     private @Getter ArrayList<String> spectator;
     private @Getter @Setter HashMap<me.vorps.snowar.bonus.Bonus, Integer> bonusData;
+    private @Getter @Setter boolean effect;
 
+
+    private void updatePlayer(){
+        this.effect = true;
+        try {
+            ResultSet results = Database.SNOWAR.getDatabase().getData("player_data", "pd_uuid = '"+uuid.toString()+"'");
+            if (!results.next()) {
+                Database.SNOWAR.getDatabase().insertTable("player_data", uuid.toString(), true);
+            } else {
+                this.effect = Database.SNOWAR.getDatabase().getBoolean(results, 2);
+            }
+        } catch (SQLException e){
+            //
+        } catch (SqlException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static boolean isPlayerData(String name){
+        return PlayerData.getPlayerDataList().containsKey(name);
+    }
     /**
      * Contructor create a data player
      * @param uuid UUID
@@ -53,12 +79,16 @@ public class PlayerData {
         Database.SNOWAR.tryConnectionDatabase();
         this.bonusData = new HashMap<>();
         this.ball = new ArrayList<>();
-        this.lang = "french"; // TODO: 26/07/2016 Lang charged 
+        this.lang = "english"; // TODO: 26/07/2016 Lang charged
         this.uuid = uuid;
         this.life = Parameter.getLife();
         this.name = getPlayer().getName();
+        this.updatePlayer();
         this.initPlayer();
         this.initInventory();
+        if(PlayerData.getPlayerDataList().size() == 0 && Data.isScenario()){
+            Info.setInfo(false, false, MapParameter.getName(), true);
+        }
         PlayerData.playerDataList.put(this.name, this);
     }
     
@@ -145,7 +175,7 @@ public class PlayerData {
      * @return Player
      */
     public Player getPlayer(){
-        return Bukkit.getPlayer(uuid);
+        return Bukkit.getPlayer(this.uuid);
     }
 
     /**
@@ -162,7 +192,7 @@ public class PlayerData {
         if(GameState.isState(GameState.WAITING) || GameState.isState(GameState.INSTART)){
             this.getPlayer().setFoodLevel(20);
             this.getPlayer().setHealth(20);
-            this.getPlayer().teleport(Location.getLocation("map_01_lobby"));
+            this.getPlayer().teleport(me.vorps.syluriapi.utils.Location.getLocation("map_01_lobby"));
             this.getPlayer().setGameMode(GameMode.ADVENTURE);
             this.setScoreboard(new SbLobby(this.lang));
             PlayerData.playerInGame++;
@@ -182,22 +212,45 @@ public class PlayerData {
     private void initInventory(){
         if(GameState.isState(GameState.WAITING) || GameState.isState(GameState.INSTART)){
             if(getPlayer().hasPermission("rushvolcano.scenario") && Data.isScenario()) {
-                this.getPlayer().getInventory().setItem(0, new me.vorps.snowar.menu.Item(Material.REDSTONE_COMPARATOR).withName(Lang.getMessage("SNO_WAR.INVENTORY.LOBBy.SCENARISE", lang)).get());
+                this.getPlayer().getInventory().setItem(0, new Item(Material.REDSTONE_COMPARATOR).withName(Lang.getMessage("SNO_WAR.INVENTORY.LOBBy.SCENARISE", lang)).get());
             }
-            for(BookHelp bookHelp : BookHelp.getBookList().values()){
-                getPlayer().getInventory().setItem(7, bookHelp.getBook(lang));
+            this.getPlayer().getInventory().setItem(7, new me.vorps.syluriapi.menu.Item(Material.BOOK).withName(Lang.getMessage("SNO_WAR.BOOK_HELP.LABEL", this.lang)).get());
+            if(this.effect){
+                this.getPlayer().getInventory().setItem(4, new Item(160).withData((byte) 5).withName(Lang.getMessage("SNO_WAR.ITEM.EFFECT.LABEL", this.lang)+" "+Lang.getMessage("SNO_WAR.SCENARIO_ENABLE", this.lang)).withLore(new String[] {Lang.getMessage("SNO_WAR.SCENARIO_ENABLE", this.lang)}).get());
+            } else {
+                this.getPlayer().getInventory().setItem(4, new Item(160).withData((byte) 14).withName(Lang.getMessage("SNO_WAR.ITEM.EFFECT.LABEL", this.lang)+" "+Lang.getMessage("SNO_WAR.SCENARIO_DISABLE", this.lang)).withLore(new String[] {Lang.getMessage("SNO_WAR.SCENARIO_DISABLE", this.lang)}).get());
             }
         }
-        this.getPlayer().getInventory().setItem(8, new me.vorps.snowar.menu.Item(Material.BED).withName(Lang.getMessage("SNO_WAR.ITEM.QUIT.LABEL", this.lang)).withLore(new String[] {Lang.getMessage("SNO_WAR.ITEM.QUIT.LORE", this.lang)}).get());
+        this.getPlayer().getInventory().setItem(8, new Item(Material.BED).withName(Lang.getMessage("SNO_WAR.ITEM.QUIT.LABEL", this.lang)).withLore(new String[] {Lang.getMessage("SNO_WAR.ITEM.QUIT.LORE", this.lang)}).get());
         if(GameState.isState(GameState.INGAME)){
-            this.getPlayer().getInventory().setItem(0, new me.vorps.snowar.menu.Item("Notch").withName(Lang.getMessage("SNO_WAR.ITEM.SPECT.LABEL", this.lang)).withLore(new String[] {Lang.getMessage("SNO_WAR.ITEM.SPECT.LORE", this.lang)}).get());
+            String playerName = "Notch";
+            for(PlayerData playerData : PlayerData.getPlayerDataList().values()){
+                if(playerData.getLife() > 0){
+                    playerName = playerData.getPlayer().getName();
+                    break;
+                }
+            }
+            this.getPlayer().getInventory().setItem(0, new Item(playerName).withName(Lang.getMessage("SNO_WAR.ITEM.SPECT.LABEL", this.lang)).withLore(new String[] {Lang.getMessage("SNO_WAR.ITEM.SPECT.LORE", this.lang)}).get());
+
         }
     }
 
+    /**
+     * Remove playerdata
+     */
     public void removePlayerData(){
         PlayerData.playerDataList.remove(this.name);
+        try {
+            Database.SNOWAR.getDatabase().updateTable("player_data", "pd_uuid = '"+uuid.toString()+"'", new DatabaseManager.Values("pd_effect", this.effect));
+        } catch (SqlException e) {
+            e.printStackTrace();
+        }
     }
 
+    /**
+     * Affect scoreBoard and set scoreboard Bukkit
+     * @param scoreboard ScoreBoard
+     */
     public void setScoreboard(final ScoreBoard scoreboard){
         this.scoreboard = scoreboard;
         this.getPlayer().setScoreboard(this.scoreboard.getScoreBoard());
@@ -216,11 +269,11 @@ public class PlayerData {
     private static @Getter int playerInGame;
 
     static {
-        PlayerData.playerDataList = new HashMap<>();
-        PlayerData.playerDataTrieLife = new TreeMap<>(new PlayerDataComparatorLife(PlayerData.playerDataList));
-        PlayerData.playerDataTrieKill = new TreeMap<>(new PlayerDataComparatorKill(PlayerData.playerDataList));
+        PlayerData.playerDataList      = new HashMap<>();
+        PlayerData.playerDataTrieLife  = new TreeMap<>(new PlayerDataComparatorLife(PlayerData.playerDataList));
+        PlayerData.playerDataTrieKill  = new TreeMap<>(new PlayerDataComparatorKill(PlayerData.playerDataList));
         PlayerData.playerDataTrieBonus = new TreeMap<>(new PlayerDataComparatorBonus(PlayerData.playerDataList));
-        PlayerData.playerDataTrieBall = new TreeMap<>(new PlayerDataComparatorBall(PlayerData.playerDataList));
+        PlayerData.playerDataTrieBall  = new TreeMap<>(new PlayerDataComparatorBall(PlayerData.playerDataList));
     }
 
     /**

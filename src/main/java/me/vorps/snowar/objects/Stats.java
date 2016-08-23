@@ -1,9 +1,9 @@
 package me.vorps.snowar.objects;
 
 import lombok.Getter;
-import me.vorps.snowar.Exceptions.SqlException;
-import me.vorps.snowar.databases.Database;
-import me.vorps.snowar.databases.DatabaseManager;
+import me.vorps.syluriapi.Exceptions.SqlException;
+import me.vorps.syluriapi.databases.Database;
+import me.vorps.syluriapi.databases.DatabaseManager;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

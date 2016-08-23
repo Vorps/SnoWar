@@ -1,13 +1,13 @@
 package me.vorps.snowar.listeners;
 
-import me.vorps.snowar.SnowWar;
 import me.vorps.snowar.game.GameState;
 import me.vorps.snowar.PlayerData;
 import me.vorps.snowar.bonus.Bonus;
-import me.vorps.snowar.cooldowns.CoolDowns;
-import me.vorps.snowar.menu.MenuScenario;
+import me.vorps.snowar.menu.MenuHelp;
 import me.vorps.snowar.scenario.Scenario;
-import me.vorps.snowar.utils.Item;
+import me.vorps.syluriapi.cooldowns.CoolDowns;
+import me.vorps.syluriapi.lang.Lang;
+import me.vorps.syluriapi.utils.Item;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
@@ -66,11 +66,24 @@ public class PlayerInteract implements Listener {
                         // TODO: 21/07/2016 Retour lobby implementation
                         break;
                     case REDSTONE_COMPARATOR:
-                        Scenario.setMenu(new MenuScenario(playerData));
+                        Scenario.openScenario(playerData);
+                        break;
+                    case BOOK:
+                        MenuHelp.createMenu(playerData);
                         break;
                     default:
+                        if(item.getType().getId() == 160){
+                            if(item.getData().getData() == 5){
+                                playerData.setEffect(false);
+                                playerData.getPlayer().getInventory().setItem(4, new me.vorps.syluriapi.menu.Item(160).withData((byte) 14).withName(Lang.getMessage("SNO_WAR.ITEM.EFFECT.LABEL", playerData.getLang())+" "+Lang.getMessage("SNO_WAR.SCENARIO_DISABLE", playerData.getLang())).withLore(new String[] {Lang.getMessage("SNO_WAR.SCENARIO_DISABLE", playerData.getLang())}).get());
+                            } else {
+                                playerData.setEffect(true);
+                                playerData.getPlayer().getInventory().setItem(4, new me.vorps.syluriapi.menu.Item(160).withData((byte) 5).withName(Lang.getMessage("SNO_WAR.ITEM.EFFECT.LABEL", playerData.getLang())+" "+Lang.getMessage("SNO_WAR.SCENARIO_ENABLE", playerData.getLang())).withLore(new String[] {Lang.getMessage("SNO_WAR.SCENARIO_ENABLE", playerData.getLang())}).get());
+                            }
+                        }
                         break;
                 }
+                e.setCancelled(true);
             }
         }
 	}

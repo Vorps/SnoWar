@@ -2,7 +2,6 @@ package me.vorps.snowar.listeners;
 
 import me.vorps.snowar.PlayerData;
 import me.vorps.snowar.game.GameState;
-import me.vorps.snowar.menu.MenuScenario;
 import me.vorps.snowar.menu.MenuSpectator;
 import me.vorps.snowar.scenario.Scenario;
 import org.bukkit.entity.Player;
@@ -35,7 +34,7 @@ public class PlayerInventoryClick implements Listener {
                         // TODO: 25/07/2016 Quit
                         break;
                     case REDSTONE_COMPARATOR:
-                        Scenario.setMenu(new MenuScenario(PlayerData.getPlayerData(player.getName())));
+                        Scenario.openScenario(PlayerData.getPlayerData(player.getName()));
                         break;
                     default:
                         break;

@@ -17,7 +17,6 @@ public class PlayerSneak implements Listener {
         PlayerData playerData = PlayerData.getPlayerData(player.getName());
 		if(player.getGameMode() == GameMode.SPECTATOR && GameState.isState(GameState.INGAME) && playerData.getPlayerView() != null){
             playerData.setScoreboard(new SbSpectator(playerData.getLang()));
-            System.out.println(playerData.getPlayerView());
             PlayerData.getPlayerData(playerData.getPlayerView()).getSpectator().remove(player.getName());
             playerData.setPlayerView(null);
 		}

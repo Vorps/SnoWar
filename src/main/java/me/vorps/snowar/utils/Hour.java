@@ -1,9 +1,9 @@
 package me.vorps.snowar.utils;
 
 import lombok.Getter;
-import me.vorps.snowar.lang.Lang;
-import me.vorps.snowar.lang.LangSetting;
 import me.vorps.snowar.scenario.Scenario;
+import me.vorps.syluriapi.lang.Lang;
+import me.vorps.syluriapi.lang.LangSetting;
 
 import java.util.HashMap;
 

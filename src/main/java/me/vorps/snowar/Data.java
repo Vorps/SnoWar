@@ -2,16 +2,19 @@ package me.vorps.snowar;
 
 import lombok.Getter;
 import lombok.Setter;
-import me.vorps.snowar.Exceptions.PercentException;
-import me.vorps.snowar.Exceptions.SqlException;
-import me.vorps.snowar.databases.Database;
-import me.vorps.snowar.lang.Lang;
-import me.vorps.snowar.lang.LangSetting;
 import me.vorps.snowar.objects.Bonus;
 import me.vorps.snowar.objects.MapParameter;
 import me.vorps.snowar.objects.Parameter;
 import me.vorps.snowar.scenario.Scenario;
-import me.vorps.snowar.utils.*;
+import me.vorps.syluriapi.Exceptions.PercentException;
+import me.vorps.syluriapi.Exceptions.SqlException;
+import me.vorps.syluriapi.databases.Database;
+import me.vorps.syluriapi.lang.Lang;
+import me.vorps.syluriapi.lang.LangSetting;
+import me.vorps.syluriapi.utils.Item;
+import me.vorps.syluriapi.utils.Limite;
+import me.vorps.syluriapi.utils.Location;
+import me.vorps.syluriapi.utils.MessageTitle;
 import org.bukkit.ChatColor;
 
 import java.nio.file.Paths;
@@ -38,15 +41,14 @@ public class Data {
      * Load all variable plugin
      */
     public static void loadVariable(){
-        getLang();
-        getSettings();
-        getLocation();
-        getLimite();
-        getMessageTitle();
-        getItem();
-        getServer();
-        getBonus();
-        getBookHelp();
+        Data.getLang();
+        Data.getSettings();
+        Data.getLocation();
+        Data.getLimite();
+        Data.getMessageTitle();
+        Data.getItem();
+        Data.getServer();
+        Data.getBonus();
     }
 
     private static void getBonus(){
@@ -102,7 +104,7 @@ public class Data {
         LangSetting.clearLangSetting();
         ResultSet results;
         try {
-            results = Database.SNOWAR.getDatabase().getDataTmp("lang_setting");
+            results = Database.SYLURIA.getDatabase().getDataTmp("lang_setting");
             while(results.next()) {
                 new LangSetting(results);
             }
@@ -117,20 +119,6 @@ public class Data {
         } catch (SQLException e){
             //
         } catch (SqlException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private static void getBookHelp(){
-        BookHelp.clear();
-        try{
-            ResultSet results = Database.SNOWAR.getDatabase().getDataTmp("book");
-            while(results.next()){
-                new BookHelp(results, false);
-            }
-        }catch(SQLException e){
-            //
-        }catch (SqlException e) {
             e.printStackTrace();
         }
     }

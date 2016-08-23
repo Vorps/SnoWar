@@ -4,7 +4,7 @@ import lombok.Getter;
 import me.vorps.snowar.PlayerData;
 import me.vorps.snowar.SnowWar;
 import me.vorps.snowar.bonus.Bonus;
-import me.vorps.snowar.lang.Lang;
+import me.vorps.syluriapi.lang.Lang;
 import org.bukkit.Bukkit;
 
 /**

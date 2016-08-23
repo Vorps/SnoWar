@@ -2,19 +2,19 @@ package me.vorps.snowar.commands;
 
 import me.vorps.snowar.PlayerData;
 import me.vorps.snowar.objects.MapParameter;
-import me.vorps.snowar.utils.EntityManager;
-import me.vorps.snowar.lang.Lang;
-import me.vorps.snowar.utils.WorldUtils;
+import me.vorps.syluriapi.lang.Lang;
+import me.vorps.syluriapi.utils.EntityManager;
+import me.vorps.syluriapi.utils.WorldUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 /**
  * Project SnoWar Created by Vorps on 21/07/2016 at 15:36.
  */
-public class CommandGenEntity extends Commands{
+public class CommandGenEntity extends me.vorps.syluriapi.commands.Commands{
 
     public CommandGenEntity(final CommandSender sender, final String args[]){
-        super(sender, Command.ENTITY.getPermissions());
+        super(sender, Commands.ENTITY.getPermissions());
         if(args.length == 0 && sender.hasPermission(getPermission()) && sender instanceof Player){
             EntityManager.removeEntity();
             MapParameter.spawnStats();
@@ -22,9 +22,7 @@ public class CommandGenEntity extends Commands{
             sender.sendMessage(Lang.getMessage("SNO_WAR.COMMAND.GEN_ENTITY", PlayerData.getPlayerData(sender.getName()).getLang()));
             super.setStateExec(true);
         }
-        if(!isStateExec()){
-            this.help();
-        }
+        super.finalize();
     }
 
     @Override

@@ -7,28 +7,18 @@ import org.bukkit.command.CommandSender;
 /**
  * Project SnoWar Created by Vorps on 21/07/2016 at 15:36.
  */
-public abstract class Commands {
-    public enum Command{
-        RELOAD_SNOW_WAR("reloadsw", "snowwar.reloadsw"),
-        ENTITY("genentity", "snowar.genentity");
+public enum Commands{
+    RELOAD_SNOW_WAR("reloadsw", "snowwar.reloadsw"),
+    ENTITY("genentity", "snowar.genentity"),
+    START("startgame", "snowar.start"),
+    STOP("stopgame", "snowar.stop");
 
-        private @Getter String command;
-        private @Getter String permissions;
+    private @Getter String command;
+    private @Getter String permissions;
 
-        Command(final String command, final String permissions){
-            this.command = command;
-            this.permissions = permissions;
-        }
-    }
-
-    private @Getter @Setter boolean stateExec;
-    private @Getter CommandSender sender;
-    private @Getter String permission;
-
-    protected abstract void help();
-
-    public Commands(final CommandSender sender, final String permission){
-        this.sender = sender;
-        this.permission = permission;
+    Commands(final String command, final String permissions){
+        this.command = command;
+        this.permissions = permissions;
     }
 }
+

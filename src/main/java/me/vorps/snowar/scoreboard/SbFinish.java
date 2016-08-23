@@ -2,7 +2,8 @@ package me.vorps.snowar.scoreboard;
 
 import me.vorps.snowar.PlayerData;
 import me.vorps.snowar.Settings;
-import me.vorps.snowar.lang.Lang;
+import me.vorps.syluriapi.lang.Lang;
+import me.vorps.syluriapi.scoreboard.ScoreBoard;
 import org.bukkit.scoreboard.DisplaySlot;
 
 import java.text.SimpleDateFormat;
@@ -13,7 +14,7 @@ import java.util.Date;
  */
 public class SbFinish extends ScoreBoard{
 
-    public SbFinish(String lang){
+    public SbFinish(final String lang){
         super(DisplaySlot.SIDEBAR, Lang.getMessage("SNO_WAR.SB.NAME", lang));
         super.add("15", Lang.getMessage("SNO_WAR.SB.STATS", lang), 14);
         super.add("14", " ", 13);

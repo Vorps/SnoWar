@@ -1,8 +1,8 @@
 package me.vorps.snowar.utils;
 
-import me.vorps.snowar.lang.Lang;
-import me.vorps.snowar.lang.LangSetting;
 import me.vorps.snowar.scenario.Scenario;
+import me.vorps.syluriapi.lang.Lang;
+import me.vorps.syluriapi.lang.LangSetting;
 import org.bukkit.Bukkit;
 
 import java.util.HashMap;
@@ -19,7 +19,7 @@ public enum Weather{
     private String key;
     private int duration;
 
-    Weather(String label, int duration, String key){
+    Weather(final String label, final int duration, final String key){
         this.label = new HashMap<>();
         this.key = key;
         for(LangSetting langSetting : LangSetting.getListLangSetting().values()){
@@ -46,11 +46,11 @@ public enum Weather{
         Bukkit.getWorlds().get(0).setThunderDuration(this.duration);
     }
 
-    public String getLabel(String lang){
+    public String getLabel(final String lang){
         return this.label.get(lang);
     }
 
-    public static Weather getWeather(String key){
+    public static Weather getWeather(final String key){
         Weather weather = Weather.SUN;
         for(Weather weatherList : Weather.values()){
             if(weatherList.key.equals(key)){

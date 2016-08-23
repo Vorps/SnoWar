@@ -4,12 +4,10 @@ import lombok.Getter;
 import lombok.Setter;
 import me.vorps.snowar.PlayerData;
 import me.vorps.snowar.Settings;
-import me.vorps.snowar.lang.Lang;
-import me.vorps.snowar.menu.Item;
 import me.vorps.snowar.menu.MenuBonus;
-import me.vorps.snowar.objects.Parameter;
 import me.vorps.snowar.scenario.Scenario;
-import org.bukkit.Material;
+import me.vorps.syluriapi.lang.Lang;
+import me.vorps.syluriapi.utils.Item;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -28,6 +26,7 @@ public abstract class Bonus {
     private @Getter @Setter ItemStack itemStack;
     private String label;
     private @Getter String icon;
+    private String lore;
 
     /**
      * Constructor abstract instance new Bonus
@@ -38,7 +37,7 @@ public abstract class Bonus {
      * @param persistence boolean
      * @param label String
      */
-    public Bonus(final int time, final double percent, final String enable, final String disable, final boolean persistence, final String label, final String icon){
+    public Bonus(final int time, final double percent, final String enable, final String disable, final boolean persistence, final String label, final String icon, final String lore){
         this.time = time;
         this.percent = percent;
         this.enable = enable;
@@ -46,7 +45,12 @@ public abstract class Bonus {
         this.persistence = persistence;
         this.label = label;
         this.icon = icon;
+        this.lore = lore;
         Bonus.bonusList.add(this);
+    }
+
+    public String getLore(String lang){
+        return Lang.getMessage(this.lore, lang);
     }
 
     /**
@@ -95,13 +99,13 @@ public abstract class Bonus {
     }
 
     private void updateItemBonus(int place){
-        ((MenuBonus) Scenario.getMenu()).updateItem(new String[] {Lang.getMessage("SNO_WAR.SCENARIO_BONUS_LORE",  ((MenuBonus) Scenario.getMenu()).getPlayerData().getLang(), new Lang.Args(Lang.Parameter.VAR, ""+percent))}, place);
+        Scenario.updateItem(new String[] {Lang.getMessage("SNO_WAR.SCENARIO_BONUS_LORE", Scenario.getPlayerData().getLang(), new Lang.Args(Lang.Parameter.VAR, ""+percent))}, place);
     }
 
     public static Bonus getBonus(ItemStack itemStack){
         Bonus bonus = null;
         for(Bonus bonusList : Bonus.getBonusList()){
-            if(me.vorps.snowar.utils.Item.getItem(bonusList.icon, Settings.getConsoleLang()).get().getItemMeta().getDisplayName().equals(itemStack.getItemMeta().getDisplayName())){
+            if(Item.getItem(bonusList.icon, Settings.getConsoleLang()).get().getItemMeta().getDisplayName().equals(itemStack.getItemMeta().getDisplayName())){
                 bonus = bonusList;
                 break;
             }

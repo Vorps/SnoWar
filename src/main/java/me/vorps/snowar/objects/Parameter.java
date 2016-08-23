@@ -2,11 +2,9 @@ package me.vorps.snowar.objects;
 
 import lombok.Getter;
 import lombok.Setter;
-import me.vorps.snowar.Data;
-import me.vorps.snowar.Exceptions.SqlException;
-import me.vorps.snowar.databases.Database;
-import me.vorps.snowar.scenario.Scenario;
 import me.vorps.snowar.utils.Weather;
+import me.vorps.syluriapi.Exceptions.SqlException;
+import me.vorps.syluriapi.databases.Database;
 import org.bukkit.Bukkit;
 
 import java.sql.ResultSet;
@@ -25,7 +23,7 @@ public class Parameter {
     private static @Getter @Setter int ball;
     private static @Getter @Setter double damage;
     private static @Getter @Setter int timeBonus;
-    private static @Getter int life;
+    private static @Getter @Setter int life;
     private static @Getter Earning earning;
     private static @Getter int hour;
     private static @Getter @Setter boolean fall;
@@ -57,7 +55,7 @@ public class Parameter {
         Parameter.weather = Database.SNOWAR.getDatabase().getString(result, 17);
         Parameter.coolDownBallState = Parameter.cooldownBall > 0;
         Weather.getWeather(Parameter.getWeather()).setWeather();
-        Bukkit.getWorlds().get(0).setGameRuleValue("doDaylightCycle", ""+cycle);
-        Bukkit.getWorlds().get(0).setTime(hour);
+        Bukkit.getWorlds().get(0).setGameRuleValue("doDaylightCycle", ""+Parameter.cycle);
+        Bukkit.getWorlds().get(0).setTime(Parameter.hour);
     }
 }

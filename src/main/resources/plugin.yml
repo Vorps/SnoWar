@@ -5,3 +5,5 @@ version: 1.0
 commands:
   reloadsw:
   genentity:
+  startgame:
+  stopgame:

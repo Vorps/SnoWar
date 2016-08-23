@@ -2,7 +2,7 @@ package me.vorps.snowar.listeners;
 
 import me.vorps.snowar.game.GameState;
 import me.vorps.snowar.PlayerData;
-import me.vorps.snowar.lang.Lang;
+import me.vorps.syluriapi.lang.Lang;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

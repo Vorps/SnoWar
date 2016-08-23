@@ -4,7 +4,8 @@ import me.vorps.snowar.game.GameState;
 import me.vorps.snowar.PlayerData;
 import me.vorps.snowar.Settings;
 import me.vorps.snowar.threads.Timers;
-import me.vorps.snowar.lang.Lang;
+import me.vorps.syluriapi.lang.Lang;
+import me.vorps.syluriapi.scoreboard.ScoreBoard;
 import org.bukkit.scoreboard.DisplaySlot;
 
 /**
@@ -12,7 +13,7 @@ import org.bukkit.scoreboard.DisplaySlot;
  */
 public class SbLobby extends ScoreBoard{
 
-    public SbLobby(String lang){
+    public SbLobby(final String lang){
 		super(DisplaySlot.SIDEBAR, Lang.getMessage("SNO_WAR.SB.NAME", lang));
         super.add("6", "§7"+Lang.getMessage("SNO_WAR.SB.SPACE", lang), 7);
         super.add("player", Lang.getMessage("SNO_WAR.SB.PLAYER", lang, new Lang.Args(Lang.Parameter.NBR_PLAYER, ""+PlayerData.getPlayerInGame())), 6);
@@ -31,7 +32,7 @@ public class SbLobby extends ScoreBoard{
      * @param time int
      * @return String
      */
-    public static String getKey(int time){
+    public static String getKey(final int time){
         String key;
         if(time >= 120){
             key = "SNO_WAR.SB.LOBBY.TIME.MINUTES";

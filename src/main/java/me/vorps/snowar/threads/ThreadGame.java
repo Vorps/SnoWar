@@ -4,10 +4,10 @@ import me.vorps.snowar.PlayerData;
 import me.vorps.snowar.Settings;
 import me.vorps.snowar.SnowWar;
 import me.vorps.snowar.bonus.Bonus;
-import me.vorps.snowar.utils.ActionBar;
-import me.vorps.snowar.lang.Lang;
-import me.vorps.snowar.utils.Title;
 import me.vorps.snowar.game.Victory;
+import me.vorps.syluriapi.lang.Lang;
+import me.vorps.syluriapi.utils.ActionBar;
+import me.vorps.syluriapi.utils.Title;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -25,12 +25,12 @@ public class ThreadGame{
     private boolean aBoolean;
 
 	public ThreadGame(){
-        state = 0;
-        run();
+        this.state = 0;
+        this.run();
 	}
 	
 	private void run(){
-        task = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(SnowWar.getInstance(), new Runnable() {
+        this.task = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(SnowWar.getInstance(), new Runnable() {
             @Override
             public void run() {
                 aBoolean = false;
@@ -97,13 +97,7 @@ public class ThreadGame{
                             PlayerData.getPlayerDataList().values().forEach((PlayerData playerData) -> {
                                 Date date = new Date(Timers.getTime()*1000);
                                 date.setHours(date.getHours()-1);
-                                SimpleDateFormat simpleDateFormat;
-                                if(Timers.getTime() > 3600){
-                                    simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
-                                } else {
-                                    simpleDateFormat = new SimpleDateFormat("mm:ss");
-                                }
-                                ActionBar.sendActionBar(Lang.getMessage("SNO_WAR.ACTION.TIME", playerData.getLang(), new Lang.Args(Lang.Parameter.TIME, ""+simpleDateFormat.format(date))), playerData.getPlayer());
+                                ActionBar.sendActionBar(Lang.getMessage("SNO_WAR.ACTION.TIME", playerData.getLang(), new Lang.Args(Lang.Parameter.TIME, ""+(Timers.getTime() > 3600 ? new SimpleDateFormat("HH:mm:ss") : new SimpleDateFormat("mm:ss")).format(date))), playerData.getPlayer());
                             });
                             break;
                         case 3:

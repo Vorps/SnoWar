@@ -1,14 +1,13 @@
 package me.vorps.snowar.objects;
 
 import lombok.Getter;
-import me.vorps.snowar.Exceptions.SqlException;
-import me.vorps.snowar.PlayerData;
-import me.vorps.snowar.databases.Database;
-import me.vorps.snowar.lang.Lang;
+import me.vorps.syluriapi.Exceptions.SqlException;
+import me.vorps.syluriapi.databases.Database;
+import me.vorps.syluriapi.players.Money;
+import org.bukkit.Bukkit;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -54,24 +53,15 @@ public class Earning {
         HashMap<String, Double> earning = new HashMap<>();
         earning.put(this.killDevice, kill * this.kill);
         earning.put(this.ballDevice, ball * this.ball);
-        ArrayList<String> notification = new ArrayList<>();
         if(victory){
             earning.put(this.victoryDevice, this.victory);
         }
         for(String device : earning.keySet()){
-            // TODO: 22/07/2016 Earning earning.get(device)
-            if(device.substring(0, 1).equalsIgnoreCase("e")){
-                notification.add(Lang.getMessage("SNO_WAR.EARNING.1", PlayerData.getPlayerData(name).getLang(), new Lang.Args(Lang.Parameter.DEVICE, device), new Lang.Args(Lang.Parameter.VAR, ""+earning.get(device))));
-            } else {
-                notification.add(Lang.getMessage("SNO_WAR.EARNING.2", PlayerData.getPlayerData(name).getLang(), new Lang.Args(Lang.Parameter.DEVICE, device), new Lang.Args(Lang.Parameter.VAR, ""+earning.get(device))));
+            try {
+                Money.addMoney(Bukkit.getPlayer(name).getUniqueId(), earning.get(device), device);
+            } catch (SqlException e){
+                e.printStackTrace();
             }
-        }
-        try {
-            for(String notif : notification){
-                Database.SNOWAR.getDatabase().insertTable("notification",  PlayerData.getPlayerData(name).getPlayer().getUniqueId().toString(), notif, "GAME");
-            }
-        } catch (SqlException e){
-            e.printStackTrace();
         }
     }
 }

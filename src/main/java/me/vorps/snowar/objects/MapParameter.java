@@ -1,11 +1,11 @@
 package me.vorps.snowar.objects;
 
 import lombok.Getter;
-import me.vorps.snowar.Exceptions.SqlException;
 import me.vorps.snowar.Settings;
-import me.vorps.snowar.databases.Database;
-import me.vorps.snowar.utils.EntityManager;
-import me.vorps.snowar.utils.Limite;
+import me.vorps.syluriapi.Exceptions.SqlException;
+import me.vorps.syluriapi.databases.Database;
+import me.vorps.syluriapi.utils.EntityManager;
+import me.vorps.syluriapi.utils.Limite;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Villager;
@@ -31,10 +31,10 @@ public class MapParameter {
      */
     public static void init(ResultSet result) throws SqlException{
         MapParameter.name = Database.SNOWAR.getDatabase().getString(result, 1);
-        MapParameter.spawnLobby = me.vorps.snowar.utils.Location.getLocation(Database.SNOWAR.getDatabase().getString(result, 2));
-        MapParameter.spawnFinish = me.vorps.snowar.utils.Location.getLocation(Database.SNOWAR.getDatabase().getString(result, 3));
-        MapParameter.spawnStats = me.vorps.snowar.utils.Location.getLocation(Database.SNOWAR.getDatabase().getString(result, 4));
-        MapParameter.spawnGame = me.vorps.snowar.utils.Location.getLocation(Database.SNOWAR.getDatabase().getString(result, 5));
+        MapParameter.spawnLobby = me.vorps.syluriapi.utils.Location.getLocation(Database.SNOWAR.getDatabase().getString(result, 2));
+        MapParameter.spawnFinish = me.vorps.syluriapi.utils.Location.getLocation(Database.SNOWAR.getDatabase().getString(result, 3));
+        MapParameter.spawnStats = me.vorps.syluriapi.utils.Location.getLocation(Database.SNOWAR.getDatabase().getString(result, 4));
+        MapParameter.spawnGame = me.vorps.syluriapi.utils.Location.getLocation(Database.SNOWAR.getDatabase().getString(result, 5));
         MapParameter.distance = Database.SNOWAR.getDatabase().getDouble(result, 6);
         MapParameter.limit = Limite.getLimite(Database.SNOWAR.getDatabase().getString(result, 7));
     }

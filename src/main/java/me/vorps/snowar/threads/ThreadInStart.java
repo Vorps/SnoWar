@@ -6,8 +6,8 @@ import me.vorps.snowar.PlayerData;
 import me.vorps.snowar.SnowWar;
 import me.vorps.snowar.objects.Parameter;
 import me.vorps.snowar.scoreboard.SbLobby;
-import me.vorps.snowar.lang.Lang;
-import me.vorps.snowar.utils.Title;
+import me.vorps.syluriapi.lang.Lang;
+import me.vorps.syluriapi.utils.Title;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -21,11 +21,11 @@ public class ThreadInStart{
     private boolean state;
 
 	public ThreadInStart(){
-        run();
+        this.run();
 	}
 
 	private void run(){
-        task = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(SnowWar.getInstance(), new Runnable() {
+        ThreadInStart.task = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(SnowWar.getInstance(), new Runnable() {
             @Override
             public void run() {
                 state = false;

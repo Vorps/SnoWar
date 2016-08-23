@@ -18,13 +18,13 @@ public class ThreadSpawnKill {
 
     public ThreadSpawnKill(Player player){
         this.player = player;
-        time = 0;
+        this.time = 0;
         PlayerData.getPlayerData(player.getName()).setGod(true);
-        run();
+        this.run();
     }
 
     private void run(){
-        task = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(SnowWar.getInstance(), new Runnable() {
+        this.task = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(SnowWar.getInstance(), new Runnable() {
             @Override
             public void run() {
                 if(time <= Settings.getCoolDownSpawnKill()*10 && PlayerData.getPlayerData(player.getName()).isGod()){

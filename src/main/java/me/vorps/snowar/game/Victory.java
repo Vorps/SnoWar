@@ -2,12 +2,14 @@ package me.vorps.snowar.game;
 
 import me.vorps.snowar.PlayerData;
 import me.vorps.snowar.Settings;
-import me.vorps.snowar.lang.Lang;
-import me.vorps.snowar.lang.LangSetting;
 import me.vorps.snowar.objects.Parameter;
 import me.vorps.snowar.objects.Stats;
 import me.vorps.snowar.threads.Timers;
-import me.vorps.snowar.utils.*;
+import me.vorps.syluriapi.lang.Lang;
+import me.vorps.syluriapi.lang.LangSetting;
+import me.vorps.syluriapi.utils.Color;
+import me.vorps.syluriapi.utils.Firework;
+import me.vorps.syluriapi.utils.Title;
 import org.bukkit.Bukkit;
 import org.bukkit.FireworkEffect;
 import org.bukkit.entity.Player;
