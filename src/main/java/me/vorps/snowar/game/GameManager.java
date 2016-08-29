@@ -8,6 +8,7 @@ import me.vorps.snowar.objects.MapParameter;
 import me.vorps.snowar.objects.Parameter;
 import me.vorps.snowar.scoreboard.SbFinish;
 import me.vorps.snowar.scoreboard.SbGame;
+import me.vorps.snowar.utils.LocationFix;
 import me.vorps.syluriapi.lang.Lang;
 import me.vorps.syluriapi.utils.*;
 import org.bukkit.*;
@@ -52,15 +53,7 @@ public class GameManager {
     }
 
     private static Location getLocation(int angle){
-        Location location =  new Location(Bukkit.getWorlds().get(0), Math.cos(Math.toRadians(angle))*MapParameter.getDistance()+MapParameter.getSpawnGame().getX(),  MapParameter.getSpawnGame().getY(), Math.sin(Math.toRadians(angle))*MapParameter.getDistance()+MapParameter.getSpawnGame().getZ(), (float) angle <= 90 ? angle+90 : angle-270, (float)0);
-        for(int y = location.getBlockY(); y < Bukkit.getWorlds().get(0).getMaxHeight(); y++){
-            if(location.getBlock().getType() != Material.AIR){
-                location.add(0, 1, 0);
-            } else {
-                break;
-            }
-        }
-        return location;
+        return LocationFix.getLocation(new Location(Bukkit.getWorlds().get(0), Math.cos(Math.toRadians(angle))*MapParameter.getDistance()+MapParameter.getSpawnGame().getX(),  MapParameter.getSpawnGame().getY(), Math.sin(Math.toRadians(angle))*MapParameter.getDistance()+MapParameter.getSpawnGame().getZ(), (float) angle <= 90 ? angle+90 : angle-270, (float)0));
     }
 	
 	public static void stopGame(){

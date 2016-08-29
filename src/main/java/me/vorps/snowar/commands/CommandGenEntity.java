@@ -18,7 +18,7 @@ public class CommandGenEntity extends me.vorps.syluriapi.commands.Commands{
         if(args.length == 0 && sender.hasPermission(getPermission()) && sender instanceof Player){
             EntityManager.removeEntity();
             MapParameter.spawnStats();
-            WorldUtils.initMap("world", "saveWorld");
+            WorldUtils.initMap("world", "save_world");
             sender.sendMessage(Lang.getMessage("SNO_WAR.COMMAND.GEN_ENTITY", PlayerData.getPlayerData(sender.getName()).getLang()));
             super.setStateExec(true);
         }

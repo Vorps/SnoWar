@@ -1,11 +1,11 @@
 package me.vorps.snowar.listeners;
 
 import me.vorps.snowar.Data;
-import me.vorps.snowar.game.GameState;
 import me.vorps.snowar.PlayerData;
 import me.vorps.snowar.Settings;
 import me.vorps.snowar.threads.Timers;
 import me.vorps.syluriapi.lang.Lang;
+import me.vorps.syluriapi.type.GameState;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -40,6 +40,7 @@ public class PlayerJoin implements Listener{
 
     private static int getTime(){
         int time = -1;
+        /*
         if(((float)(PlayerData.getPlayerInGame()-1)/Data.getNbPlayerMax())*100 < 25.0 && ((float)PlayerData.getPlayerInGame()/Data.getNbPlayerMax())*100 >= 25.0){
             time = Settings.getTimeStart();
         }
@@ -49,6 +50,7 @@ public class PlayerJoin implements Listener{
         if(((float)(PlayerData.getPlayerInGame()-1)/Data.getNbPlayerMax())*100 < 75.0 && ((float)PlayerData.getPlayerInGame()/Data.getNbPlayerMax())*100 >= 75.0){
             time = Settings.getTimeStart()/4;
         }
+        */
         if(PlayerData.getPlayerInGame() == Data.getNbPlayerMax()){
             time = Settings.getTimeStart()/6;
         }

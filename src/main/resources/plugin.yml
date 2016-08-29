@@ -2,6 +2,7 @@ name: SnowWar
 main: me.vorps.snowar.SnowWar
 author: Vorps
 version: 1.0
+depend: [SyluriAPI]
 commands:
   reloadsw:
   genentity:

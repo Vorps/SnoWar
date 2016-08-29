@@ -7,6 +7,7 @@ import me.vorps.snowar.objects.Stats;
 import me.vorps.snowar.threads.Timers;
 import me.vorps.syluriapi.lang.Lang;
 import me.vorps.syluriapi.lang.LangSetting;
+import me.vorps.syluriapi.type.GameState;
 import me.vorps.syluriapi.utils.Color;
 import me.vorps.syluriapi.utils.Firework;
 import me.vorps.syluriapi.utils.Title;
@@ -29,7 +30,7 @@ public class Victory {
         int var = 0;
         for(String player : winnerTreeMap.keySet()){
             winner.add(player);
-            if(var++ == 3) break;
+            if(++var == (PlayerData.getPlayerDataList().size() <= 3 ? 1 : 3)) break;
         }
         if(PlayerData.getPlayerData(winnerTreeMap.lastKey()).getLife() == Parameter.getLife() && state == 1){
             winner.clear();

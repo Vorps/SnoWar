@@ -26,5 +26,8 @@
     <orderEntry type="library" name="Maven: org.bukkit:bukkit:1.8.8-R0.1-SNAPSHOT" level="project" />
     <orderEntry type="library" name="API spigot 1.8" level="project" />
     <orderEntry type="library" name="SyluriAPI" level="project" />
+    <orderEntry type="library" name="Mineplexer" level="project" />
+    <orderEntry type="library" name="UHCLegend" level="project" />
+    <orderEntry type="library" name="DragonRush" level="project" />
   </component>
 </module>

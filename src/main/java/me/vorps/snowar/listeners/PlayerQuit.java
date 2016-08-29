@@ -1,13 +1,13 @@
 package me.vorps.snowar.listeners;
 
 import me.vorps.snowar.Data;
-import me.vorps.snowar.game.GameState;
 import me.vorps.snowar.PlayerData;
 import me.vorps.snowar.Settings;
 import me.vorps.snowar.threads.ThreadInStart;
 import me.vorps.snowar.threads.Timers;
 import me.vorps.snowar.game.Victory;
 import me.vorps.syluriapi.lang.Lang;
+import me.vorps.syluriapi.type.GameState;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

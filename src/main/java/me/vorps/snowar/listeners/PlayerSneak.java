@@ -1,8 +1,8 @@
 package me.vorps.snowar.listeners;
 
-import me.vorps.snowar.game.GameState;
 import me.vorps.snowar.PlayerData;
 import me.vorps.snowar.scoreboard.SbSpectator;
+import me.vorps.syluriapi.type.GameState;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

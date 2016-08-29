@@ -3,6 +3,7 @@ package me.vorps.snowar.cooldowns;
 import me.vorps.snowar.SnowWar;
 import me.vorps.snowar.objects.MapParameter;
 import me.vorps.snowar.objects.Parameter;
+import me.vorps.snowar.utils.LocationFix;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
@@ -27,7 +28,7 @@ public class CoolDownSpawnBonus {
             public void run() {
                 int var = new Random().nextInt(360);
                 int distance = new Random().nextInt((int) MapParameter.getDistance());
-                Bukkit.getWorlds().get(0).spawnEntity(new Location(Bukkit.getWorlds().get(0), Math.cos(var)*distance+MapParameter.getSpawnGame().getX(),  MapParameter.getSpawnGame().getY(), Math.sin(var)*distance+MapParameter.getSpawnGame().getZ()), EntityType.SNOWMAN);
+                Bukkit.getWorlds().get(0).spawnEntity(LocationFix.getLocation(new Location(Bukkit.getWorlds().get(0), Math.cos(var)*distance+MapParameter.getSpawnGame().getX(),  MapParameter.getSpawnGame().getY(), Math.sin(var)*distance+MapParameter.getSpawnGame().getZ())), EntityType.SNOWMAN);
             }
         }, 0L, Parameter.getTimeBonus()*20);
     }

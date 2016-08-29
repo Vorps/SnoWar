@@ -2,10 +2,10 @@ package me.vorps.snowar;
 
 import lombok.Getter;
 import me.vorps.snowar.commands.CommandManager;
-import me.vorps.snowar.game.GameState;
 import me.vorps.snowar.listeners.EventsManager;
 import me.vorps.snowar.objects.MapParameter;
 import me.vorps.syluriapi.databases.Database;
+import me.vorps.syluriapi.type.GameState;
 import me.vorps.syluriapi.utils.Info;
 import me.vorps.syluriapi.utils.WorldUtils;
 import org.bukkit.Bukkit;

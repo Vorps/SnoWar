@@ -4,11 +4,11 @@ package me.vorps.snowar.threads;
 import lombok.Getter;
 import lombok.Setter;
 import me.vorps.snowar.game.GameManager;
-import me.vorps.snowar.game.GameState;
 import me.vorps.snowar.PlayerData;
 import me.vorps.snowar.Settings;
 import me.vorps.snowar.scoreboard.SbLobby;
 import me.vorps.syluriapi.lang.Lang;
+import me.vorps.syluriapi.type.GameState;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

@@ -1,9 +1,9 @@
 package me.vorps.snowar.listeners;
 
 import me.vorps.snowar.PlayerData;
-import me.vorps.snowar.game.GameState;
 import me.vorps.snowar.menu.MenuSpectator;
-import me.vorps.snowar.scenario.Scenario;
+import me.vorps.snowar.utils.Event;
+import me.vorps.syluriapi.type.GameState;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -29,16 +29,7 @@ public class PlayerInventoryClick implements Listener {
                         break;
                 }
             } else {
-                switch (item.getType()) {
-                    case BED:
-                        // TODO: 25/07/2016 Quit
-                        break;
-                    case REDSTONE_COMPARATOR:
-                        Scenario.openScenario(PlayerData.getPlayerData(player.getName()));
-                        break;
-                    default:
-                        break;
-                }
+                Event.interractItem(item, PlayerData.getPlayerData(player.getName()));
             }
         }
     }

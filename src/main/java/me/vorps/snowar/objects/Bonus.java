@@ -24,7 +24,7 @@ public class Bonus {
      */
     public Bonus(ResultSet resultSet) throws SqlException{
         try {
-            java.lang.reflect.Constructor constructor = Class.forName ("me.vorps.snowar.bonus."+Database.SNOWAR.getDatabase().getString(resultSet, 1)).getConstructor (int.class, double.class, String.class, String.class, boolean.class, String.class, String.class, String.class);
+            java.lang.reflect.Constructor constructor = Class.forName("me.vorps.snowar.bonus."+Database.SNOWAR.getDatabase().getString(resultSet, 1)).getConstructor (int.class, double.class, String.class, String.class, boolean.class, String.class, String.class, String.class);
             constructor.newInstance (Database.SNOWAR.getDatabase().getInt(resultSet, 2), Database.SNOWAR.getDatabase().getDouble(resultSet, 3), Database.SNOWAR.getDatabase().getString(resultSet, 4), Database.SNOWAR.getDatabase().getString(resultSet, 5), Database.SNOWAR.getDatabase().getBoolean(resultSet, 6), Database.SNOWAR.getDatabase().getString(resultSet, 7), Database.SNOWAR.getDatabase().getString(resultSet, 8), Database.SNOWAR.getDatabase().getString(resultSet, 9));
         } catch (Exception e) {
             e.printStackTrace();

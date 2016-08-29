@@ -1,12 +1,12 @@
 package me.vorps.snowar.listeners;
 
 import me.vorps.snowar.SnowWar;
-import me.vorps.snowar.game.GameState;
 import me.vorps.snowar.PlayerData;
 import me.vorps.snowar.cooldowns.CoolDownsLastDamage;
 import me.vorps.snowar.objects.Bonus;
 import me.vorps.snowar.objects.Parameter;
 import me.vorps.snowar.threads.ThreadSpawnKill;
+import me.vorps.syluriapi.type.GameState;
 import me.vorps.syluriapi.utils.ActionBar;
 import me.vorps.syluriapi.utils.Hologram;
 import org.bukkit.entity.Player;

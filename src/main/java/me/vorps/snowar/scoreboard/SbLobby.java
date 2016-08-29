@@ -1,11 +1,11 @@
 package me.vorps.snowar.scoreboard;
 
-import me.vorps.snowar.game.GameState;
 import me.vorps.snowar.PlayerData;
 import me.vorps.snowar.Settings;
 import me.vorps.snowar.threads.Timers;
 import me.vorps.syluriapi.lang.Lang;
 import me.vorps.syluriapi.scoreboard.ScoreBoard;
+import me.vorps.syluriapi.type.GameState;
 import org.bukkit.scoreboard.DisplaySlot;
 
 /**

@@ -15,7 +15,7 @@ public class MenuSpectator extends MenuRecursive{
 
 	public MenuSpectator(final Player player, final ArrayList<Item> list){
         super(null, Bukkit.createInventory(player, list.size() > 9 ? list.size() > 18 ? 36 : 27 : 18, Lang.getMessage("SNO_WAR.INVENTORY.SPECTATOR.TITLE", PlayerData.getPlayerData(player.getName()).getLang())), null, list,PlayerData.getPlayerData(player.getName()).getLang(), 9, 9);
-        initMenu(player, 1);
+        this.initMenu(player, 1);
         player.openInventory(super.menu);
 	}
 

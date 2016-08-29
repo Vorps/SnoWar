@@ -2,9 +2,9 @@ package me.vorps.snowar.commands;
 
 import me.vorps.snowar.PlayerData;
 import me.vorps.snowar.Settings;
-import me.vorps.snowar.game.GameState;
 import me.vorps.snowar.game.Victory;
 import me.vorps.syluriapi.lang.Lang;
+import me.vorps.syluriapi.type.GameState;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -15,7 +15,7 @@ public class CommandStop extends me.vorps.syluriapi.commands.Commands{
 
 
     public CommandStop(final CommandSender sender, final String args[]){
-        super(sender, Commands.ENTITY.getPermissions());
+        super(sender, Commands.STOP.getPermissions());
         if(args.length == 0){
             if(GameState.isState(GameState.INGAME)){
                 Bukkit.getServer().getScheduler().cancelAllTasks();

@@ -3,12 +3,11 @@ package me.vorps.snowar.commands;
 import me.vorps.snowar.Data;
 import me.vorps.snowar.PlayerData;
 import me.vorps.snowar.Settings;
-import me.vorps.snowar.game.GameState;
 import me.vorps.snowar.objects.Parameter;
 import me.vorps.snowar.threads.ThreadInStart;
 import me.vorps.snowar.threads.Timers;
-import me.vorps.syluriapi.commands.*;
 import me.vorps.syluriapi.lang.Lang;
+import me.vorps.syluriapi.type.GameState;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -19,7 +18,7 @@ import org.bukkit.entity.Player;
 public class CommandStart extends me.vorps.syluriapi.commands.Commands{
 
     public CommandStart(final CommandSender sender, final String args[]) {
-        super(sender, Commands.ENTITY.getPermissions());
+        super(sender, Commands.START.getPermissions());
         if(args.length == 0){
             if(GameState.isState(GameState.INSTART) || GameState.isState(GameState.WAITING)){
                 if(PlayerData.getPlayerInGame() >= Data.getNbPlayerMin()){
